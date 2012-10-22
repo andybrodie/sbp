@@ -1,0 +1,11 @@
+﻿<ViewModel:HighScoresViewModel xmlns:ViewModel="clr-namespace:Locima.SlidingBlock.ViewModel" ButtonLabel="Continue">    
+    <ViewModel:HighScoresViewModel.HighScores>
+        <ViewModel:HighScoreItemViewModel PlayerName="(H) A player with a very long name indeed" IsHighlighted="True" TotalMoves="1000" Time="00:10:00" DateEntered="2012-10-11 06:00"/>
+        <ViewModel:HighScoreItemViewModel PlayerName="Shorty" IsHighlighted="False" TotalMoves="99999" DateEntered="2012/09/01" />
+        <ViewModel:HighScoreItemViewModel PlayerName="áéíóú" IsHighlighted="False" TotalMoves="56" />
+        <ViewModel:HighScoreItemViewModel PlayerName="(H) Another player" IsHighlighted="True" TotalMoves="344" />
+        <ViewModel:HighScoreItemViewModel PlayerName="Yet another player" IsHighlighted="False" TotalMoves="21" />
+        <ViewModel:HighScoreItemViewModel PlayerName="Are we scrolling yet?" IsHighlighted="False" TotalMoves="0" />
+        <ViewModel:HighScoreItemViewModel PlayerName="Probably..." IsHighlighted="True" TotalMoves="77" />
+    </ViewModel:HighScoresViewModel.HighScores>    
+</ViewModel:HighScoresViewModel>

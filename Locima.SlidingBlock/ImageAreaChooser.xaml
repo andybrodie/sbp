@@ -1,0 +1,64 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Locima.SlidingBlock.ImageAreaChooser"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    xmlns:ViewModel="clr-namespace:Locima.SlidingBlock.ViewModel" 
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+  <phone:PhoneApplicationPage.Resources>
+    <ViewModel:ImageAreaChooserViewModel x:Key="imageChooserViewModel" />
+  </phone:PhoneApplicationPage.Resources>
+    <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{StaticResource imageChooserViewModel}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Canvas x:Name="ContentCanvas" Grid.Row="1">
+            <Image x:Name="ImgZoom" Source="{Binding Image}" Stretch="UniformToFill" RenderTransformOrigin="0.5,0.5" CacheMode="BitmapCache">
+                <toolkit:GestureService.GestureListener>
+                    <toolkit:GestureListener
+                        PinchStarted="OnPinchStarted"
+                        PinchDelta="OnPinchDelta"
+                        DragStarted="OnDragStarted"
+                        DragDelta="OnDragDelta"
+                        />
+                </toolkit:GestureService.GestureListener>
+                <Image.RenderTransform>
+                    <CompositeTransform ScaleX="1" ScaleY="1" TranslateX="0" TranslateY="0"/>
+                </Image.RenderTransform>
+            </Image>
+            <!-- These rectangles create the effect of a "window" through part of the image to see what's going to be used -->
+            <Rectangle x:Name="DarkRectLeft" Fill="#80000000" Canvas.Top="{Binding CropTop}" Canvas.Left="0" Width="{Binding CropLeft}" Height="{Binding CropHeight}"/>
+            <Rectangle x:Name="DarkRectTop" Fill="#80000000" Canvas.Top="0" Canvas.Left="0" Width="{Binding ActualWidth,ElementName=ContentCanvas}" Height="{Binding CropTop}"/>
+            <Rectangle x:Name="DarkRectRight" Fill="#80000000" Canvas.Top="{Binding CropTop}" Canvas.Left="{Binding CropRight}" Width="{Binding CropRightToRightEdge}" Height="{Binding CropHeight}"/>
+            <Rectangle x:Name="DarkRectBottom" Fill="#80000000" Canvas.Top="{Binding CropBottom}" Canvas.Left="0" Width="{Binding ActualWidth,ElementName=ContentCanvas}" Height="{Binding CropBottomToBottomEdge}"/>
+            <Border x:Name="CropArea" BorderBrush="White" BorderThickness="5" Canvas.Top="{Binding CropTop}" Canvas.Left="{Binding CropLeft}" Width="{Binding CropWidth}" Height="{Binding CropHeight}"/>
+        </Canvas>
+      
+        <StackPanel x:Name="ToolsPanel" Grid.Row="2">
+            <Slider x:Name="ZoomSlider" Minimum="1" Maximum="100" Value="{Binding ZoomAmount,Mode=TwoWay}"/>
+        </StackPanel>
+    </Grid>
+ 
+</phone:PhoneApplicationPage>
+
+   

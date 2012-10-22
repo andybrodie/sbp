@@ -1,0 +1,52 @@
+<SlidingBlock:LevelStats xmlns:SlidingBlock="clr-namespace:Locima.SlidingBlock" xmlns:System="clr-namespace:System;assembly=mscorlib">
+	<SlidingBlock:LevelStat Index="77" MoveCount="36">
+		<SlidingBlock:LevelStat.ElapsedTime>
+            <System:TimeSpan/>
+        </SlidingBlock:LevelStat.ElapsedTime>
+	</SlidingBlock:LevelStat>
+	<SlidingBlock:LevelStat Index="40" MoveCount="87">
+		<SlidingBlock:LevelStat.ElapsedTime>
+			<System:TimeSpan/>
+		</SlidingBlock:LevelStat.ElapsedTime>
+	</SlidingBlock:LevelStat>
+	<SlidingBlock:LevelStat Index="38" MoveCount="25">
+		<SlidingBlock:LevelStat.ElapsedTime>
+			<System:TimeSpan/>
+		</SlidingBlock:LevelStat.ElapsedTime>
+	</SlidingBlock:LevelStat>
+	<SlidingBlock:LevelStat Index="89" MoveCount="53">
+		<SlidingBlock:LevelStat.ElapsedTime>
+			<System:TimeSpan/>
+		</SlidingBlock:LevelStat.ElapsedTime>
+	</SlidingBlock:LevelStat>
+	<SlidingBlock:LevelStat Index="26" MoveCount="71">
+		<SlidingBlock:LevelStat.ElapsedTime>
+			<System:TimeSpan/>
+		</SlidingBlock:LevelStat.ElapsedTime>
+	</SlidingBlock:LevelStat>
+	<SlidingBlock:LevelStat Index="46" MoveCount="83">
+		<SlidingBlock:LevelStat.ElapsedTime>
+			<System:TimeSpan/>
+		</SlidingBlock:LevelStat.ElapsedTime>
+	</SlidingBlock:LevelStat>
+	<SlidingBlock:LevelStat Index="68" MoveCount="55">
+		<SlidingBlock:LevelStat.ElapsedTime>
+			<System:TimeSpan/>
+		</SlidingBlock:LevelStat.ElapsedTime>
+	</SlidingBlock:LevelStat>
+	<SlidingBlock:LevelStat Index="51" MoveCount="52">
+		<SlidingBlock:LevelStat.ElapsedTime>
+			<System:TimeSpan/>
+		</SlidingBlock:LevelStat.ElapsedTime>
+	</SlidingBlock:LevelStat>
+	<SlidingBlock:LevelStat Index="54" MoveCount="36">
+		<SlidingBlock:LevelStat.ElapsedTime>
+			<System:TimeSpan/>
+		</SlidingBlock:LevelStat.ElapsedTime>
+	</SlidingBlock:LevelStat>
+	<SlidingBlock:LevelStat Index="50" MoveCount="64">
+		<SlidingBlock:LevelStat.ElapsedTime>
+			<System:TimeSpan/>
+		</SlidingBlock:LevelStat.ElapsedTime>
+	</SlidingBlock:LevelStat>
+</SlidingBlock:LevelStats>

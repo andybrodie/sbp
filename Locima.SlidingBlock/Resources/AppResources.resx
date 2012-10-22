@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutMenuOption" xml:space="preserve">
+    <value>about</value>
+    <comment>The application bar menu option to bring up the YLAD dialogue</comment>
+  </data>
+  <data name="AcknowledgementsLeader" xml:space="preserve">
+    <value>The author would like to acknowledge the following people and organisations who provided either inspiration or some great tips and code snippets on the Internet that were used within this app.</value>
+    <comment>Text shown at the top of the acknowledgements page</comment>
+  </data>
+  <data name="AddNewPlayerTitle" xml:space="preserve">
+    <value>add player</value>
+    <comment>Page title for the screen allowing a new player to be created</comment>
+  </data>
+  <data name="AddPlayer" xml:space="preserve">
+    <value>add player</value>
+    <comment>Application bar button label for adding a new player</comment>
+  </data>
+  <data name="ApplicationName" xml:space="preserve">
+    <value>SLIDING BLOCK</value>
+    <comment>The title of the application</comment>
+  </data>
+  <data name="Autosolve" xml:space="preserve">
+    <value>autosolve</value>
+    <comment>Application Bar icon to automatically solve the puzzle</comment>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>back</value>
+    <comment>The word"back", used to indicate that an interaction will go back through the app</comment>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>cancel</value>
+    <comment>Application bar button label for cancelling the creation of a new player</comment>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>continue</value>
+    <comment>The word "continue", to indicate that an interaction will continue to the next logical part of the application</comment>
+  </data>
+  <data name="ContinueGame" xml:space="preserve">
+    <value>continue game</value>
+    <comment>Menu item title for continuing the current game</comment>
+  </data>
+  <data name="ContinueGameDescription" xml:space="preserve">
+    <value>Continue the current game</value>
+    <comment>Menu item description for continuing the current game</comment>
+  </data>
+  <data name="Custom" xml:space="preserve">
+    <value>custom</value>
+    <comment>Indicates a custom game</comment>
+  </data>
+  <data name="CustomDescription" xml:space="preserve">
+    <value>Start a new custom game</value>
+    <comment>Describes a custom game</comment>
+  </data>
+  <data name="DefaultPlayerName" xml:space="preserve">
+    <value>Player</value>
+    <comment>The name of the player created when the game is first run</comment>
+  </data>
+  <data name="DeleteConfirmationMessage" xml:space="preserve">
+    <value>{0} has {1} save game(s).  Click OK to delete all these games as well as the player record, or cancel to abort the operation</value>
+    <comment>Description for confirmation dialogue box asking for confirmation of player delete when they have save games</comment>
+  </data>
+  <data name="DeleteConfirmationTitle" xml:space="preserve">
+    <value>delete player</value>
+    <comment>Title for confirmation dialogue box asking for confirmation of player delete when they have save games</comment>
+  </data>
+  <data name="Easy" xml:space="preserve">
+    <value>easy</value>
+    <comment>Indicates an easy difficulty game</comment>
+  </data>
+  <data name="EditPlayerTitle" xml:space="preserve">
+    <value>edit player</value>
+    <comment>Page title for the AddPlayer.xaml page when an existing player is being edited</comment>
+  </data>
+  <data name="EndGameMessage" xml:space="preserve">
+    <value>Congratulations!  You've completed the single player game in a total of {0} using {1} moves, which places you {2} on the high score table.  Times for each level are shown below.</value>
+    <comment>Message shown in EndGame.xaml</comment>
+  </data>
+  <data name="EndGameTitle" xml:space="preserve">
+    <value>game over</value>
+    <comment>Title of the GameEnd page</comment>
+  </data>
+  <data name="GameDescription" xml:space="preserve">
+    <value>Start a game using a {0} x {1} grid</value>
+    <comment>Describes an easy, medium or hard game</comment>
+  </data>
+  <data name="GamePageTitle" xml:space="preserve">
+    <value>level {0}</value>
+    <comment>The title displayed on the GamePage.xaml main page (this will be the number of the level)</comment>
+  </data>
+  <data name="GoToHighscores" xml:space="preserve">
+    <value>highscores</value>
+    <comment>Shown on the application menu bar to navigate to the highscore table</comment>
+  </data>
+  <data name="Hard" xml:space="preserve">
+    <value>hard</value>
+    <comment>Indicates a hard difficulty game</comment>
+  </data>
+  <data name="HighscorePageTitle" xml:space="preserve">
+    <value>highscores</value>
+    <comment>Page title for the highscore table</comment>
+  </data>
+  <data name="HighscoreStats" xml:space="preserve">
+    <value>{0} moves in {1}</value>
+    <comment>Used on the highscore table, this is the string shown beneath each player name containing the stats of their game (number of moves and elapsed time)</comment>
+  </data>
+  <data name="LevelFinishedCaption" xml:space="preserve">
+    <value>LEVEL COMPLETE</value>
+    <comment>The caption on the message box displayed when a player completes a level</comment>
+  </data>
+  <data name="LevelFinishedMessage" xml:space="preserve">
+    <value>Congratulations! You have completed level {0} in a total of {1} using {2} {3}.</value>
+    <comment>The message text displayed when a player completes a level</comment>
+  </data>
+  <data name="LevelLabel" xml:space="preserve">
+    <value>level:</value>
+    <comment>Prompt on the screen for which level number this is</comment>
+  </data>
+  <data name="LittleWatson_Message" xml:space="preserve">
+    <value>A problem occurred the last time you ran this application. Would you like to send an email to report it?</value>
+    <comment>Message shown by LittleWatson to the user when starting up and a crash file was detected</comment>
+  </data>
+  <data name="LittleWatson_Title" xml:space="preserve">
+    <value>Problem Report</value>
+    <comment>Title of Little Watson problem report MessageBox</comment>
+  </data>
+  <data name="LoadGame" xml:space="preserve">
+    <value>load game</value>
+    <comment>Menu item title for loading a saved game</comment>
+  </data>
+  <data name="LoadGameDescription" xml:space="preserve">
+    <value>Load a saved game</value>
+    <comment>Menu item description for loading a saved game</comment>
+  </data>
+  <data name="LocalPictures" xml:space="preserve">
+    <value>Local Pictures</value>
+    <comment>Prompt for using pictures on the local device (your phone)</comment>
+  </data>
+  <data name="LocalPicturesDescription" xml:space="preserve">
+    <value>Use a picture from your phone</value>
+    <comment>Description for prompt for using pictures on the local device (your phone)</comment>
+  </data>
+  <data name="MainMenu" xml:space="preserve">
+    <value>main menu</value>
+    <comment>Main menu page title</comment>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>medium</value>
+    <comment>Indicates a medium difficulty game</comment>
+  </data>
+  <data name="MovesInLabel" xml:space="preserve">
+    <value>moves in</value>
+    <comment>Used on highscores.xaml to separate the number of moves and elapsed time</comment>
+  </data>
+  <data name="MovesLabel" xml:space="preserve">
+    <value>moves:</value>
+    <comment>Prompt on the main game screen for how many moves the player has taken on this level so far</comment>
+  </data>
+  <data name="NewGame" xml:space="preserve">
+    <value>start new game</value>
+    <comment>Menu item title for starting a new game</comment>
+  </data>
+  <data name="NewGameDescription" xml:space="preserve">
+    <value>Starts a new game from scratch</value>
+    <comment>Menu item description for starting a new game</comment>
+  </data>
+  <data name="NoHighscoresFound" xml:space="preserve">
+    <value>no highscores yet!</value>
+    <comment>text shown where there are no high scores</comment>
+  </data>
+  <data name="NoSavedGamesFound" xml:space="preserve">
+    <value>no saved games found!</value>
+    <comment>Message displayed when no saved games exist on the SavedGameSelector page</comment>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>pause</value>
+    <comment>Application bar text for button that pauses a running game</comment>
+  </data>
+  <data name="PausedMessage" xml:space="preserve">
+    <value>paused</value>
+    <comment>The message shown overlaid on the puzzle when paused (stops the user considering the puzzle)</comment>
+  </data>
+  <data name="PlayerContextMenuDelete" xml:space="preserve">
+    <value>delete</value>
+    <comment>Context menu option on player selector to delete the player</comment>
+  </data>
+  <data name="PlayerContextMenuEdit" xml:space="preserve">
+    <value>edit</value>
+    <comment>Context menu option on player selector to edit the player</comment>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>resume</value>
+    <comment>Application bar text for button that resumes a paused game</comment>
+  </data>
+  <data name="SaveGameSelectorDeleteGame" xml:space="preserve">
+    <value>delete</value>
+    <comment>The context menu header for the option to delete a previously saved game</comment>
+  </data>
+  <data name="SaveGameSelectorPageTitle" xml:space="preserve">
+    <value>select save game</value>
+    <comment>Page title for the save game selector page</comment>
+  </data>
+  <data name="SavePlayer" xml:space="preserve">
+    <value>save</value>
+    <comment>Application bar button label for saving a new player</comment>
+  </data>
+  <data name="SelectPlayer" xml:space="preserve">
+    <value>select player</value>
+    <comment>Select player page screen title</comment>
+  </data>
+  <data name="SettingsMenuOption" xml:space="preserve">
+    <value>settings</value>
+    <comment>Application bar option for configuration of application settings</comment>
+  </data>
+  <data name="SinglePlayerTitle" xml:space="preserve">
+    <value>single player game</value>
+    <comment>ImageTitle of the page for single players</comment>
+  </data>
+  <data name="TimeLabel" xml:space="preserve">
+    <value>time:</value>
+    <comment>Label on the main game screen indicating the amount of time the player has been on this level</comment>
+  </data>
+  <data name="UnnamedPlayer" xml:space="preserve">
+    <value>No name</value>
+    <comment>The name given to a player where the player name has been set to an empty string</comment>
+  </data>
+</root>

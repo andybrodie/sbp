@@ -1,0 +1,97 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Locima.SlidingBlock.HighScores"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ViewModel="clr-namespace:Locima.SlidingBlock.ViewModel"
+    xmlns:Converters="clr-namespace:Locima.SlidingBlock.Converters"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True"
+    >
+
+    <phone:PhoneApplicationPage.Resources>
+        <Converters:IntegerToVisibilityConverter x:Key="IntegerToVisibilityConverter" />
+        <ViewModel:HighScoresViewModel x:Key="viewModel"/>
+        <toolkit:RelativeTimeConverter  x:Key="relativeTimeConverter"/>
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <!-- Note we have to put the d:DataContext here rather than in the PhoneApplicationPage or it won't work because
+    the Loaded event handler will overwrite it -->
+    <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{Binding Source={StaticResource viewModel}}"
+    d:DataContext="{d:DesignData Source=/SampleData/HighScoresViewModelSampleData.xaml}"
+          >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" 
+                       Text="{Binding Path=Strings.ApplicationName, Source={StaticResource Localization}}"
+                       Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding Path=Strings.HighscorePageTitle, Source={StaticResource Localization}}"
+                       Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+        
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <ListBox x:Name="SaveGameListbox" Grid.Row="0"
+                     ItemsSource="{Binding Path=HighScores}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Text="{Binding Path=PlayerName}" 
+                                       TextWrapping="NoWrap" 
+                                       Style="{StaticResource PhoneTextLargeStyle}"
+                                       Foreground="{Binding EntryStyle}"
+                            />
+                            <TextBlock Margin="12,0,0,0" Grid.Row="1" Grid.Column="0"
+                                       Text="{Binding Path=GameStats}"
+                                       Style="{StaticResource PhoneTextSmallStyle}" />
+                            <TextBlock Grid.Row="1" Grid.Column="1" 
+                                       Text="{Binding Path=DateEntered,Converter={StaticResource relativeTimeConverter}}" 
+                                       Style="{StaticResource PhoneTextSmallStyle}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <TextBlock x:Name="NoGamesFoundTextBlock" Grid.Row="0" Grid.Column="0" 
+                       Text="{Binding Path=Strings.NoHighscoresFound, Source={StaticResource Localization}}"
+                       Visibility="{Binding Path=HighScores.Count,Converter={StaticResource IntegerToVisibilityConverter}}"
+                       Style="{StaticResource PhoneTextLargeStyle}">
+            	<TextBlock.Foreground>
+            		<SolidColorBrush Color="{StaticResource PhoneForegroundColor}"/>
+            	</TextBlock.Foreground>
+            </TextBlock>
+            <Button x:Name="ProceedButton" Grid.Column="0" Grid.Row="1" Content="{Binding ButtonLabel}" Command="{Binding ClickCommand}"/>
+        </Grid>
+    </Grid>
+ 
+</phone:PhoneApplicationPage>
