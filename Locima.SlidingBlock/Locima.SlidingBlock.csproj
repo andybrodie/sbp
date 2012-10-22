@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{84EBBAF5-7914-42C0-B0AA-BCF8C8D0C9C7}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Locima.SlidingBlock</RootNamespace>
+    <AssemblyName>Locima.SlidingBlock</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>de-DE;en-GB;</SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>Locima.SlidingBlock.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>Locima.SlidingBlock.App</SilverlightAppEntry>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <Utf8Output>true</Utf8Output>
+    <ExpressionBlendVersion>4.0.30816.0</ExpressionBlendVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>Bin\Debug\Locima.SlidingBlock.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>Bin\Release\Locima.SlidingBlock.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Phone" />
+    <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
+      <HintPath>..\packages\SilverlightToolkitWP.4.2012.6.25\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Servicemodel.Web" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="mscorlib.extensions" />
+    <Reference Include="WriteableBitmapExWinPhone">
+      <HintPath>..\..\WriteableBitmapEx_v1.0.2.0\WindowsPhone\WriteableBitmapExWinPhone.dll</HintPath>
+    </Reference>
+    <Reference Include="YourLastAboutDialog">
+      <HintPath>..\packages\YLAD.2.0.0\lib\sl40-wp71\YourLastAboutDialog.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddPlayer.xaml.cs">
+      <DependentUpon>AddPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\ArrayTools.cs" />
+    <Compile Include="Common\InvalidStateException.cs" />
+    <Compile Include="Common\LocalizationHelper.cs" />
+    <Compile Include="Common\Position.cs" />
+    <Compile Include="Common\SafeRaise.cs" />
+    <Compile Include="Controls\AcknowledgementList.cs" />
+    <Compile Include="Controls\Acknowledgement.cs" />
+    <Compile Include="Controls\Acknowledgements.xaml.cs">
+      <DependentUpon>Acknowledgements.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ApplicationBarHelper.cs" />
+    <Compile Include="Controls\DataTemplateSelector.cs" />
+    <Compile Include="Controls\DiscreteSlider.cs" />
+    <Compile Include="Controls\HighscoreTemplateSelector.cs" />
+    <Compile Include="Controls\MenuItemTemplateSelector.cs" />
+    <Compile Include="Controls\MetroGridHelper.cs" />
+    <Compile Include="Controls\Puzzle.cs" />
+    <Compile Include="Converters\BoolToColorConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\DoubleToThicknessConverter.cs" />
+    <Compile Include="Converters\ElapsedTimeConverter.cs" />
+    <Compile Include="Converters\IdentityConverter.cs" />
+    <Compile Include="Converters\IntegerToVisibilityConverter.cs" />
+    <Compile Include="Converters\PositionToStringConverter.cs" />
+    <Compile Include="CreateCustomGame.xaml.cs">
+      <DependentUpon>CreateCustomGame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GameEnd.xaml.cs">
+      <DependentUpon>GameEnd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GameTemplates\GameDefinition.cs" />
+    <Compile Include="GameTemplates\LevelDefinition.cs" />
+    <Compile Include="GameTemplates\LicenseDefinition.cs" />
+    <Compile Include="GameTemplates\SinglePlayer\SinglePlayerGame.cs" />
+    <Compile Include="HighScores.xaml.cs">
+      <DependentUpon>HighScores.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageAreaChooser.xaml.cs">
+      <DependentUpon>ImageAreaChooser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageChooser.xaml.cs">
+      <DependentUpon>ImageChooser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IO\HighscoresStorageManager.cs" />
+    <Compile Include="IO\IHighscoresStorageManager.cs" />
+    <Compile Include="IO\IImageStorageManager.cs" />
+    <Compile Include="IO\ImageStorageManager.cs" />
+    <Compile Include="IO\IPersistedObject.cs" />
+    <Compile Include="IO\IPlayerStorageManager.cs" />
+    <Compile Include="IO\ISaveGameStorageManager.cs" />
+    <Compile Include="IO\IsolatedStorage\HighscoreIsolatedStorageManager.cs" />
+    <Compile Include="IO\IsolatedStorage\ImageCatalogueIsolatedStorageManager.cs" />
+    <Compile Include="IO\IsolatedStorage\ImageIsolatedStorageManager.cs" />
+    <Compile Include="IO\IsolatedStorage\IOHelper.cs" />
+    <Compile Include="IO\IsolatedStorage\PlayerIsolatedStorageManager.cs" />
+    <Compile Include="IO\IsolatedStorage\SaveGameIsolatedStorageManager.cs" />
+    <Compile Include="IO\PlayerStorageManager.cs" />
+    <Compile Include="IO\SaveGameStorageManager.cs" />
+    <Compile Include="LittleWatson.cs" />
+    <Compile Include="Messaging\ConfirmationMessageArgs.cs" />
+    <Compile Include="Messaging\DefaultHandlerExtensionMethods.cs" />
+    <Compile Include="Messaging\DefaultMessageHandlers.cs" />
+    <Compile Include="Messaging\MessageArgs.cs" />
+    <Compile Include="Messaging\MessageHandler.cs" />
+    <Compile Include="Messaging\NavigationMessageArgs.cs" />
+    <Compile Include="Messaging\ScrollToViewMessage.cs" />
+    <Compile Include="Model\ClockModel.cs" />
+    <Compile Include="Model\DirectionPreference.cs" />
+    <Compile Include="Model\ImageDivider.cs" />
+    <Compile Include="Model\PlayerLink.cs" />
+    <Compile Include="Model\PlayerMoveEventArgs.cs" />
+    <Compile Include="Model\PlayerType.cs" />
+    <Compile Include="Model\PuzzleResizedEventArgs.cs" />
+    <Compile Include="Model\StopwatchModel.cs" />
+    <Compile Include="Model\TileDirection.cs" />
+    <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\TileModel.cs" />
+    <Compile Include="Model\TileMoveEventArgs.cs" />
+    <Compile Include="Persistence\Highscore.cs" />
+    <Compile Include="Persistence\HighscoreTable.cs" />
+    <Compile Include="Persistence\LevelState.cs" />
+    <Compile Include="Persistence\PlayerDetails.cs" />
+    <Compile Include="Persistence\SaveGame.cs" />
+    <Compile Include="PlayerSelector.xaml.cs">
+      <DependentUpon>PlayerSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SavedGameSelector.xaml.cs">
+      <DependentUpon>SavedGameSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scrambles\Scrambler.cs" />
+    <Compile Include="SimpleTile.xaml.cs">
+      <DependentUpon>SimpleTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PuzzleModel.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GamePage.xaml.cs">
+      <DependentUpon>GamePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SinglePlayer\GameFactory.cs" />
+    <Compile Include="Test\EndGameTestSetup.cs" />
+    <Compile Include="ViewModel\HighscoreItemViewModel.cs" />
+    <Compile Include="ViewModel\HighScoresViewModel.cs" />
+    <Compile Include="ViewModel\MenuItem.cs" />
+    <Compile Include="ViewModel\MenuPageBroker.cs" />
+    <Compile Include="ViewModel\MenuPageViewModel.cs" />
+    <Compile Include="ViewModel\MenuViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\AppResources.de-DE.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.de-DE.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\AppResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\AppResources.en-GB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.en-GB.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\DelegateCommand.cs" />
+    <Compile Include="ViewModel\DependencyViewModelBase.cs" />
+    <Compile Include="ViewModel\ImageAreaChooserViewModel.cs" />
+    <Compile Include="ViewModel\PlayerSelectorItem.cs" />
+    <Compile Include="ViewModel\PlayerSelectorViewModel.cs" />
+    <Compile Include="ViewModel\PuzzleViewModel.cs" />
+    <Compile Include="Common\Tuple.cs" />
+    <Compile Include="ViewModel\SaveGameMenuItem.cs" />
+    <Compile Include="ViewModel\SaveGameSelectorViewModel.cs" />
+    <Compile Include="ViewModel\TileAnimator.cs" />
+    <Compile Include="ViewModel\TileViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="AddPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Content Include="Content\About\AboutStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Content>
+    <Page Include="Controls\Acknowledgements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CreateCustomGame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GameEnd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HighScores.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ImageAreaChooser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImageChooser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GamePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PlayerSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <DesignData Include="SampleData\HighScoresViewModelSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </DesignData>
+    <Page Include="SavedGameSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SimpleTile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApplicationIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\About\Data.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="GameTemplates\SinglePlayer\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameTemplates\SinglePlayer\2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameTemplates\SinglePlayer\3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\appbar.cancel.rest.png" />
+    <Content Include="Icons\appbar.check.rest.png" />
+    <Content Include="Icons\appbar.new.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\appbar.save.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\appbar.transport.ff.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\appbar.transport.play.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\appbar.transport.pause.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SplashScreenImage.jpg" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <DesignData Include="SampleData\LevelStatsSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
+    <DesignData Include="SampleData\MenuPageViewModelSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\AppResources.de-DE.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.de-DE.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\AppResources.en-GB.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.en-GB.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\AppResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions />
+</Project>
