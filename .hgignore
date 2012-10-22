@@ -1,4 +1,5 @@
-# Ignore file for Visual Studio 2008
+# Courtesy of Even Mein (http://stackoverflow.com/users/73794/even-mien) on Stack Overflow
+# Originally from: http://stackoverflow.com/questions/34784/mercurial-hgignore-for-visual-studio-2008-projects
 
 # use glob syntax
 syntax: glob
