@@ -21,6 +21,18 @@ namespace Locima.SlidingBlock.Controls
         /// </summary>
         public DataTemplate Disabled { get; set; }
 
+        /// <summary>
+        ///   Selects either the <see cref="Enabled" /> template or <see cref="Disabled" /> template, depending on the value of <see
+        ///    cref="MenuItemViewModel.IsEnabled" />
+        /// </summary>
+        /// <param name="item"> The <see cref="MenuItemViewModel" /> that is to be rendered </param>
+        /// <param name="container"> <c>this</c> </param>
+        /// <returns>
+        ///   <para> Either <see cref="Enabled" /> or <see cref="Disabled" /> . If no value for <see
+        ///    cref="MenuItemViewModel.IsEnabled" /> could be found then this defers to <see
+        ///    cref="DataTemplateSelector.SelectTemplate" /> (this returns <c>null</c> which means that the item won't be rendered. </para>
+        ///   <para> Serves you right for including an object that wasn't an instance of <see cref="MenuItemViewModel" />! </para>
+        /// </returns>
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             MenuItemViewModel model = item as MenuItemViewModel;

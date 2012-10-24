@@ -92,9 +92,9 @@ namespace Locima.SlidingBlock
         {
             IApplicationBar appBar = new ApplicationBar();
 
-            ApplicationBarHelper.AddButton(appBar, ApplicationBarHelper.Buttons["Tick"],
+            ApplicationBarHelper.AddButton(appBar, ApplicationBarHelper.ButtonIcons["Tick"],
                                            LocalizationHelper.GetString("OK"));
-            ApplicationBarHelper.AddButton(appBar, ApplicationBarHelper.Buttons["Cancel"],
+            ApplicationBarHelper.AddButton(appBar, ApplicationBarHelper.ButtonIcons["Cancel"],
                                            LocalizationHelper.GetString("Cancel"));
 
             ApplicationBar = appBar;

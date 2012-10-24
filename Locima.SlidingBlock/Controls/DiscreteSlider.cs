@@ -15,6 +15,8 @@ namespace Locima.SlidingBlock.Controls
 
         protected override void OnValueChanged(double oldValue, double newValue)
         {
+            const double smallChangeDelta = 0.000001;
+
             if (!_busy)
             {
                 try
@@ -25,7 +27,7 @@ namespace Locima.SlidingBlock.Controls
                     {
                         double newDiscreteValue = (int)(Math.Round(newValue / SmallChange)) * SmallChange;
 
-                        if (Math.Abs(newDiscreteValue - Value) > 0.000001 || Math.Abs(Value - oldValue) > 0.000001)
+                        if (Math.Abs(newDiscreteValue - Value) > smallChangeDelta || Math.Abs(Value - oldValue) > smallChangeDelta)
                         {
                             Value = newDiscreteValue;
                             base.OnValueChanged(_discreteValue, newDiscreteValue);

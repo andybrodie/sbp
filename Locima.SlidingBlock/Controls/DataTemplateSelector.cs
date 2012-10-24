@@ -13,11 +13,21 @@ namespace Locima.SlidingBlock.Controls
     public abstract class DataTemplateSelector : ContentControl
     {
 
+        /// <summary>
+        /// SHould be overridded by subclasses, this method examines the <paramref name="item"/> and then returns the <see cref="DataTemplate"/> to use with that item.
+        /// </summary>
+        /// <param name="item">The itme being rendered (usually a view model object)</param>
+        /// <param name="container">The object that will contain the item (usually this)</param>
+        /// <returns>Default implementation returns <c>null</c></returns>
         public virtual DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             return null;
         }
          
+        /// <summary>
+        /// Invoked if an item changes, this then allows the selector to set, or change its mind, which <see cref="DataTemplate"/> to use.
+        /// </summary>
+        /// <see cref="ContentControl.OnContentChanged"/>
         protected override void OnContentChanged(object oldContent, object newContent)
         {
             base.OnContentChanged(oldContent, newContent);
@@ -25,6 +35,12 @@ namespace Locima.SlidingBlock.Controls
         }
 
 
+        /// <summary>
+        /// Uses reflection to retrieve the property named by <paramref name="propertyName"/> on the <paramref name="item"/> object
+        /// </summary>
+        /// <param name="item">The (typically view model) object to retrieve the property from</param>
+        /// <param name="propertyName">The name of the property on the <paramref name="item"/> to retrieve</param>
+        /// <returns>The value of the property as a string</returns>
         protected string RetrieveDesignerProperty(object item, string propertyName)
         {
             if (item == null) return null;

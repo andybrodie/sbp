@@ -114,7 +114,7 @@ namespace Locima.SlidingBlock
             ApplicationBar = new ApplicationBar();
 
             IApplicationBarIconButton pauseButton = ApplicationBarHelper.AddButton(ApplicationBar,
-                                                                                   ApplicationBarHelper.Buttons["Pause"],
+                                                                                   ApplicationBarHelper.ButtonIcons["Pause"],
                                                                                    LocalizationHelper.GetString("Pause"));
             pauseButton.Click += PauseButtonOnClick;
         }
@@ -139,13 +139,13 @@ namespace Locima.SlidingBlock
             if (ViewModel.IsPaused)
             {
                 Logger.Debug("Replacing text and icon for pause button with resume icon and text");
-                pauseButton.IconUri = ApplicationBarHelper.Buttons["Resume"];
+                pauseButton.IconUri = ApplicationBarHelper.ButtonIcons["Resume"];
                 pauseButton.Text = LocalizationHelper.GetString("Resume");
             }
             else
             {
                 Logger.Debug("Replacing text and icon for resume button with pause icon and text");
-                pauseButton.IconUri = ApplicationBarHelper.Buttons["Pause"];
+                pauseButton.IconUri = ApplicationBarHelper.ButtonIcons["Pause"];
                 pauseButton.Text = LocalizationHelper.GetString("Pause");
             }
         }

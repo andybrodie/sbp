@@ -141,7 +141,7 @@ namespace Locima.SlidingBlock.Controls
                 Debug.WriteLine("Dear developer:");
                 Debug.WriteLine("Unfortunately the design overlay feature requires that the root frame visual");
                 Debug.WriteLine("be a Border or a Grid. So the overlay grid just isn't going to happen.");
-                return;
+//                return;   // AJB removed this as a pointless statement
             }
         }
 

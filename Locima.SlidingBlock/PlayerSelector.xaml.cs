@@ -37,7 +37,7 @@ namespace Locima.SlidingBlock
             base.OnNavigatedTo(e);
             ApplicationBar = new ApplicationBar();
             IApplicationBarIconButton icon = ApplicationBarHelper.AddButton(ApplicationBar,
-                                                                            ApplicationBarHelper.Buttons["New"],
+                                                                            ApplicationBarHelper.ButtonIcons["New"],
                                                                             LocalizationHelper.GetString("AddPlayer"));
             icon.Click += (o, args) => NavigationService.Navigate(AddPlayer.CreateNavigationUri(null));
             this.RegisterDefaultMessageHandlers(ViewModel);
