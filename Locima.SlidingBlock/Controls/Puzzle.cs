@@ -50,6 +50,9 @@ namespace Locima.SlidingBlock.Controls
         /// <summary>
         /// The save game that the puzzle is currently playing.  I don't like this, the View essentially has a reference to the model, which is not right at all.
         /// </summary>
+        /// <remarks>
+        /// Backing field for <see cref="SaveGame"/>
+        /// </remarks>
         private SaveGame _game;
 
         /// <summary>
@@ -77,7 +80,12 @@ namespace Locima.SlidingBlock.Controls
         }
 
 
-        // TODO The puzzle shouldn't need the whole SaveGame instance, instead create individual DependencyProperties and bind them to the view model
+        /// <summary>
+        /// The current game that's being represented by this control.  When this is set the whole control reconfigures itself.
+        /// </summary>
+        /// <remarks>
+        /// TODO The puzzle shouldn't need the whole SaveGame instance, instead create individual DependencyProperties and bind them to the view model
+        /// </remarks>
         public SaveGame Game
         {
             get { return _game; }
@@ -161,6 +169,9 @@ namespace Locima.SlidingBlock.Controls
         }
 
 
+        /// <summary>
+        /// Captures a <see cref="UIElement.Tap"/> event on the puzzle and, provided that the game isn't paused, passes the location of the tap to the view model (<see cref="PuzzleViewModel.MoveTileBasedOnTap"/>
+        /// </summary>
         private void PuzzleTap(object sender, GestureEventArgs e)
         {
             if (Paused)
@@ -207,6 +218,8 @@ namespace Locima.SlidingBlock.Controls
         /// <summary>
         ///   Creates all the child controls of this canvas specialisation, namely the tiles that will slide around
         /// </summary>
+        /// <see cref="TileViewModel"/>
+        /// <see cref="SimpleTile"/>
         private void CreateTileControls()
         {
             Logger.Debug(

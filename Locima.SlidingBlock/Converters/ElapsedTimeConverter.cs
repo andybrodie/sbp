@@ -5,9 +5,8 @@ using System.Windows.Data;
 namespace Locima.SlidingBlock.Converters
 {
     /// <summary>
-    /// Converts a TimeSpan object to a string and back again
+    /// Converts a <see cref="TimeSpan"/> object to a <see cref="string"/> and back again
     /// </summary>
-    
     public class ElapsedTimeConverter : IValueConverter
     {
 

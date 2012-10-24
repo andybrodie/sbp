@@ -94,7 +94,6 @@
     <Compile Include="Controls\MenuItemTemplateSelector.cs" />
     <Compile Include="Controls\MetroGridHelper.cs" />
     <Compile Include="Controls\Puzzle.cs" />
-    <Compile Include="Converters\BoolToColorConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\DoubleToThicknessConverter.cs" />
     <Compile Include="Converters\ElapsedTimeConverter.cs" />

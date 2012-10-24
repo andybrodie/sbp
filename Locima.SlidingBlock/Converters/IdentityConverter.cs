@@ -10,8 +10,8 @@ namespace Locima.SlidingBlock.Converters
     /// Identity converter that passes pack whatever value is passed back in
     /// </summary>
     /// <remarks>
-    /// This is useful for debugging when a binding update is invoked, by setting a breakpoint on the <see cref="Convert"/> or <see cref="ConvertBack"/> methods</remarks>.  This also
-    /// sends the parameters to the log
+    /// This is useful for debugging when a binding update is invoked, by setting a breakpoint on the <see cref="Convert"/> or <see cref="ConvertBack"/> methods.  This also
+    /// sends the parameters to the log</remarks>
     public class IdentityConverter : IValueConverter
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
