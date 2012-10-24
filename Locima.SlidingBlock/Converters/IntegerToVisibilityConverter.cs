@@ -7,7 +7,7 @@ namespace Locima.SlidingBlock.Converters
 {
 
     /// <summary>
-    /// Converts a zero or non-zero integer to either <see cref="Visibility.Visible"/> or <see cref="Visibility.Collapsed"/>, depending on the convert parameter
+    /// Converts a zero or non-zero <see cref="int"/> to either <see cref="Visibility.Visible"/> or <see cref="Visibility.Collapsed"/>, depending on the convert parameter
     /// </summary>
     public class IntegerToVisibilityConverter : IValueConverter
     {
