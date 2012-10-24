@@ -38,11 +38,15 @@
                 <Controls:Acknowledgement Title="MetroGridHelper"
                                           Link="http://www.jeff.wilcox.name/2011/10/metrogridhelper/"
                                           Author="Jeff Wilcox"
-                                          Description="Helped me to work out layout (although I've probably done it badly!)"/>
+                                          Description="Helped me to work out how to lay out my controls (although I've probably done it badly!)"/>
                 <Controls:Acknowledgement Title="Sandcastle"
                                           Link="http://shfb.codeplex.com/"
                                           Author="Eric Woodruff"
-                                          Description="Sandcastle builds the HTML API documentation"/>
+                                          Description="Sandcastle builds the HTML API documentation."/>
+                <Controls:Acknowledgement Title="Scott Hanselman"
+                                          Author="Scott's parents"
+                                          Description="I was inspired to write this having read Scott's post on &quot;Shipping my first Windows App&quot;.  He's a truly motivational speaker and writer!"
+                                          Link="http://www.hanselman.com/blog/FromConceptToCodeIn6HoursShippingMyFirstWindowsPhoneApp.aspx"/>
             </Controls:AcknowledgementList>
             <Style TargetType="HyperlinkButton" x:Name="hyperlink">
                 <Setter Property="Foreground" Value="{StaticResource PhoneSubtleBrush}"/>
