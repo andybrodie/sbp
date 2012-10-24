@@ -4,6 +4,13 @@ using Locima.SlidingBlock.ViewModel;
 
 namespace Locima.SlidingBlock.Controls
 {
+    /// <summary>
+    ///   Selects the appropriate template for showing a high score item (<see cref="HighScoreItemViewModel" />) for use within <see
+    ///    cref="HighScores" />
+    /// </summary>
+    /// <remarks>
+    ///   There are two templates defined that allow for "normal" entries and "highlighted" entries.  There is usually just one highlighted entry, which is the entry just created by the player.
+    /// </remarks>
     public class HighscoreTemplateSelector : DataTemplateSelector
     {
         /// <summary>
@@ -16,6 +23,18 @@ namespace Locima.SlidingBlock.Controls
         /// </summary>
         public DataTemplate Normal { get; set; }
 
+        /// <summary>
+        ///   Selects either the <see cref="Highlighted" /> template or <see cref="Normal" /> template, depending on the value of <see
+        ///    cref="HighScoreItemViewModel.IsHighlighted" />
+        /// </summary>
+        /// <param name="item"> The <see cref="HighScoreItemViewModel" /> that is to be rendered </param>
+        /// <param name="container"> <c>this</c> </param>
+        /// <returns>
+        ///   <para> Either <see cref="Highlighted" /> or <see cref="Normal" /> . If no value for <see
+        ///    cref="HighScoreItemViewModel.IsHighlighted" /> could be found then this defers to <see
+        ///    cref="DataTemplateSelector.SelectTemplate" /> (this returns <c>null</c> which means that the item won't be rendered. </para>
+        ///   <para> Serves you right for including an object that wasn't an instance of <see cref="HighScoreItemViewModel" />! </para>
+        /// </returns>
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             HighScoreItemViewModel model = item as HighScoreItemViewModel;
@@ -45,7 +64,7 @@ namespace Locima.SlidingBlock.Controls
                 }
             }
             else
-            // The item passed to the template selector was an instance of MenuItemViewModel, so in that case just use the value in the IsEnabled property
+                // The item passed to the template selector was an instance of MenuItemViewModel, so in that case just use the value in the IsEnabled property
             {
                 isHighlighted = model.IsHighlighted;
             }

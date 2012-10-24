@@ -65,10 +65,10 @@ namespace Locima.SlidingBlock
             }
 
             IApplicationBarIconButton icon = ApplicationBarHelper.AddButton(ApplicationBar,
-                                                                            ApplicationBarHelper.Buttons["Save"],
+                                                                            ApplicationBarHelper.ButtonIcons["Save"],
                                                                             LocalizationHelper.GetString("SavePlayer"));
             icon.Click += SavePlayerClick;
-            icon = ApplicationBarHelper.AddButton(ApplicationBar, ApplicationBarHelper.Buttons["Cancel"],
+            icon = ApplicationBarHelper.AddButton(ApplicationBar, ApplicationBarHelper.ButtonIcons["Cancel"],
                                                   LocalizationHelper.GetString("Cancel"));
             icon.Click += CancelClick;
 

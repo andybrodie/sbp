@@ -9,15 +9,37 @@ using NLog;
 
 namespace Locima.SlidingBlock.Controls
 {
+
+    /// <summary>
+    /// This control represents the entire sliding block puzzle as it appears on <see cref="GamePage"/>.  It contains only instances of <see cref="SimpleTile"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>This is a specialisation of <see cref="Canvas"/>, which may or may not be a smart way to do this.  I used it because then the tiles could be easily animated based on the
+    /// <see cref="Canvas.TopProperty"/> and <see cref="Canvas.LeftProperty"/> attached properties of each tile.</para>
+    /// <para>
+    /// This control shows off:
+    /// <list type="number">
+    /// <item><description>Creating a my own dependency properties, <see cref="PauseScreenProperty"/> and <see cref="PausedProperty"/> which are then data bound</description></item>
+    /// <item><description>Creating a XAML-based property of the control, i.e. the pause screen, <see cref="PauseScreenProperty"/></description></item>
+    /// <item><description>Dynamically creating sub-controls defined in XAML (<see cref="SimpleTile"/>) and adding them to the hierarchy</description></item>
+    /// </list>
+    /// </para>
+    /// </remarks>
     public class Puzzle : Canvas
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// The pause screen is overlaid on top of the puzzle when <see cref="PausedProperty"/> is set to true
+        /// </summary>
         public static readonly DependencyProperty PauseScreenProperty = DependencyProperty.Register("PauseScreen",
                                                                                                     typeof (FrameworkElement),
                                                                                                     typeof (Puzzle),
                                                                                                     null);
 
+        /// <summary>
+        /// If <c>true</c> then the pause screen is displayed and all taps are ignored
+        /// </summary>
         public static readonly DependencyProperty PausedProperty = DependencyProperty.Register("Paused",
                                                                                                typeof (Boolean),
                                                                                                typeof (Puzzle),
@@ -25,8 +47,15 @@ namespace Locima.SlidingBlock.Controls
                                                                                                    false,
                                                                                                    PausedPropertyChangeCallback));
         
+        /// <summary>
+        /// The save game that the puzzle is currently playing.  I don't like this, the View essentially has a reference to the model, which is not right at all.
+        /// </summary>
         private SaveGame _game;
 
+        /// <summary>
+        /// The set of pause screen controls
+        /// </summary>
+        /// <see cref="PauseScreen"/>
         public FrameworkElement PauseScreen { get; set; }
 
         /// <summary>
