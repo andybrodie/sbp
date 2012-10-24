@@ -5,8 +5,10 @@
              FontFamily="{StaticResource PhoneFontFamilyNormal}" FontSize="{StaticResource PhoneFontSizeNormal}"
              Foreground="{StaticResource PhoneForegroundBrush}" d:DesignHeight="768" d:DesignWidth="480"
              xmlns:Controls="clr-namespace:Locima.SlidingBlock.Controls">
-
-    <StackPanel x:Name="LayoutRoot">
+    
+    <!-- I had to set the background explicitly here just so it would show up in the design view.  For some reason
+    Grid shows up by default with a black background, but StackPanel doesn't.  Weird huh? -->
+    <StackPanel x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundBrush}">
         <StackPanel.Resources>
             <Controls:AcknowledgementList x:Name="AckList">
                 <Controls:Acknowledgement Title="Windows Phone Mango Jump Start"
