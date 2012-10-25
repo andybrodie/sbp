@@ -144,7 +144,6 @@
     <Compile Include="Messaging\MessageHandler.cs" />
     <Compile Include="Messaging\NavigationMessageArgs.cs" />
     <Compile Include="Messaging\ScrollToViewMessage.cs" />
-    <Compile Include="Model\ClockModel.cs" />
     <Compile Include="Model\DirectionPreference.cs" />
     <Compile Include="Model\ImageDivider.cs" />
     <Compile Include="Model\PlayerLink.cs" />
