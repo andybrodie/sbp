@@ -7,6 +7,11 @@ using NLog;
 
 namespace Locima.SlidingBlock.Messaging
 {
+
+    /// <summary>
+    /// Some useful default message handlers to save each view having to provide its own handler.  Most handlers are the same, e.g. <see cref="OnNavigationMessage"/>, there's only so
+    /// many things you can do with that!
+    /// </summary>
     public class DefaultMessageHandlers
     {
 
@@ -14,11 +19,14 @@ namespace Locima.SlidingBlock.Messaging
 
         private readonly PhoneApplicationPage _page;
 
+        /// <summary>
+        /// Saves <paramref name="page"/> for later use
+        /// </summary>
+        /// <param name="page"></param>
         public DefaultMessageHandlers(PhoneApplicationPage page)
         {
             _page = page;
         }
-
 
 
         /// <summary>
@@ -71,6 +79,11 @@ namespace Locima.SlidingBlock.Messaging
         }
 
 
+        /// <summary>
+        /// Default confirmation message handler that pops up a <see cref="MessageBox"/> instance.
+        /// </summary>
+        /// <param name="sender">The view model object that sent the message</param>
+        /// <param name="confirmArgs">Arguments to confire the message box</param>
         public void OnConfirmationMessage(object sender, ConfirmationMessageArgs confirmArgs)
         {
             Logger.Info("Displaying MessageBox based on ConfirmationMessage command: {0} from {1}", confirmArgs.Title, sender);
@@ -108,6 +121,11 @@ namespace Locima.SlidingBlock.Messaging
         }
 
 
+        /// <summary>
+        /// Registers the default handlers for <paramref name="page"/> on the <paramref name="viewModel"/>
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="viewModel"></param>
         public static void Register(PhoneApplicationPage page, ViewModelBase viewModel)
         {
             Logger.Debug("Registering default handlers for NavigationMessageArgs and ConfirmationMessageArgs");
