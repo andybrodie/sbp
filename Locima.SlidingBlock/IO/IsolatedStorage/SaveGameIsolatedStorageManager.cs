@@ -7,13 +7,12 @@ using NLog;
 
 namespace Locima.SlidingBlock.IO.IsolatedStorage
 {
+
     public class SaveGameIsolatedStorageManager : ISaveGameStorageManager
     {
         private const string SaveGameDirectory = "SaveGames";
         private const string PathSeparator = "\\";
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        #region ISaveGameStorageManager Members
 
         /// <summary>
         ///   Loads a puzzle from disk using only the filename
@@ -46,9 +45,6 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
             Logger.Info("Save game {0} has {1}", saveGameId, result ? "been deleted successfully" : "not been deleted");
         }
 
-        #endregion
-
-        #region Save Game Management
 
         /// <summary>
         ///   Save the current game
@@ -122,11 +118,10 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
 
-        public SaveGame GetContinuableGame()
+        public SaveGame GetContinuableGame(string playerId)
         {
-            return LoadGames().FirstOrDefault();
+            return LoadGames(playerId).FirstOrDefault();
         }
 
-        #endregion
     }
 }

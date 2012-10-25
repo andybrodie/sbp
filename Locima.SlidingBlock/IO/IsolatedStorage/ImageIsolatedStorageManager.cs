@@ -7,6 +7,9 @@ using NLog;
 
 namespace Locima.SlidingBlock.IO.IsolatedStorage
 {
+    /// <summary>
+    /// Currently unused, this is used for managing the persistence of downloaded image files (either from the Internet or from within XAP content)
+    /// </summary>
     public class ImageIsolatedStorageManager : IImageStorageManager
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
