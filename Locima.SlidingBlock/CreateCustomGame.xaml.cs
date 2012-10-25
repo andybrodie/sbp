@@ -29,7 +29,7 @@ namespace Locima.SlidingBlock
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            _puzzle = SaveGameStorageManager.Instance.GetContinuableGame();
+            _puzzle = SaveGameStorageManager.Instance.GetContinuableGame(PlayerStorageManager.Instance.CurrentPlayer.Id);
             _puzzle.EnsureLevels(1);
             LevelState level = _puzzle.Levels[0];
             TilesAcross = Math.Max(level.TilesAcross,3);

@@ -132,8 +132,10 @@
     <Compile Include="IO\IsolatedStorage\IOHelper.cs" />
     <Compile Include="IO\IsolatedStorage\PlayerIsolatedStorageManager.cs" />
     <Compile Include="IO\IsolatedStorage\SaveGameIsolatedStorageManager.cs" />
+    <Compile Include="IO\IStorageManager.cs" />
     <Compile Include="IO\PlayerStorageManager.cs" />
     <Compile Include="IO\SaveGameStorageManager.cs" />
+    <Compile Include="IO\StorageManagerManager.cs" />
     <Compile Include="LittleWatson.cs" />
     <Compile Include="Messaging\ConfirmationMessageArgs.cs" />
     <Compile Include="Messaging\DefaultHandlerExtensionMethods.cs" />

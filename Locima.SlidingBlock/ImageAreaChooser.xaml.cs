@@ -45,7 +45,7 @@ namespace Locima.SlidingBlock
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            _puzzle = SaveGameStorageManager.Instance.GetContinuableGame();
+            _puzzle = SaveGameStorageManager.Instance.GetContinuableGame(PlayerStorageManager.Instance.CurrentPlayer.Id);
             ImageAreaChooserViewModel iacvm = (ImageAreaChooserViewModel) Resources["imageChooserViewModel"];
             Debug.Assert(iacvm != null);
             iacvm.CropTop = 30;

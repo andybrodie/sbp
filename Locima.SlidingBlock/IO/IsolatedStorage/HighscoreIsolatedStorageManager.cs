@@ -5,6 +5,10 @@ using NLog;
 
 namespace Locima.SlidingBlock.IO.IsolatedStorage
 {
+
+    /// <summary>
+    /// Mnaages the persistence of a single high score table in isolated storage
+    /// </summary>
     public class HighscoreIsolatedStorageManager : IHighscoresStorageManager
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

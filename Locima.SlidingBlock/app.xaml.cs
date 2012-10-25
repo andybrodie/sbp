@@ -148,11 +148,8 @@ namespace Locima.SlidingBlock
 
             Logger = LogManager.GetCurrentClassLogger();
 
-            // Make sure all required directories are created
-            SaveGameStorageManager.Instance.Initialise();
-            PlayerStorageManager.Instance.Initialise();
-            ImageStorageManager.Instance.Initialise();
-            HighScoresStorageManager.Instance.Initialise();
+            // Initialise all the storage managers
+            StorageManagerManager.Initialise();
 
             // Create the frame but don't set it as RootVisual yet; this allows the splash
             // screen to remain active until the application is ready to render.
