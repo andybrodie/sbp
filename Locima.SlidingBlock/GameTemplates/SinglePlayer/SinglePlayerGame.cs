@@ -1,13 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Locima.SlidingBlock.Scrambles;
 
 namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
 {
+
+    /// <summary>
+    /// This programatically creates the default single player game within the application.
+    /// </summary>
+    /// <remarks>
+    /// I could have created this offline and included the serialised version of the <see cref="GameDefinition"/> as content within the XAP, but, to be honest, that's just
+    /// too much hassle as creating it on the fly is quick enough.</remarks>
     public class SinglePlayerGame
     {
         private const string TemplatePath = "/GameTemplates/SinglePlayer/";
 
+        /// <summary>
+        /// Creates the game definition for the default single player game.
+        /// </summary>
+        /// <remarks>
+        /// Creates 3 levels, using the JPG files contained within the same directory (GameTemplates/SinglePlayer), adds the licensing information and sets up the <see cref="Scrambler.ScrambleType"/></remarks>
         public static GameDefinition Create()
         {
             const string andy = "Andy Brodie";
@@ -18,6 +31,10 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
                     Title = "Creative Commons Attribution 3.0 (CC BY 3.0)"
                 };
 
+            // If debugging then use a scramble that allows the level to be finished within one move, to make it easier to test stuff out
+            Scrambler.ScrambleType scramble = Debugger.IsAttached
+                                                  ? Scrambler.ScrambleType.OneMoveToFinish
+                                                  : Scrambler.ScrambleType.XyFlip;
 
             GameDefinition gm = new GameDefinition
                 {
@@ -28,11 +45,13 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
                                     XapImageUri = new Uri(TemplatePath + "1.jpg", UriKind.Relative),
                                     ImageTitle = "Dax the Labrador",
                                     ImageText =
-                                        "This is some description text about the picture, can include <a href=\"http://www.flickr.com\"> links to the source of the picture",
+                                        "My wife's dog, \"Dax\", an adorable, dopey yellow labrador",
                                     OwnerName = andy,
                                     OwnerUri = andyLink,
                                     License = ccby30,
-                                    ScrambleType = Scrambler.ScrambleType.OneMoveToFinish
+                                    ScrambleType = scramble
+
+                                   
                                 },
                             new LevelDefinition
                                 {
@@ -42,7 +61,7 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
                                     OwnerName = andy,
                                     OwnerUri = andyLink,
                                     License = ccby30,
-                                    ScrambleType = Scrambler.ScrambleType.OneMoveToFinish
+                                    ScrambleType = scramble
                                 },
                             new LevelDefinition
                                 {
@@ -53,7 +72,7 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
                                     OwnerName = andy,
                                     OwnerUri = andyLink,
                                     License = ccby30,
-                                    ScrambleType = Scrambler.ScrambleType.OneMoveToFinish
+                                    ScrambleType = scramble
                                 }
                         }
                 };
