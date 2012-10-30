@@ -63,6 +63,9 @@ namespace Locima.SlidingBlock.ViewModel
         private PuzzleModel _puzzleModel;
         private bool _dontSaveGameOnNavigatingFrom;
 
+        /// <summary>
+        /// Invoked by the view when the user wishes to pause the game
+        /// </summary>
         public ICommand PauseGameCommand
         {
             get { return _pauseGameCommand; }
@@ -175,6 +178,12 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+
+        /// <summary>
+        /// Initialises the view model, creating a new <see cref="PuzzleModel"/>.
+        /// </summary>
+        /// <remarks>
+        /// This doens't do much until the <see cref="Configure"/> is called.</remarks>
         public void Initialise()
         {
             Logger.Debug("PuzzleViewModel Initialise entry");
@@ -192,6 +201,10 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
 
+        /// <summary>
+        /// The implementation of the <see cref="PauseGameCommand"/> action
+        /// </summary>
+        /// <param name="ignoredParam">Ignored</param>
         public void PauseGameAction(object ignoredParam)
         {
             if (_puzzleModel.Stopwatch.IsRunning)
@@ -229,10 +242,15 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
 
+        /// <summary>
+        /// Reconfigure this view model with the <paramref name="game"/>, showing <see cref="SaveGame.CurrentLevel"/>
+        /// </summary>
+        /// <remarks>
+        /// We need the whole <see cref="SaveGame"/> object as we'll be updating the top level data within this object (e.g. <see cref="SaveGame.TotalMoves"/>)</remarks>
+        /// <param name="game"></param>
         public void Configure(SaveGame game)
         {
             Logger.Debug("Configure with SaveGame entry");
-//            TileBorder = 1; // BUG This shouldn't be set here
 
             _puzzleModel.Initialise(game.CurrentLevel);
 
@@ -422,6 +440,12 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
 
+        /// <summary>
+        /// When the user navigates away from the page (or a system event interrupts us) then save our current position
+        /// </summary>
+        /// <remarks>
+        /// This method has to be quick, as it impacts the user experience.  As <see cref="SaveGame"/> instances are only a few kilobytes this is fine</remarks>
+        /// <param name="navigatingCancelEventArgs">Unused</param>
         public void OnNavigatingFrom(NavigatingCancelEventArgs navigatingCancelEventArgs)
         {
             Logger.Info("OnNavigatingFrom fired");
@@ -439,6 +463,11 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
 
+        /// <summary>
+        /// Updates the <see cref="SaveGame"/> instance stored in <see cref="_currentGame"/> with the current position of all the tiles and the stopwatch
+        /// </summary>
+        /// <remarks>
+        /// This should be called before persisting the <see cref="SaveGame"/></remarks>
         private void UpdateCurrentGame()
         {
             // Stop the stopwatch
@@ -451,6 +480,13 @@ namespace Locima.SlidingBlock.ViewModel
             _currentGame.CurrentLevel.Thumbnail = CreateThumbnailBitmap();
         }
 
+
+        /// <summary>
+        /// Create a small thumbnail of the current state of the puzzle for use within the save game file
+        /// </summary>
+        /// <remarks>
+        /// Not implemented yet, this currently just returns a blank thumbnail image </remarks>
+        /// <returns>An empty bitmap of size <see cref="SaveGame.ThumbnailWidth"/> by <see cref="SaveGame.ThumbnailHeight"/></returns>
         private WriteableBitmap CreateThumbnailBitmap()
         {
             Logger.Debug("Haven't implemented thumbnail generation yet!");

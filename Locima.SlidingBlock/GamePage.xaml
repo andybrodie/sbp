@@ -28,7 +28,7 @@
 
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent" ShowGridLines="True" SizeChanged="LayoutRootSizeChanged"
+    <Grid x:Name="LayoutRoot" Background="Transparent" ShowGridLines="False" SizeChanged="LayoutRootSizeChanged"
           DataContext="{Binding Source={StaticResource viewModel}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />

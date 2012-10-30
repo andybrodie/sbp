@@ -10,6 +10,7 @@ using Microsoft.Phone.Controls;
 
 namespace Locima.SlidingBlock
 {
+
     public partial class CreateCustomGame : PhoneApplicationPage
     {
         private readonly ICommand _selectImageCommand;

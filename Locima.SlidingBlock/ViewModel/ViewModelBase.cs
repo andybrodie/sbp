@@ -9,15 +9,18 @@ using NLog;
 namespace Locima.SlidingBlock.ViewModel
 {
     /// <summary>
-    /// Base class for all View Models.
+    /// Base class for all View Models, or if another base class is already in use, then this can be used as an encapsulated member of that view model, e.g. <see cref="DependencyViewModelBase"/>
     /// </summary>
     /// <remarks>
-    /// This contains functionality for:
+    /// <para>This contains functionality for:
     /// <list type="number">
     /// <item><description>Notifying property changes to the view: <see cref="OnNotifyPropertyChanged"/></description></item>
     /// <item><description>Sending messages to the view (e.g. requests to navigate to a new page): <see cref="SendViewMessage"/></description></item>
-    /// </list></remarks>
-    public abstract class ViewModelBase : INotifyPropertyChanged
+    /// </list></para>
+    /// <para>
+    /// TODO: Allow multiple message handlers for a <see cref="MessageArgs"/> type
+    /// </para></remarks>
+    public class ViewModelBase : IViewModelBase
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -41,7 +44,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// Convenience method to notify the view that an observed property has changed.  Suppresses any exceptions from handlers.
         /// </summary>
         /// <param name="changedPropertyName">The name of hte property that changes</param>
-        protected void OnNotifyPropertyChanged(string changedPropertyName)
+        public void OnNotifyPropertyChanged(string changedPropertyName)
         {
 //            Logger.Debug("{0} notifying that {1} has changed", this, changedPropertyName);
             if (PropertyChanged != null)
@@ -76,7 +79,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// Note that this sets the list of message handlers to the same object.  Therefore any changes will be reflected in both view models.
         /// Note that this erases any message handlers in this object.</remarks>
         /// <param name="syncViewModel">The view model to share message handlers with</param>
-        protected void ShareMessageHandlers(ViewModelBase syncViewModel)
+        public void ShareMessageHandlers(ViewModelBase syncViewModel)
         {
             Logger.Info("Synchronising message handlers in {0} with message handlers from {1}, they are now sharing the same Dictionary", this, syncViewModel);
             _messageHandlers = syncViewModel._messageHandlers;
@@ -100,7 +103,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// <summary>
         ///   Invoke the message handler for the message argument type passed
         /// </summary>
-        /// <param name="args"> </param>
+        /// <param name="args">The payload of the message.  The type of this object will determine the event handler that is called</param>
         /// <returns> </returns>
         public bool SendViewMessage(MessageArgs args)
         {
