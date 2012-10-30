@@ -7,7 +7,7 @@ using NLog;
 namespace Locima.SlidingBlock.ViewModel
 {
     /// <summary>
-    ///   Represents a single item of a <see cref="MenuPageViewModel" />.
+    ///   View model to represent a single item of a <see cref="MenuPageViewModel" />.
     /// </summary>
     /// <remarks>
     ///   <para> This class does not perform any explicit localization, the caller is responsible for this. </para>
@@ -18,12 +18,34 @@ namespace Locima.SlidingBlock.ViewModel
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// Backing field for <see cref="Icon"/>
+        /// </summary>
         private WriteableBitmap _icon;
+
+        /// <summary>
+        /// Backing field for <see cref="IsEnabled"/>
+        /// </summary>
         private bool _isEnabled = true;
+
+        /// <summary>
+        /// Backing field for <see cref="TargetPage"/>
+        /// </summary>
         private string _targetPage;
+
+        /// <summary>
+        /// Backing field for <see cref="TargetUri"/>
+        /// </summary>
         private Uri _targetUri;
+
+        /// <summary>
+        /// Backing field for <see cref="Text"/>
+        /// </summary>
         private string _text;
 
+        /// <summary>
+        /// Backing field for <see cref="Title"/>
+        /// </summary>
         private string _title;
 
         /// <summary>
@@ -35,7 +57,7 @@ namespace Locima.SlidingBlock.ViewModel
             set
             {
                 _title = value;
-                OnNotifyPropertyChanged("ImageTitle");
+                OnNotifyPropertyChanged("Title");
             }
         }
 
@@ -48,7 +70,7 @@ namespace Locima.SlidingBlock.ViewModel
             set
             {
                 _text = value;
-                OnNotifyPropertyChanged("ImageText");
+                OnNotifyPropertyChanged("Text");
             }
         }
 
@@ -56,12 +78,16 @@ namespace Locima.SlidingBlock.ViewModel
         /// <summary>
         ///   The <see cref="Uri" /> to navigate to when the menu item is selected
         /// </summary>
+        /// <remarks>
+        /// <para>See <see cref="Invoke"/> to understand the precedence of <see cref="SelectedAction"/>, 
+        /// <see cref="TargetPage"/> and <see cref="TargetUri"/></para>
+        /// </remarks>
         public Uri TargetUri
         {
             get { return _targetUri; }
             set
             {
-                if (_targetUri != value)
+                if (_targetUri != value)    
                 {
                     if (value != null) TargetPage = null;
                     _targetUri = value;
@@ -73,6 +99,10 @@ namespace Locima.SlidingBlock.ViewModel
         /// <summary>
         ///   The name of another menu page to navigate to when ths menu item is selected.
         /// </summary>
+        /// <remarks>
+        /// <para>See <see cref="Invoke"/> to understand the precedence of <see cref="SelectedAction"/>, 
+        /// <see cref="TargetPage"/> and <see cref="TargetUri"/></para>
+        /// </remarks>
         public string TargetPage
         {
             get { return _targetPage; }
@@ -88,9 +118,12 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
         /// <summary>
+        /// Retrieve the <see cref="Uri"/> to navigate to when selected
         /// </summary>
         /// <remarks>
-        ///   This doesn't need to notify it has no impact on the GUI
+        /// Useful when the generation of the <see cref="Uri"/> is computationally expensive.  
+        /// <para>See <see cref="Invoke"/> to understand the precedence of <see cref="SelectedAction"/>, 
+        /// <see cref="TargetPage"/> and <see cref="TargetUri"/></para>
         /// </remarks>
         public Func<Uri> SelectedAction { get; set; }
 
@@ -107,6 +140,9 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+        /// <summary>
+        /// The icon to display next to this menu item
+        /// </summary>
         public WriteableBitmap Icon
         {
             get { return _icon; }
@@ -117,7 +153,14 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+        /// <summary>
+        /// Re-usable defined function for <see cref="IsEnabled"/> that always returns <c>false</c>
+        /// </summary>
         public static readonly Func<bool> AlwaysDisabled = () => false;
+
+        /// <summary>
+        /// Re-usable defined function for <see cref="IsEnabled"/> that always returns <c>true</c>
+        /// </summary>
         public static readonly Func<bool> AlwaysEnabled = () => true;
 
         /// <summary>
@@ -170,7 +213,7 @@ namespace Locima.SlidingBlock.ViewModel
                     Logger.Debug("Returning TargetPage \"{0}\"", TargetPage);
                 }
             }
-            Logger.Debug("Menu item {0}(ImageTitle=\"{1}\",ImageText=\"{2}\") returning Uri {3}", this, Title, Text,
+            Logger.Debug("Menu item {0}(Title=\"{1}\",Text=\"{2}\") returning Uri {3}", this, Title, Text,
                          navUri == null ? "null" : navUri.ToString());
             return navUri;
         }
