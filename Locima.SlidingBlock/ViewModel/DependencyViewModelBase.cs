@@ -1,46 +1,55 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Windows;
-using NLog;
+using Locima.SlidingBlock.Messaging;
 
 namespace Locima.SlidingBlock.ViewModel
 {
-    public class DependencyViewModelBase : DependencyObject, INotifyPropertyChanged
+    /// <summary>
+    ///   Combines <see cref="ViewModelBase" /> with <see cref="DependencyObject" /> as a base class for view models that require dependency property support
+    /// </summary>
+    /// <see cref="TileViewModel" />
+    public abstract class DependencyViewModelBase : DependencyObject, IViewModelBase
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ViewModelBase _viewModelBase;
+
+        protected DependencyViewModelBase()
+        {
+            _viewModelBase = new ViewModelBase();
+        }
+
+        #region IViewModelBase Members
 
         public bool IsDesignTime
         {
-            get { return (Application.Current == null) || (Application.Current.GetType() == typeof (Application)); }
+            get { return _viewModelBase.IsDesignTime; }
         }
 
-        #region INotifyPropertyChanged Members
+        public void OnNotifyPropertyChanged(string changedPropertyName)
+        {
+            _viewModelBase.OnNotifyPropertyChanged(changedPropertyName);
+        }
 
+        public void ShareMessageHandlers(ViewModelBase syncViewModel)
+        {
+            _viewModelBase.ShareMessageHandlers(syncViewModel);
+        }
+
+        public void RegisterMessageHandler<TMessageArgs>(MessageHandler<TMessageArgs> handler)
+            where TMessageArgs : MessageArgs
+        {
+            _viewModelBase.RegisterMessageHandler(handler);
+        }
+
+        public bool SendViewMessage(MessageArgs args)
+        {
+            return _viewModelBase.SendViewMessage(args);
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="INotifyPropertyChanged.PropertyChanged"/>
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
-
-        protected void OnNotifyPropertyChanged(string changedPropertyName)
-        {
-            Logger.Debug("{0} notifying that {1} has changed", this, changedPropertyName);
-            if (PropertyChanged != null)
-            {
-                Delegate[] eventHandlers = PropertyChanged.GetInvocationList();
-
-                foreach (
-                    PropertyChangedEventHandler currentSubscriber in eventHandlers.Cast<PropertyChangedEventHandler>())
-                {
-                    try
-                    {
-                        currentSubscriber(this, new PropertyChangedEventArgs(changedPropertyName));
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.ErrorException(string.Format("Event subscriber {0} threw an exception", currentSubscriber), e);
-                    }
-                }
-            }
-        }
     }
 }

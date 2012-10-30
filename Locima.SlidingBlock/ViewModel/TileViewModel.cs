@@ -10,29 +10,84 @@ using NLog;
 
 namespace Locima.SlidingBlock.ViewModel
 {
+    /// <summary>
+    /// The view model object for a single tile in the puzzle.
+    /// </summary>
     public class TileViewModel : DependencyViewModelBase
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// The vertical pixel offset from the top of the puzzle that the tile occupies.
+        /// </summary>
+        /// <remarks>
+        /// This is a dependency property for two reasons:
+        /// <list type="number">
+        /// <item><description>It can be bound to the <see cref="ModelTop"/> property, for when the tile is not moving</description></item>
+        /// <item><description>When the tile is moving, the animation overrides this binding (see <see cref="TileAnimator"/>) temporarily to move the tile</description></item>
+        /// </list>
+        /// </remarks>
         public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof (double),
                                                                                             typeof (TileViewModel),
                                                                                             new PropertyMetadata(0.00));
 
+        /// <summary>
+        /// The horizontal pixel offset from the top of the puzzle that the tile occupies.
+        /// </summary>
+        /// <remarks>
+        /// This is a dependency property for two reasons:
+        /// <list type="number">
+        /// <item><description>It can be bound to the <see cref="ModelTop"/> property, for when the tile is not moving</description></item>
+        /// <item><description>When the tile is moving, the animation overrides this binding (see <see cref="TileAnimator"/>) temporarily to move the tile</description></item>
+        /// </list>
+        /// </remarks>
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof (double),
                                                                                              typeof (TileViewModel),
                                                                                              new PropertyMetadata(0.00));
 
+        private readonly TileModel _tile;
+
+        /// <summary>
+        /// Backing field for <see cref="Height"/>
+        /// </summary>
         private double _height;
+
+        /// <summary>
+        /// Backing field for <see cref="ImageHeight"/>
+        /// </summary>
         private double _imageHeight;
+
+        /// <summary>
+        /// Backing field for <see cref="ImageLeft"/>
+        /// </summary>
+        private double _imageLeft;
+
+        /// <summary>
+        /// Backing field for <see cref="ImageHeight"/>
+        /// </summary>
         private double _imageWidth;
-        private double _imageX;
+
+        /// <summary>
+        /// Backing field for <see cref="ImageY"/>
+        /// </summary>
         private double _imageY;
+
+        /// <summary>
+        /// Backing field for <see cref="TileBorder"/>
+        /// </summary>
         private double _tileBorder;
+
+        /// <summary>
+        /// Backing field for <see cref="Width"/>
+        /// </summary>
         private double _width;
 
-        public event EventHandler<EventArgs> TileAnimationStarted;
-        public event EventHandler<EventArgs> TileAnimationCompleted;
 
+        /// <summary>
+        /// Initialises this view model, locking it to the <paramref name="tileModel"/> passed.  Also hooks up <see cref="PropertyChangedCallback"/> to
+        /// our own <see cref="UpdatePositionBasedOnModelChange"/>
+        /// </summary>
+        /// <param name="tileModel"></param>
         public TileViewModel(TileModel tileModel)
         {
             _tile = tileModel;
@@ -42,7 +97,7 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
         /// <summary>
-        /// Where the tile should be if synced to the model (i.e. not taking in to account animations)
+        /// Pixel offset from the top of the puzzle.  <see cref="TopProperty"/> binds to this when no animation is running on the tile
         /// </summary>
         public double ModelTop
         {
@@ -50,16 +105,28 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
         /// <summary>
-        /// Where the tile should be if synced to the model (i.e. not taking in to account animations)
+        /// Pixel offset from the left of the puzzle.  <see cref="LeftProperty"/> binds to this when no animation is running on the tile
         /// </summary>
         public double ModelLeft
         {
             get { return Position.X*Width; }
         }
 
+
         /// <summary>
         /// The pixel width of this tile
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This is what the <see cref="SimpleTile.Width"/> property should be bound to</para>
+        /// <para>
+        /// Changing this has two knock-on effects:
+        /// <list type="number">
+        /// <item><description>It notifies a change to the calculated <see cref="ModelLeft"/> property</description></item>
+        /// <item><description>It changes the <see cref="ImageWidth"/> property to recalculate the width of hte image within the total width (dependant on <see cref="TileBorder"/>)</description></item>
+        /// </list>
+        /// </para>
+        /// </remarks>
         public double Width
         {
             get { return _width; }
@@ -76,6 +143,17 @@ namespace Locima.SlidingBlock.ViewModel
         /// <summary>
         /// The pixel height of this tile
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This is what the <see cref="SimpleTile.Height"/> property should be bound to</para>
+        /// <para>
+        /// Changing this has two knock-on effects:
+        /// <list type="number">
+        /// <item><description>It notifies a change to the calculated <see cref="ModelTop"/> property</description></item>
+        /// <item><description>It changes the <see cref="ImageHeight"/> property to recalculate the width of hte image within the total width (dependant on <see cref="TileBorder"/>)</description></item>
+        /// </list>
+        /// </para>
+        /// </remarks>
         public double Height
         {
             get { return _height; }
@@ -127,6 +205,15 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+        /// <summary>
+        /// The width of the border around each tile.
+        /// </summary>
+        /// <remarks>
+        /// <para>Unlike normal Silverlight the border eats in to the total width and height of the control, it doesn't wrap around it.
+        /// This is because the puzzle is a fixed width and height and everything has to fit within it, rather than the puzzle being sized to accommodate the tiles.</para>
+        /// <para>Changing this causes changes to <see cref="ImageWidth"/> and <see cref="ImageHeight"/> as well because of this.</para>
+        /// 
+        /// </remarks>
         public double TileBorder
         {
             get { return _tileBorder; }
@@ -141,16 +228,27 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
 
+        /// <summary>
+        /// The position of this tile, relative to all the other tiles
+        /// </summary>
         public Position Position
         {
             get { return _tile.Position; }
         }
 
+        /// <summary>
+        /// The position this tile will be in when it's in the right position to finish the puzzle
+        /// </summary>
         public Position SolvedPosition
         {
             get { return _tile.SolvedPosition; }
         }
 
+        /// <summary>
+        /// The width of the image within the tile. 
+        /// </summary>
+        /// <remarks>
+        /// This is never changed directly, it's changed as a side-effect of changing <see cref="TileBorder"/> or <see cref="Width"/></remarks>
         public double ImageWidth
         {
             get { return _imageWidth; }
@@ -161,6 +259,11 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+        /// <summary>
+        /// The height of the image within the tile. 
+        /// </summary>
+        /// <remarks>
+        /// This is never changed directly, it's changed as a side-effect of changing <see cref="TileBorder"/> or <see cref="Height"/></remarks>
         public double ImageHeight
         {
             get { return _imageHeight; }
@@ -171,16 +274,23 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
-        public double ImageX
+
+        /// <summary>
+        /// The horizontal pixel offset, from the top left of the tile, where the image starts
+        /// </summary>
+        public double ImageLeft
         {
-            get { return _imageX; }
+            get { return _imageLeft; }
             set
             {
-                _imageX = value;
-                OnNotifyPropertyChanged("ImageX");
+                _imageLeft = value;
+                OnNotifyPropertyChanged("ImageLeft");
             }
         }
 
+        /// <summary>
+        /// The vertical pixel offset, from the top left of the tile, where the image starts
+        /// </summary>
         public double ImageY
         {
             get { return _imageY; }
@@ -191,22 +301,36 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+
+        /// <summary>
+        /// Determines whether the player tile should be visible (it's not visible if this is not a player tile)
+        /// </summary>
         public Visibility PlayerTileVisibility
         {
             get { return _tile.IsPlayerTile ? Visibility.Visible : Visibility.Collapsed; }
         }
 
+        /// <summary>
+        /// Determines whether the tile image should should be visible (it's not visible if this is a player tile)
+        /// </summary>
         public Visibility TileImageVisibility
         {
             get { return _tile.IsPlayerTile ? Visibility.Collapsed : Visibility.Visible; }
         }
 
+
+        /// <summary>
+        /// The brush to paint the image with (this is the image for the tile)
+        /// </summary>
         public Brush TileBrush
         {
             get { return _tile.TileBrush; }
         }
 
 
+        /// <summary>
+        /// The brush to paint the image with when a player is using this tile (typically this is just a black square)
+        /// </summary>
         public Brush PlayerBrush
         {
             get
@@ -218,8 +342,21 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+        /// <summary>
+        /// Invoked when an animation on this tile starts.
+        /// </summary>
+        /// <remarks>
+        /// This allows the <see cref="PuzzleViewModel"/> (see <see cref="PuzzleViewModel.Configure"/>) to keep track of all tile animations</remarks>
+        public event EventHandler<EventArgs> TileAnimationStarted;
 
-        private readonly TileModel _tile;
+        /// <summary>
+        /// Invoked when an animation on this tile completes.
+        /// </summary>
+        /// <remarks>
+        /// This allows the <see cref="PuzzleViewModel"/> (see <see cref="PuzzleViewModel.Configure"/>) to keep track of all tile animations.  We don't want to
+        /// declare a level finished until all the animations on tiles have been completed</remarks>
+        public event EventHandler<EventArgs> TileAnimationCompleted;
+
 
         /// <summary>
         ///   Resyncs the <see cref="Top" /> and <see cref="Left" /> properties to the model, stored in <see cref="ModelLeft" /> and <see
@@ -245,6 +382,14 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
 
+        /// <summary>
+        /// Invoked when the model has moved this tile from <see cref="TileMoveEventArgs.OldPosition"/> to <see cref="TileMoveEventArgs.NewPosition"/>
+        /// </summary>
+        /// <remarks>
+        /// Once the model has moved the tile, we need to animate the tile moving from <see cref="TileMoveEventArgs.OldPosition"/> to <see cref="TileMoveEventArgs.NewPosition"/>
+        /// within <paramref name="tileMoveEventArgs"/></remarks>
+        /// <param name="sender">The <see cref="TileModel"/> object for this view model.  Unused.</param>
+        /// <param name="tileMoveEventArgs">The details of the change</param>
         private void TileModelOnTileMoved(object sender, TileMoveEventArgs tileMoveEventArgs)
         {
             // On the start of a move, kick off the animation for the tile sliding
@@ -254,16 +399,16 @@ namespace Locima.SlidingBlock.ViewModel
                 Storyboard sb = TileAnimator.CreateSlideAnimation(this, tileMoveEventArgs.NewPosition.X*Width,
                                                                   tileMoveEventArgs.NewPosition.Y*Height);
                 sb.Children[0].Completed += (tile, args) =>
-                    {
-                        Logger.Debug("Tile animation on {0} completed", tile);
-                        // Resync with the model
-                        OnNotifyPropertyChanged("ModelTop");
-                        OnNotifyPropertyChanged("ModelLeft");
+                                                {
+                                                    Logger.Debug("Tile animation on {0} completed", tile);
+                                                    // Resync with the model
+                                                    OnNotifyPropertyChanged("ModelTop");
+                                                    OnNotifyPropertyChanged("ModelLeft");
 
-                        // Raise notification that we've finished running animations
-                        SafeRaise.Raise(TileAnimationCompleted, this);
-                    };
-                Logger.Info("Tile animation for PlayerTile kicked off");
+                                                    // Raise notification that we've finished running animations
+                                                    SafeRaise.Raise(TileAnimationCompleted, this);
+                                                };
+                Logger.Info("Calling begin on tile animation for PlayerTile ({0})", this);
                 sb.Begin();
                 SafeRaise.Raise(TileAnimationStarted, this);
             }

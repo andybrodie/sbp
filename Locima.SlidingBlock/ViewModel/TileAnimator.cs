@@ -5,6 +5,10 @@ using NLog;
 
 namespace Locima.SlidingBlock.ViewModel
 {
+
+    /// <summary>
+    /// Simple factory class for the animation that slides tiles around the puzzle
+    /// </summary>
     public class TileAnimator
     {
 
@@ -19,7 +23,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// <returns>A storyboard ready to be executed</returns>
         public static Storyboard CreateSlideAnimation(TileViewModel tvm, double targetX, double targetY)
         {
-            Duration duration = new Duration(TimeSpan.FromSeconds(0.5));
+            Duration duration = new Duration(TimeSpan.FromSeconds(0.2));
             Logger.Info("Creating an animation lasting {0} to move tile {1} from ({2},{3}) to ({4},{5})", duration,
                         tvm.Position, tvm.Left, tvm.Top, targetX, targetY);
 

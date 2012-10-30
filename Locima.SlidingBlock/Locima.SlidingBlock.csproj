@@ -184,6 +184,7 @@
     <Compile Include="Test\EndGameTestSetup.cs" />
     <Compile Include="ViewModel\HighscoreItemViewModel.cs" />
     <Compile Include="ViewModel\HighScoresViewModel.cs" />
+    <Compile Include="ViewModel\IViewModelBase.cs" />
     <Compile Include="ViewModel\MenuItem.cs" />
     <Compile Include="ViewModel\MenuPageBroker.cs" />
     <Compile Include="ViewModel\MenuPageViewModel.cs" />
@@ -284,6 +285,7 @@
   <ItemGroup>
     <None Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
