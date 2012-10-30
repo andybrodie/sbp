@@ -121,7 +121,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// Retrieve the <see cref="Uri"/> to navigate to when selected
         /// </summary>
         /// <remarks>
-        /// Useful when the generation of the <see cref="Uri"/> is computationally expensive.  
+        /// Useful when the generation of the <see cref="Uri"/> is computationally expensive, or has side effects that you only want to occur when the user selects the action (e.g. creating a new game)
         /// <para>See <see cref="Invoke"/> to understand the precedence of <see cref="SelectedAction"/>, 
         /// <see cref="TargetPage"/> and <see cref="TargetUri"/></para>
         /// </remarks>
