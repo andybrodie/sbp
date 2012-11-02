@@ -95,17 +95,6 @@ namespace Locima.SlidingBlock.ViewModel
             _tile = tileModel;
             PropertyChanged += UpdatePositionBasedOnModelChange;
 
-            // Bind the Top to ModelTop and Left to ModelLeft
-            Binding topBinding = new Binding("ModelTop");
-            topBinding.Source = this;
-            BindingOperations.SetBinding(this, TopProperty, topBinding);
-
-            // Bind the Top to ModelTop and Left to ModelLeft
-            Binding leftBinding = new Binding("ModelLeft");
-            leftBinding.Source = this;
-            BindingOperations.SetBinding(this, LeftProperty, leftBinding);
-
-
             // Detects changes to the X and Y position of the tile from the puzzle (relative to the other tiles, e.g. 0,0; 0,1; 2,2; etc. (not to be confused with Top and Left which are pixel offsets)
             tileModel.TileMoved += TileModelOnTileMoved;
         }
@@ -393,7 +382,6 @@ namespace Locima.SlidingBlock.ViewModel
         /// <param name="e"> </param>
         private void UpdatePositionBasedOnModelChange(object sender, PropertyChangedEventArgs e)
         {
-            Logger.Debug("TileViewModel updated " + e.PropertyName);
             if (e.PropertyName == "ModelTop")
             {
                 Logger.Debug("Resyncing Top with ModelTop for {0}", this);
