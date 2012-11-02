@@ -48,7 +48,11 @@ namespace Locima.SlidingBlock.ViewModel
         /// <summary>
         /// Implementation of <see cref="INotifyPropertyChanged.PropertyChanged"/>
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged
+        {
+            add { _viewModelBase.PropertyChanged += value; }
+            remove { _viewModelBase.PropertyChanged -= value; }
+        }
 
         #endregion
     }
