@@ -102,6 +102,14 @@ namespace Locima.SlidingBlock.Scrambles
             return scramble;
         }
 
+        /// <summary>
+        /// Create a puzzle grid <paramref name="tilesAcross"/> wide and <paramref name="tilesHigh"/> using <paramref name="customScrambler"/> to decide the solved position of each tile.
+        /// </summary>
+        /// <param name="customScrambler">A customised scrambler function that, given the x and y co-ordinate of a tile, returns the position the tile should be in to be in the solved position</param>
+        /// <param name="tilesAcross">The number of tiles across in the puzzle</param>
+        /// <param name="tilesHigh">The number of tiles high in the puzzle</param>
+        /// <returns>A 2D array of <see cref="Position"/> instances.  Each <see cref="Position"/> object contains the solved position of the tile, it's position within the array determines
+        /// where the tile currently is in the puzzle</returns>
         public Position[][] Scramble(Func<int, int, Position> customScrambler, int tilesAcross, int tilesHigh)
         {
             return ArrayTools.Create(tilesAcross, tilesHigh, customScrambler);
@@ -109,35 +117,66 @@ namespace Locima.SlidingBlock.Scrambles
 
         #region Scramblers
 
+
+        /// <summary>
+        /// Flips the tiles along an imaginary Y-axis down the middle of the puzzle
+        /// </summary>
+        /// <param name="tilesAcross">The number of tiles across in the puzzle</param>
+        /// <param name="tilesHigh">The number of tiles high in the puzzle</param>
+        /// <returns>A 2D array of <see cref="Position"/> instances.  Each <see cref="Position"/> object contains the solved position of the tile, it's position within the array determines
+        /// where the tile currently is in the puzzle</returns>
         private Position[][] XFlipScramble(int tilesAcross, int tilesHigh)
         {
             return ArrayTools.Create(tilesAcross, tilesHigh,
                                      (x, y) => new Position(x, (tilesHigh - 1) - y));
         }
 
+        /// <summary>
+        /// Flips the tiles along an imaginary X-axis across the middle of the puzzle
+        /// </summary>
+        /// <param name="tilesAcross">The number of tiles across in the puzzle</param>
+        /// <param name="tilesHigh">The number of tiles high in the puzzle</param>
+        /// <returns>A 2D array of <see cref="Position"/> instances.  Each <see cref="Position"/> object contains the solved position of the tile, it's position within the array determines
+        /// where the tile currently is in the puzzle</returns>
         private Position[][] YFlipScramble(int tilesAcross, int tilesHigh)
         {
             return ArrayTools.Create(tilesAcross, tilesHigh,
                                      (x, y) => new Position((tilesAcross - 1) - x, y));
         }
 
+        /// <summary>
+        /// Combines <see cref="XFlipScramble"/> and <see cref="YFlipScramble"/> to flip the tiles along both axes
+        /// </summary>
+        /// <param name="tilesAcross">The number of tiles across in the puzzle</param>
+        /// <param name="tilesHigh">The number of tiles high in the puzzle</param>
+        /// <returns>A 2D array of <see cref="Position"/> instances.  Each <see cref="Position"/> object contains the solved position of the tile, it's position within the array determines
+        /// where the tile currently is in the puzzle</returns>
         private Position[][] XYFlipScramble(int tilesAcross, int tilesHigh)
         {
             return ArrayTools.Create(tilesAcross, tilesHigh,
                                      (x, y) => new Position((tilesAcross - 1) - x, (tilesHigh - 1) - y));
         }
 
+
+        /// <summary>
+        /// Performs no translation of tiles, i.e. each tile is in the solved position
+        /// </summary>
+        /// <param name="tilesAcross">The number of tiles across in the puzzle</param>
+        /// <param name="tilesHigh">The number of tiles high in the puzzle</param>
+        /// <returns>A 2D array of <see cref="Position"/> instances.  Each <see cref="Position"/> object contains the solved position of the tile, it's position within the array determines
+        /// where the tile currently is in the puzzle</returns>
         public Position[][] IdentityScramble(int tilesAcross, int tilesHigh)
         {
             return ArrayTools.Create(tilesAcross, tilesHigh, (x, y) => new Position(x, y));
         }
 
         /// <summary>
-        ///   Creates a random scrambled set of tiles
+        ///  Creates a random scrambled set of tiles
         /// </summary>
-        /// <param name="tilesAcross"> Number of tiles across in the puzzle </param>
-        /// <param name="tilesHigh"> Number of tiles high in the puzzle </param>
-        /// <returns> A scramble </returns>
+        /// <param name="tilesAcross">The number of tiles across in the puzzle</param>
+        /// <param name="tilesHigh">The number of tiles high in the puzzle</param>
+        /// <returns>A 2D array of <see cref="Position"/> instances.  Each <see cref="Position"/> object contains the solved position of the tile, it's position within the array determines
+        /// where the tile currently is in the puzzle</returns>
         public Position[][] RandomScramble(int tilesAcross, int tilesHigh)
         {
             int totalTiles = tilesAcross*tilesHigh;

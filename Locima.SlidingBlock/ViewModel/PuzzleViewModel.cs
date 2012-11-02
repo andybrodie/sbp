@@ -229,14 +229,22 @@ namespace Locima.SlidingBlock.ViewModel
         {
             Size newTileSize = new Size(PuzzleArea.Width/_puzzleModel.TilesAcross,
                                         PuzzleArea.Height/_puzzleModel.TilesHigh);
-            Logger.Debug("Updating TileSize from {0} to {1}", TileSize, newTileSize);
-            TileSize = newTileSize;
-            if (Tiles != null)
+
+            if (newTileSize.Equals(TileSize))
             {
-                foreach (TileViewModel tvm in Tiles)
+                Logger.Debug("Ignoring PuzzleModel resize request as it's not changing: {0}", TileSize);
+            }
+            else
+            {
+                Logger.Debug("Updating TileSize from {0} to {1}", TileSize, newTileSize);
+                TileSize = newTileSize;
+                if (Tiles != null)
                 {
-                    tvm.Width = TileSize.Width;
-                    tvm.Height = TileSize.Height;
+                    foreach (TileViewModel tvm in Tiles)
+                    {
+                        tvm.Width = TileSize.Width;
+                        tvm.Height = TileSize.Height;
+                    }
                 }
             }
         }
