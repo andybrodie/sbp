@@ -11,7 +11,7 @@ namespace Locima.SlidingBlock.Controls
 {
 
     /// <summary>
-    /// This control represents the entire sliding block puzzle as it appears on <see cref="GamePage"/>.  It contains only instances of <see cref="SimpleTile"/>.
+    /// This control represents the entire sliding block puzzle as it appears on <see cref="GamePage"/>.  It contains only instances of <see cref="TileControl"/>.
     /// </summary>
     /// <remarks>
     /// <para>This is a specialisation of <see cref="Canvas"/>, which may or may not be a smart way to do this.  I used it because then the tiles could be easily animated based on the
@@ -21,7 +21,7 @@ namespace Locima.SlidingBlock.Controls
     /// <list type="number">
     /// <item><description>Creating a my own dependency properties, <see cref="PauseScreenProperty"/> and <see cref="PausedProperty"/> which are then data bound</description></item>
     /// <item><description>Creating a XAML-based property of the control, i.e. the pause screen, <see cref="PauseScreenProperty"/></description></item>
-    /// <item><description>Dynamically creating sub-controls defined in XAML (<see cref="SimpleTile"/>) and adding them to the hierarchy</description></item>
+    /// <item><description>Dynamically creating sub-controls defined in XAML (<see cref="TileControl"/>) and adding them to the hierarchy</description></item>
     /// </list>
     /// </para>
     /// </remarks>
@@ -186,9 +186,6 @@ namespace Locima.SlidingBlock.Controls
         }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
         public void Initialise()
         {
             Logger.Debug("Puzzle control initialise entry");
@@ -219,18 +216,18 @@ namespace Locima.SlidingBlock.Controls
         ///   Creates all the child controls of this canvas specialisation, namely the tiles that will slide around
         /// </summary>
         /// <see cref="TileViewModel"/>
-        /// <see cref="SimpleTile"/>
+        /// <see cref="TileControl"/>
         private void CreateTileControls()
         {
             Logger.Debug(
-                "Dynamically creating {0} SimpleTile controls and binding them to the TileViewModel instances in the PuzzleViewModel",
+                "Dynamically creating {0} TileControl controls and binding them to the TileViewModel instances in the PuzzleViewModel",
                 ViewModel.Tiles.Count);
             foreach (TileViewModel tvm in ViewModel.Tiles)
             {
-                Logger.Info("Creating tile control for {0} (solved Position {1}", tvm.Position, tvm.SolvedPosition);
-                SimpleTile tile = new SimpleTile {DataContext = tvm};
+                Logger.Info("Creating tile control for {0} (solved Position ({1},{2}))", tvm.Position, tvm.SolvedPosition.X, tvm.SolvedPosition.Y);
+                TileControl tile = new TileControl {DataContext = tvm};
                 
-                Logger.Debug("Binding SimpleTile Width, Height, Top and Left properties to the TileViewModel and adding to the Puzzles Children collection");
+                Logger.Debug("Binding TileControl Width, Height, Top and Left properties to the TileViewModel and adding to the Puzzles Children collection");
                 tile.SetBinding(WidthProperty, new Binding
                     {
                         Mode = BindingMode.OneWay,
@@ -256,7 +253,7 @@ namespace Locima.SlidingBlock.Controls
                     });
 
                 Children.Add(tile);
-                Logger.Debug("Current tile values are: Width({0}) Height({1}) Top({2}) Left5({3})", tile.ActualWidth, tile.ActualHeight, GetTop(tile), GetLeft(tile));
+                Logger.Debug("Current tile values are: Width({0}) Height({1}) Top({2}) Left({3})", tile.ActualWidth, tile.ActualHeight, GetTop(tile), GetLeft(tile));
             }
             Logger.Debug("CreateTileControls Exit");
         }

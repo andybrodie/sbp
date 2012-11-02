@@ -2,9 +2,11 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Locima.SlidingBlock.Common;
+using Locima.SlidingBlock.Controls;
 using Locima.SlidingBlock.Model;
 using NLog;
 
@@ -68,9 +70,9 @@ namespace Locima.SlidingBlock.ViewModel
         private double _imageWidth;
 
         /// <summary>
-        /// Backing field for <see cref="ImageY"/>
+        /// Backing field for <see cref="ImageTop"/>
         /// </summary>
-        private double _imageY;
+        private double _imageTop;
 
         /// <summary>
         /// Backing field for <see cref="TileBorder"/>
@@ -92,6 +94,18 @@ namespace Locima.SlidingBlock.ViewModel
         {
             _tile = tileModel;
             PropertyChanged += UpdatePositionBasedOnModelChange;
+
+            // Bind the Top to ModelTop and Left to ModelLeft
+            Binding topBinding = new Binding("ModelTop");
+            topBinding.Source = this;
+            BindingOperations.SetBinding(this, TopProperty, topBinding);
+
+            // Bind the Top to ModelTop and Left to ModelLeft
+            Binding leftBinding = new Binding("ModelLeft");
+            leftBinding.Source = this;
+            BindingOperations.SetBinding(this, LeftProperty, leftBinding);
+
+
             // Detects changes to the X and Y position of the tile from the puzzle (relative to the other tiles, e.g. 0,0; 0,1; 2,2; etc. (not to be confused with Top and Left which are pixel offsets)
             tileModel.TileMoved += TileModelOnTileMoved;
         }
@@ -118,7 +132,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This is what the <see cref="SimpleTile.Width"/> property should be bound to</para>
+        /// This is what the <see cref="TileControl.Width"/> property should be bound to</para>
         /// <para>
         /// Changing this has two knock-on effects:
         /// <list type="number">
@@ -132,7 +146,7 @@ namespace Locima.SlidingBlock.ViewModel
             get { return _width; }
             set
             {
-                Logger.Debug("Tile width updated from {0} to {1}", _width, value);
+                Logger.Debug("Tile {0} width updated from {1} to {2}", Position , _width, value);
                 _width = value;
                 OnNotifyPropertyChanged("Width");
                 OnNotifyPropertyChanged("ModelLeft");
@@ -159,7 +173,7 @@ namespace Locima.SlidingBlock.ViewModel
             get { return _height; }
             set
             {
-                Logger.Debug("Tile height updated from {0} to {1}", _height, value);
+                Logger.Debug("Tile {0} height updated from {0} to {1}", Position, _height, value);
                 _height = value;
                 OnNotifyPropertyChanged("Height");
                 OnNotifyPropertyChanged("ModelTop");
@@ -169,7 +183,7 @@ namespace Locima.SlidingBlock.ViewModel
 
 
         /// <summary>
-        ///   SimpleTile's binds its <see cref="Canvas.TopProperty" /> proprerty to this one to determine where on the screen the tile should sit vertically.
+        ///   TileControl's binds its <see cref="Canvas.TopProperty" /> proprerty to this one to determine where on the screen the tile should sit vertically.
         /// </summary>
         /// <remarks>
         ///   This is a dependency property itself ( <see cref="TopProperty" /> ). Whilst it is usually bound to the model via the <see
@@ -188,7 +202,7 @@ namespace Locima.SlidingBlock.ViewModel
 
 
         /// <summary>
-        ///   SimpleTile's binds its <see cref="Canvas.TopProperty" /> proprerty to this one to determine where on the screen the tile should sit vertically.
+        ///   TileControl's binds its <see cref="Canvas.TopProperty" /> proprerty to this one to determine where on the screen the tile should sit vertically.
         /// </summary>
         /// <remarks>
         ///   This is a dependency property itself ( <see cref="LeftProperty" /> ). Whilst it is usually bound to the model via the <see
@@ -219,11 +233,19 @@ namespace Locima.SlidingBlock.ViewModel
             get { return _tileBorder; }
             set
             {
-                Logger.Info("Updating TileBorder from {0} to {1}", _tileBorder, value);
-                _tileBorder = value;
-                OnNotifyPropertyChanged("TileBorder");
-                ImageWidth = Width - TileBorder*2;
-                ImageHeight = Height - TileBorder*2;
+                // Suppress anyhting that doesn't change the value
+                if (Math.Abs(_tileBorder - value) < 1)
+                {
+                    Logger.Info("Ignoring update of TileBorder from {0} to {1}", _tileBorder, value);
+                }
+                else
+                {
+                    Logger.Info("Updating TileBorder from {0} to {1}", _tileBorder, value);
+                    _tileBorder = value;
+                    OnNotifyPropertyChanged("TileBorder");
+                    ImageWidth = Width - TileBorder*2;
+                    ImageHeight = Height - TileBorder*2;
+                }
             }
         }
 
@@ -254,6 +276,7 @@ namespace Locima.SlidingBlock.ViewModel
             get { return _imageWidth; }
             set
             {
+                Logger.Debug("Tile {0} ImageWidth updated from {1} to {2}", this, _imageWidth, value);
                 _imageWidth = value;
                 OnNotifyPropertyChanged("ImageWidth");
             }
@@ -269,6 +292,7 @@ namespace Locima.SlidingBlock.ViewModel
             get { return _imageHeight; }
             set
             {
+                Logger.Debug("Tile {0} ImageHeight updated from {1} to {2}", this, _imageHeight, value);
                 _imageHeight = value;
                 OnNotifyPropertyChanged("ImageHeight");
             }
@@ -291,13 +315,13 @@ namespace Locima.SlidingBlock.ViewModel
         /// <summary>
         /// The vertical pixel offset, from the top left of the tile, where the image starts
         /// </summary>
-        public double ImageY
+        public double ImageTop
         {
-            get { return _imageY; }
+            get { return _imageTop; }
             set
             {
-                _imageY = value;
-                OnNotifyPropertyChanged("ImageY");
+                _imageTop = value;
+                OnNotifyPropertyChanged("ImageTop");
             }
         }
 
@@ -369,6 +393,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// <param name="e"> </param>
         private void UpdatePositionBasedOnModelChange(object sender, PropertyChangedEventArgs e)
         {
+            Logger.Debug("TileViewModel updated " + e.PropertyName);
             if (e.PropertyName == "ModelTop")
             {
                 Logger.Debug("Resyncing Top with ModelTop for {0}", this);
