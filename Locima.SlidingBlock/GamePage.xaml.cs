@@ -2,6 +2,7 @@
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
@@ -16,25 +17,45 @@ using Locima.SlidingBlock.Messaging;
 namespace Locima.SlidingBlock
 {
     /// <summary>
-    /// The main game page that has the puzzle on it
+    /// The main game page that uses the <see cref="Puzzle"/> custom control.
     /// </summary>
     public partial class GamePage : PhoneApplicationPage
     {
         private const string SaveGameQueryParameterName = "SaveGame";
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// Convenient getter for the view model that is defined in XAML
+        /// </summary>
         private PuzzleViewModel ViewModel
         {
             get { return ((PuzzleViewModel) Resources["viewModel"]); }
         }
 
 
+        /// <summary>
+        /// Default page constructor that invoked <see cref="InitializeComponent"/>
+        /// </summary>
         public GamePage()
         {
             InitializeComponent();
         }
 
 
+        /// <summary>
+        /// <para>Performs the majority of the initialisation of the page</para>
+        /// </summary>
+        /// <remarks>
+        /// <list type="number">
+        /// <item><description>Builds the application bar</description></item>
+        /// <item><description>The <see cref="ViewModel"/> is set up in the XAML, so we only need to call <see cref="PuzzleViewModel.Initialise"/></description></item>
+        /// <item><description>Loads the configured game using <see cref="LoadSaveGame"/></description></item>
+        /// <item><description>If the user has managed to load a completed game (<see cref="SaveGame.IsCompletedGame"/> (this can happen if Back is used), then
+        /// bounce the user immediately to the <see cref="GameEnd"/> page</description></item>
+        /// <item><description>Finally, <see cref="Locima.SlidingBlock.Controls.Puzzle.Initialise"/> is called </description></item>
+        /// </list>
+        /// </remarks>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -88,26 +109,47 @@ namespace Locima.SlidingBlock
             ViewModel.OnNavigatingFrom(e);
         }
 
+
+        /// <summary>
+        /// This is the event handler for the <see cref="Grid.SizeChanged"/> event.
+        /// </summary>
+        /// <remarks>
+        /// When the size of the available space within the grid cell for the puzzle changes, it's important that the puzzle is resized take advantage of the full amount of screen space avaialble.
+        /// In the case of our control hierarchy, the puzzle is contained within a <see cref="PuzzleBorder"/> control, so we'll set the <see cref="Border.Width"/> and <see cref="Border.Height"/>
+        /// to the largest square within that space.</remarks>
+        /// <param name="unused"></param>
+        /// <param name="unused2"></param>
         private void LayoutRootSizeChanged(object unused, SizeChangedEventArgs unused2)
         {
-            Logger.Debug("LayoutRootSizeChanged fired");
             // The Puzzle Border, which contains the puzzle, needs to be set to the biggest size it can
 
             // Find the grid row and column index that the PuzzleBorder is contained within
             int puzzleControlGridCellRowIndex = Grid.GetRow(PuzzleBorder);
             int puzzleControlGridCellColumnIndex = Grid.GetColumn(PuzzleBorder);
+
             // Now the biggest square that will fit within the ActualWidth and ActualHeight of that grid cell
             double largestSquareWithinParent = Math.Min(LayoutRoot.ColumnDefinitions[puzzleControlGridCellColumnIndex].ActualWidth,
                                                         LayoutRoot.RowDefinitions[puzzleControlGridCellRowIndex].ActualHeight);
-            Logger.Debug(
-                "Calculated largest square that fits as {0}, now setting PuzzleBorder Width and Height properties to this value",
-                largestSquareWithinParent);
-            PuzzleBorder.Width = largestSquareWithinParent;
-            PuzzleBorder.Height = largestSquareWithinParent;
+
+            if (Math.Abs(PuzzleBorder.Width - PuzzleBorder.Height) < 1 && Math.Abs(PuzzleBorder.Height - largestSquareWithinParent) < 1)
+            {
+                Logger.Debug("Ignoring grid size change as values haven't changed: PuzzleBorder.Width({0}) and PuzzleBorder.Height({1}) unchanged at {2}",
+                    PuzzleBorder.ActualWidth, PuzzleBorder.ActualHeight, largestSquareWithinParent);
+            }
+            else
+            {
+                Logger.Debug(
+                    "LayoutRoot grid size has changed, updating PuzzleBorder.Width({0}) and PuzzleBorder.Height({1}) to {2}",
+                    PuzzleBorder.ActualWidth, PuzzleBorder.ActualHeight, largestSquareWithinParent);
+                PuzzleBorder.Width = largestSquareWithinParent;
+                PuzzleBorder.Height = largestSquareWithinParent;
+            }
         }
 
 
-        // Helper function to build a localized ApplicationBar
+        /// <summary>
+        /// Invoked from <see cref="OnNavigatedTo"/> this builds the application bar with its single pause button
+        /// </summary>
         private void BuildApplicationBar()
         {
             Logger.Info("Creating application bar");
@@ -122,12 +164,13 @@ namespace Locima.SlidingBlock
 
         /// <summary>
         ///   Pauses the game using the <see cref="PuzzleViewModel.PauseGameCommand" /> which toggles the pause state, then updates the <see
-        ///    cref="ApplicationBar" /> so that a pause or resume button
-        ///   is displayed appropriately
+        ///    cref="ApplicationBar" /> so that a pause or resume button is displayed appropriately
         /// </summary>
+        /// <remarks>
+        /// We have to do this via a <see cref="Button.OnClick"/> handler because <see cref="IApplicationBarIconButton"/>s don't support <see cref="ICommand"/>s</remarks>
         /// <param name="sender"> The pause <see cref="IApplicationBarIconButton" /> </param>
-        /// <param name="eventArgs"> Empty, ignored </param>
-        private void PauseButtonOnClick(object sender, EventArgs eventArgs)
+        /// <param name="unused">unused</param>
+        private void PauseButtonOnClick(object sender, EventArgs unused)
         {
             if (ViewModel.PauseGameCommand.CanExecute(null))
             {
