@@ -94,6 +94,9 @@
     <Compile Include="Controls\MenuItemTemplateSelector.cs" />
     <Compile Include="Controls\MetroGridHelper.cs" />
     <Compile Include="Controls\Puzzle.cs" />
+    <Compile Include="Controls\TileControl.xaml.cs">
+      <DependentUpon>TileControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\DoubleToThicknessConverter.cs" />
     <Compile Include="Converters\ElapsedTimeConverter.cs" />
@@ -167,9 +170,6 @@
       <DependentUpon>SavedGameSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scrambles\Scrambler.cs" />
-    <Compile Include="SimpleTile.xaml.cs">
-      <DependentUpon>SimpleTile.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Model\PuzzleModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -236,6 +236,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\TileControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="CreateCustomGame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -275,10 +279,6 @@
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SimpleTile.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
