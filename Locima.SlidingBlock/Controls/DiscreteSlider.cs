@@ -13,6 +13,12 @@ namespace Locima.SlidingBlock.Controls
         private bool _busy;
         private double _discreteValue;
 
+
+        /// <summary>
+        /// When the value changes, if the change is less that our discrete <see cref="RangeBase.SmallChange"/> then don't change the value.  If it's bigger then proceed normally
+        /// </summary>
+        /// <param name="oldValue">The old value of the slider</param>
+        /// <param name="newValue">The new value of the slider</param>
         protected override void OnValueChanged(double oldValue, double newValue)
         {
             const double smallChangeDelta = 0.000001;

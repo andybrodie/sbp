@@ -25,6 +25,9 @@ namespace Locima.SlidingBlock
 
         private PlayerDetails _player;
 
+        /// <summary>
+        /// Calls <see cref="InitializeComponent"/> and hooks the <see cref="FrameworkElement.Loaded"/> event to invoke <see cref="FocusNameElement"/>
+        /// </summary>
         public AddPlayer()
         {
             InitializeComponent();
@@ -46,6 +49,10 @@ namespace Locima.SlidingBlock
         }
 
 
+        /// <summary>
+        /// Initialises thie page by parsing out the query parameters, setting up the controls appropriately and creating the application bar
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);

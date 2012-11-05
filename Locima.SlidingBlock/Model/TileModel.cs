@@ -99,8 +99,11 @@ namespace Locima.SlidingBlock.Model
         {
             if (playerMovingEventArgs.PlayerTile == this)
             {
-                TileMovingEventArgs args = new TileMovingEventArgs(playerMovingEventArgs.PuzzleTile.Position,
-                                                   playerMovingEventArgs.PlayerTile.Position);
+                TileMovingEventArgs args = new TileMovingEventArgs
+                                               {
+                                                   OldPosition = playerMovingEventArgs.PuzzleTile.Position,
+                                                   NewPosition = playerMovingEventArgs.PlayerTile.Position
+                                               };
                 SafeRaise.Raise(TileMoving, this, args);
                 if (args.Cancel)
                 {
@@ -109,8 +112,11 @@ namespace Locima.SlidingBlock.Model
             }
             else if (playerMovingEventArgs.PuzzleTile == this)
             {
-                TileMovingEventArgs args = new TileMovingEventArgs(playerMovingEventArgs.PlayerTile.Position,
-                                                   playerMovingEventArgs.PuzzleTile.Position);
+                TileMovingEventArgs args = new TileMovingEventArgs
+                {
+                    OldPosition = playerMovingEventArgs.PlayerTile.Position,
+                    NewPosition = playerMovingEventArgs.PuzzleTile.Position
+                };
                 SafeRaise.Raise(TileMoving, this, args);
                 if (args.Cancel)
                 {
@@ -125,14 +131,20 @@ namespace Locima.SlidingBlock.Model
             if (playerMoveEventArgs.PlayerTile == this)
             {
                 SafeRaise.Raise(TileMoved, this,
-                                new TileMovedEventArgs(playerMoveEventArgs.PuzzleTile.Position,
-                                                       playerMoveEventArgs.PlayerTile.Position));
+                                new TileMovedEventArgs
+                                    {
+                                        OldPosition = playerMoveEventArgs.PuzzleTile.Position,
+                                        NewPosition = playerMoveEventArgs.PlayerTile.Position
+                                    });
             }
             else if (playerMoveEventArgs.PuzzleTile == this)
             {
                 SafeRaise.Raise(TileMoved, this,
-                                new TileMovedEventArgs(playerMoveEventArgs.PlayerTile.Position,
-                                                       playerMoveEventArgs.PuzzleTile.Position));
+                                new TileMovedEventArgs
+                                {
+                                    OldPosition = playerMoveEventArgs.PlayerTile.Position,
+                                    NewPosition = playerMoveEventArgs.PuzzleTile.Position
+                                });
             }
         }
 

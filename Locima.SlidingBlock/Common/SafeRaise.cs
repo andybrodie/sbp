@@ -7,6 +7,16 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Locima.SlidingBlock.Common
 {
+
+    /// <summary>
+    /// Provides a simple framework to raise events safely and easily from elsewhere in the app.
+    /// </summary>
+    /// <remarks>
+    /// <para>(c) Copyright Microsoft Corporation.</para>
+    /// <para>This source is subject to the Microsoft Public License (Ms-PL).</para>
+    /// <para>Please see <a href="http://go.microsoft.com/fwlink/?LinkID=131993">http://go.microsoft.com/fwlink/?LinkID=131993</a> for details.</para>
+    /// <para>All other rights reserved.</para>
+    /// </remarks>
     public class SafeRaise
     {
 

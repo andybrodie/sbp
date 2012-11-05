@@ -12,6 +12,9 @@ namespace Locima.SlidingBlock.ViewModel
     {
         private readonly ViewModelBase _viewModelBase;
 
+        /// <summary>
+        /// Initialises <see cref="_viewModelBase"/>
+        /// </summary>
         protected DependencyViewModelBase()
         {
             _viewModelBase = new ViewModelBase();
@@ -19,20 +22,33 @@ namespace Locima.SlidingBlock.ViewModel
 
         #region IViewModelBase Members
 
+        /// <summary>
+        /// Delegates to <see cref="ViewModelBase.IsDesignTime"/>
+        /// </summary>
         public bool IsDesignTime
         {
             get { return _viewModelBase.IsDesignTime; }
         }
 
+        /// <summary>
+        /// Delegates to <see cref="ViewModelBase.OnNotifyPropertyChanged"/>
+        /// </summary>
         public void OnNotifyPropertyChanged(string changedPropertyName)
         {
             _viewModelBase.OnNotifyPropertyChanged(changedPropertyName);
         }
 
+        /// <summary>
+        /// Delegates to <see cref="ViewModelBase.ShareMessageHandlers"/>
+        /// </summary>
         public void ShareMessageHandlers(ViewModelBase syncViewModel)
         {
             _viewModelBase.ShareMessageHandlers(syncViewModel);
         }
+
+        /// <summary>
+        /// Delegates to <see cref="ViewModelBase.RegisterMessageHandler{TMessageArgs}"/>
+        /// </summary>
 
         public void RegisterMessageHandler<TMessageArgs>(MessageHandler<TMessageArgs> handler)
             where TMessageArgs : MessageArgs
@@ -40,13 +56,16 @@ namespace Locima.SlidingBlock.ViewModel
             _viewModelBase.RegisterMessageHandler(handler);
         }
 
+        /// <summary>
+        /// Delegates to <see cref="ViewModelBase.SendViewMessage"/>
+        /// </summary>
         public bool SendViewMessage(MessageArgs args)
         {
             return _viewModelBase.SendViewMessage(args);
         }
 
         /// <summary>
-        /// Implementation of <see cref="INotifyPropertyChanged.PropertyChanged"/>
+        /// Delegates to <see cref="ViewModelBase.PropertyChanged"/>
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged
         {

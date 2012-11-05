@@ -13,7 +13,7 @@ namespace Locima.SlidingBlock.IO
         public static IHighscoresStorageManager Instance { get; private set; }
 
         /// <summary>
-        /// Set up <see cref="Instance"/> so the <see cref="IHighscoresStorageManager.Initialise"/> method can be invoked during application initialisation
+        /// Set up <see cref="Instance"/> so the <see cref="IStorageManager.Initialise"/> method can be invoked during application initialisation
         /// </summary>
         static HighScoresStorageManager()
         {

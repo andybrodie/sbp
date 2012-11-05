@@ -14,7 +14,7 @@ namespace Locima.SlidingBlock.IO
         public static ISaveGameStorageManager Instance { get; private set; }
 
         /// <summary>
-        /// Set up <see cref="Instance"/> so the <see cref="ISaveGameStorageManager.Initialise"/> method can be invoked during application initialisation
+        /// Set up <see cref="Instance"/> so the <see cref="IStorageManager.Initialise"/> method can be invoked during application initialisation
         /// </summary>
         static SaveGameStorageManager()
         {

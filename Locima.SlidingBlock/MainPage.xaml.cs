@@ -10,15 +10,30 @@ using NLog;
 
 namespace Locima.SlidingBlock
 {
+
+    /// <summary>
+    /// The MVVM view for the first page of the App, which presents all the menus to the user
+    /// </summary>
     public partial class MainPage : PhoneApplicationPage
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// The query parameter on the Uri for this page that determines which menu page to display
+        /// </summary>
+        public const string MenuPageQueryParamName = "MenuPage";
+
+        /// <summary>
+        /// Calls <See cref="InitializeComponent"/>
+        /// </summary>
         public MainPage()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Creates the application bar and sets up the view model for the desired menu page (passed as a query parameter)
+        /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -27,7 +42,7 @@ namespace Locima.SlidingBlock
             LittleWatson.CheckForPreviousException();
 
             string pageId;
-            if (!NavigationContext.QueryString.TryGetValue("menuPage", out pageId))
+            if (!NavigationContext.QueryString.TryGetValue(MenuPageQueryParamName, out pageId))
             {
                 pageId = "MainMenu";
             }
@@ -58,7 +73,7 @@ namespace Locima.SlidingBlock
                                                                                 "AboutMenuOption"));
             item.Click +=
                 (sender, args) =>
-                NavigationService.Navigate(new Uri("/YourLastAboutDialog;component/AboutPage.xaml", UriKind.Relative));
+                NavigationService.Navigate(GetAboutPageUri());
 
             // Player selection
             item = ApplicationBarHelper.AddMenuItem(ApplicationBar, LocalizationHelper.GetString("SelectPlayer"));
@@ -68,6 +83,16 @@ namespace Locima.SlidingBlock
             // Highscore review
             item = ApplicationBarHelper.AddMenuItem(ApplicationBar, LocalizationHelper.GetString("GoToHighscores"));
             item.Click += (sender, args) => NavigationService.Navigate(HighScores.CreateNavigationUri());
+        }
+
+
+        /// <summary>
+        /// Returns the Uri to the YLAD page (it's here because YLAD is in an included DLL
+        /// </summary>
+        /// <returns></returns>
+        private static Uri GetAboutPageUri()
+        {
+            return new Uri("/YourLastAboutDialog;component/AboutPage.xaml", UriKind.Relative);
         }
 
 
@@ -95,9 +120,19 @@ namespace Locima.SlidingBlock
         }
 
 
-        public static Uri CreateNavigationUri()
+        /// <summary>
+        /// Creates a Uri that navigates to this page
+        /// </summary>
+        /// <returns></returns>
+        public static Uri CreateNavigationUri(string menuPageName)
         {
-            return new Uri("/MainPage.xaml", UriKind.Relative);
+            string uriString = "/MainPage.xaml";
+            if (!string.IsNullOrEmpty(menuPageName))
+            {
+                uriString = String.Format("{0}?{1}={2}", uriString, MenuPageQueryParamName, menuPageName);
+            }
+
+            return new Uri(uriString, UriKind.Relative);
         }
     }
 }

@@ -11,15 +11,27 @@ using NLog;
 
 namespace Locima.SlidingBlock.SinglePlayer
 {
+
+    /// <summary>
+    /// Creates a new <see cref="SinglePlayerGame"/> for the current player
+    /// </summary>
     public class GameFactory
     {
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// Creates a new <see cref="SaveGame"/> instance for the <see cref="IPlayerStorageManager.CurrentPlayer"/>
+        /// </summary>
+        /// <remarks>
+        /// TODO Don't pass in the <paramref name="tilesAcross"/> and <paramref name="tilesHigh"/>, instead pass a difficulty object and leave it up to the <see cref="SinglePlayerGame"/> to determine
+        /// </remarks>
+        /// <param name="tilesAcross">Number of tiles across in each puzzle</param>
+        /// <param name="tilesHigh">Number of tiles high in each puzzle</param>
+        /// <returns>A new save game</returns>
         public static SaveGame CreateSinglePlayerGame(int tilesAcross, int tilesHigh)
         {
-            SaveGame sg = new SaveGame();
-            sg.GameType = SaveGame.GameTypes.SinglePlayer;
+            SaveGame sg = new SaveGame {GameType = SaveGame.GameTypes.SinglePlayer};
 
             // TODO ALlow the level definition to set the player tile
             PlayerStorageManager.Instance.EnsureCurrentPlayer();
@@ -28,6 +40,8 @@ namespace Locima.SlidingBlock.SinglePlayer
                     PlayerDetailsId = PlayerStorageManager.Instance.CurrentPlayer.Id,
                     Position = new Position {X = 0, Y = 0}
                 };
+
+            Logger.Info("Creating a new SaveGame for {0} using {1}x{2}", PlayerStorageManager.Instance.CurrentPlayer.Name, tilesAcross, tilesHigh);
 
             GameDefinition spgGame = SinglePlayerGame.Create();
 
@@ -38,6 +52,7 @@ namespace Locima.SlidingBlock.SinglePlayer
             }
 
             SaveGameStorageManager.Instance.SaveGame(sg);
+            Logger.Info("Created a new SaveGame ({0}) with {1} levels", sg.Id, sg.Levels.Count);
             return sg;
         }
 

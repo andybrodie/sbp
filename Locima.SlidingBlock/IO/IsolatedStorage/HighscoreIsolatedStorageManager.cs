@@ -15,19 +15,29 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
 
         private const string HighscoreFilename = "Highscores";
 
+        /// <summary>
+        /// Creates an empty high score table if one doesn't already exist
+        /// </summary>
         public void Initialise()
         {
-            Logger.Info("Initialising empty high scores table in isolated storage file {0}", HighscoreFilename);
-            // Set up an empty highscore file
-            HighScoreTable defaultTable = new HighScoreTable
-                {
-                    Id = HighscoreFilename,
-                    Scores = new List<Highscore>()
-                };
-            Save(defaultTable);
+            if (!IOHelper.FileExists(HighscoreFilename))
+            {
+                Logger.Info("Initialising empty high scores table in isolated storage file {0}", HighscoreFilename);
+                // Set up an empty highscore file
+                HighScoreTable defaultTable = new HighScoreTable
+                                                  {
+                                                      Id = HighscoreFilename,
+                                                      Scores = new List<Highscore>()
+                                                  };
+                Save(defaultTable);
+            } else
+            {
+                Logger.Info("Found exists high score table in isolated storage file {0}", HighscoreFilename);
+            }
         }
 
 
+        /// <inheritdoc/>
         public HighScoreTable Load()
         {
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
@@ -37,6 +47,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
 
+        /// <inheritdoc/>
         public void Save(HighScoreTable highScoreTable)
         {
             IOHelper.SaveObject(highScoreTable);

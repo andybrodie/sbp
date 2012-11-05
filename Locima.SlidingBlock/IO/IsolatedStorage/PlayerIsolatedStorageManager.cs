@@ -12,6 +12,9 @@ using NLog;
 
 namespace Locima.SlidingBlock.IO.IsolatedStorage
 {
+    /// <summary>
+    /// Manages the persistence of players in isolated storage
+    /// </summary>
     public class PlayerIsolatedStorageManager : IPlayerStorageManager
     {
         private const string PlayerProfileDirectory = "PlayerProfiles";
@@ -20,8 +23,12 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
 
         #region IPlayerStorageManager Members
 
+        /// <summary>
+        /// The current player using the app
+        /// </summary>
         public PlayerDetails CurrentPlayer { get; set; }
 
+        /// <inheritdoc/>
         public List<PlayerDetails> GetAvailablePlayers()
         {
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
@@ -34,6 +41,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
 
+        /// <inheritdoc/>
         public void SavePlayer(PlayerDetails player)
         {
             if (player == null) throw new ArgumentException("puzzle");

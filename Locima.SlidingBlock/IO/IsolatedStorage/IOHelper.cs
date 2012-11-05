@@ -131,7 +131,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
         /// <summary>
-        ///   Copies the data from <paramref name="inStream" /> to <see cref="outStream" />
+        ///   Copies the data from <paramref name="inStream" /> to <paramref name="outStream" />
         /// </summary>
         /// <param name="inStream"> The stream to copy data from </param>
         /// <param name="outStream"> The stream to copy data to </param>
@@ -393,5 +393,19 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
         #endregion
+
+     
+        /// <summary>
+        /// Determines whether or not a file exists in isolated storage
+        /// </summary>
+        /// <param name="filename">The name of the file to check for the existance of, must be a valid filename</param>
+        /// <returns><c>true</c> if the file exists, <c>false</c> otherwise</returns>
+        public static bool FileExists(string filename)
+        {
+            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                return store.FileExists(filename);
+            }
+        }
     }
 }

@@ -12,9 +12,16 @@ namespace Locima.SlidingBlock.Model
     [DataContract]
     public class PlayerLink
     {
+
+        /// <summary>
+        /// The tile position the player occupies
+        /// </summary>
         [DataMember]
         public Position Position { get; set; }
 
+        /// <summary>
+        /// The ID of a player in this position
+        /// </summary>
         [DataMember]
         public string PlayerDetailsId { get; set; }
     }

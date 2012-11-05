@@ -12,22 +12,35 @@ using NLog;
 
 namespace Locima.SlidingBlock
 {
+
+
+    /// <summary>
+    /// Traditional "Code-behind" page shown to the user when they've finished the game
+    /// </summary>
     public partial class GameEnd : PhoneApplicationPage
     {
         private const string SaveGameQueryParameterName = "SaveGame";
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// Calls <see cref="InitializeComponent"/>, allocates <see cref="LevelStats"/>
+        /// </summary>
         public GameEnd()
         {
-            Logger.Info("Constructor entry");
             InitializeComponent();
-            LevelStats = new ObservableCollection<LevelStat>();
-            Unloaded += (sender, args) => Logger.Info("Unloaded entry/exit");
-            Logger.Info("Constructor exit");
+            LevelStats = new LevelStats();
         }
 
-        public ObservableCollection<LevelStat> LevelStats { get; set; }
+        /// <summary>
+        /// The stats for the level
+        /// </summary>
+        public LevelStats LevelStats { get; set; }
 
+        /// <summary>
+        /// Load the statistics from the <see cref="SaveGame"/> (named in the Uri as <see cref="SaveGameQueryParameterName"/>), set them up in using <see cref="PopulateLevelStats"/> 
+        /// and finally initialise the <see cref="EndGameMessage"/>
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Logger.Info("OnNavigatedTo entry");
@@ -109,6 +122,11 @@ namespace Locima.SlidingBlock
         }
 
 
+        /// <summary>
+        /// Creates a Uri that navigates to this page, showing statistics and adding to the highscore for the <paramref name="saveGameId"/> <see cref="SaveGame"/> specified
+        /// </summary>
+        /// <param name="saveGameId">The save game that was completed</param>
+        /// <returns>A Uri for use with <see cref="NavigationService.Navigate"/></returns>
         public static Uri CreateNavigationUri(string saveGameId)
         {
             if (string.IsNullOrEmpty(saveGameId)) throw new ArgumentNullException("saveGameId");
@@ -119,25 +137,47 @@ namespace Locima.SlidingBlock
 
         private void HighscoreButtonClick(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(HighScores.CreateNavigationUri("MainMenu", MainPage.CreateNavigationUri()));
+            NavigationService.Navigate(HighScores.CreateNavigationUri("MainMenu", MainPage.CreateNavigationUri(null)));
         }
 
 
         private void MenuMenuButtonClick(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(MainPage.CreateNavigationUri());
+            NavigationService.Navigate(MainPage.CreateNavigationUri(null));
         }
     }
 
+
+    /// <summary>
+    /// Used for displaying level stats in the designer view, required by Silverlight 4 doesn't support generic type references in object declarations
+    /// </summary>
     public class LevelStats : ObservableCollection<LevelStat>
     {
     }
 
+    /// <summary>
+    /// A set of statistics for a single level
+    /// </summary>
     public class LevelStat
     {
+
+        /// <summary>
+        /// The position of the level with respect to other levels
+        /// </summary>
         public int Index { get; set; }
+
+        /// <summary>
+        /// The number of moves the player took to complete the level
+        /// </summary>
         public int MoveCount { get; set; }
+        /// <summary>
+        /// The total amount of time it took the player to complete the level
+        /// </summary>
         public TimeSpan ElapsedTime { get; set; }
+
+        /// <summary>
+        /// The thumbnail image for the level
+        /// </summary>
         public WriteableBitmap Thumbnail { get; set; }
     }
 }

@@ -37,26 +37,45 @@ namespace Locima.SlidingBlock.Persistence
         /// </remarks>
         private object _lockObject = new object();
 
+        /// <summary>
+        /// Backing field for <see cref="Thumbnail"/>
+        /// </summary>
         private WriteableBitmap _thumbnail;
 
-        [DataMember]
-        public string Name { get; set; }
-
+        /// <summary>
+        /// The data for the thumbnail image
+        /// </summary>
         [DataMember]
         public byte[] ThumbnailData { get; set; }
 
+        /// <summary>
+        /// The name of the image file when it's held in isolated storage
+        /// </summary>
         [DataMember]
         public string IsolatedStorageFilename { get; set; }
 
+        /// <summary>
+        /// The Uri of the image file when it's held in the XAP distribution
+        /// </summary>
         [DataMember]
         public Uri XapImageUri { get; set; }
 
+        /// <summary>
+        /// The amount of time the player 
+        /// </summary>
         [DataMember]
         public TimeSpan ElapsedTime { get; set; }
 
+        /// <summary>
+        /// The state of the puzzle tiles
+        /// </summary>
         [DataMember]
         public Position[][] SolvedTilePositions { get; set; }
 
+
+        /// <summary>
+        /// Gets the bitmap thumbnail for the level
+        /// </summary>
         public WriteableBitmap Thumbnail
         {
             get
@@ -74,6 +93,9 @@ namespace Locima.SlidingBlock.Persistence
             }
         }
 
+        /// <summary>
+        /// The number of tiles across this level has
+        /// </summary>
         public int TilesAcross
         {
             get
@@ -84,11 +106,18 @@ namespace Locima.SlidingBlock.Persistence
             }
         }
 
+        /// <summary>
+        /// The number of tiles high this level has
+        /// </summary>
         public int TilesHigh
         {
             get { return SolvedTilePositions != null ? SolvedTilePositions.Length : 0; }
         }
 
+
+        /// <summary>
+        /// The image that the player is trying to arrange
+        /// </summary>
         public WriteableBitmap Image
         {
             get
@@ -108,6 +137,10 @@ namespace Locima.SlidingBlock.Persistence
             }
         }
 
+
+        /// <summary>
+        /// The count of moves so far the player has made on this level
+        /// </summary>
         [DataMember]
         public int MoveCount { get; set; }
 
@@ -120,6 +153,10 @@ namespace Locima.SlidingBlock.Persistence
             _lockObject = new object();
         }
 
+        /// <summary>
+        /// Loads the bitmap for the image in to this object
+        /// </summary>
+        /// <returns></returns>
         public WriteableBitmap LoadImage()
         {
             WriteableBitmap bitmap;
@@ -135,6 +172,10 @@ namespace Locima.SlidingBlock.Persistence
         }
 
         
+        /// <summary>
+        /// Writes the image passed to a 480 x 480 image as a JPEG to.... NOWHERE!
+        /// </summary>
+        /// <param name="image">The image to save</param>
         public void SetAndSaveImage(WriteableBitmap image)
         {
             // Save the selected image area back to to the puzzle metadata
@@ -145,6 +186,10 @@ namespace Locima.SlidingBlock.Persistence
         }
 
  
+        /// <summary>
+        /// NOT IMPLEMENTED YET (<see cref="ImageChooser"/>)
+        /// </summary>
+        /// <param name="imageDataStream"></param>
         public void SetAndSaveImage(Stream imageDataStream)
         {
             throw new NotImplementedException();

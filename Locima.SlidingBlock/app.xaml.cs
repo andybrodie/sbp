@@ -15,12 +15,28 @@ using NLog;
 namespace Locima.SlidingBlock
 {
     
+
+    /// <summary>
+    /// The main application bootstrap class
+    /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// NLog logger, we can't initialise statically because the log subsystem isn't set up yet, so instead we initialise this in <see cref="InitializePhoneApplication"/>
+        /// </summary>
         private static Logger Logger;
 
+        /// <summary>
+        /// The name of the query parameter used to suppress the most recent entry in the backstack.
+        /// </summary>
+        /// <remarks>
+        /// This functionality is required in multiple pages, so it's defined here rather than in each page that requires it</remarks>
         public const string SuppressBackQueryParameterName = "SuppressBack";
 
+        /// <summary>
+        /// Determines whether we're using the dark or light theme
+        /// </summary>
+        /// <remarks><c>true</c> if the light theme is active, <c>false</c> if dark</remarks>
         public bool IsLightTheme
         {
             get
@@ -30,6 +46,10 @@ namespace Locima.SlidingBlock
             }
         }
 
+
+        /// <summary>
+        /// Returns the accent colour that the user has selected as their favourite
+        /// </summary>
         public Color ThemeColor
         {
             get { return (Color) Current.Resources["PhoneAccentColor"]; }

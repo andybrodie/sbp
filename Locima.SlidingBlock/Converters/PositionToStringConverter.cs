@@ -6,6 +6,12 @@ using Locima.SlidingBlock.Controls;
 
 namespace Locima.SlidingBlock.Converters
 {
+    /// <summary>
+    /// Converts a <see cref="Position"/> to a <see cref="String"/>
+    /// </summary>
+    /// <remarks>
+    /// Used for debugging
+    /// </remarks>
     public class PositionToStringConverter : IValueConverter
     {
         /// <summary>

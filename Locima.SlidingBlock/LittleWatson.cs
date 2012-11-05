@@ -9,6 +9,14 @@ using NLog;
 
 namespace Locima.SlidingBlock
 {
+
+    /// <summary>
+    /// Creates a crash report on a file in isolated storage when an uncaught exception is thrown; then when the app is started again the report can be mailed
+    /// to me for analysis.
+    /// </summary>
+    /// <remarks>
+    /// Credit to Andy Pennell for this, see <a href="http://blogs.msdn.com/b/andypennell/archive/2010/11/01/error-reporting-on-windows-phone-7.aspx"/>
+    /// </remarks>
     public class LittleWatson
     {
         const string CrashReportFilename = "LittleWatson.txt";

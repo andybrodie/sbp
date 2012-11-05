@@ -5,11 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using Locima.SlidingBlock.Common;
+using Locima.SlidingBlock.Controls;
 using Locima.SlidingBlock.Persistence;
+using Locima.SlidingBlock.ViewModel;
 using NLog;
 
 namespace Locima.SlidingBlock.Model
 {
+
+    /// <summary>
+    /// The MVVM model for the <see cref="Puzzle"/> view and <see cref="PuzzleViewModel"/> view model.
+    /// </summary>
     public class PuzzleModel
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -267,6 +273,14 @@ namespace Locima.SlidingBlock.Model
         }
 
 
+        /// <summary>
+        /// Determines the player tile (<paramref name="player"/>) and validity of a move (moving the tile in the <paramref name="direction"/> indicated) then calls <see cref="MovePlayer"/>
+        /// to swap the tile positions.
+        /// </summary>
+        /// <remarks>E.g. if <paramref name="direction"/> is <see cref="TileDirection.FromAbove"/> then the tile above the player will be swapped with the player tile</remarks>
+        /// <param name="player">The player to move</param>
+        /// <param name="direction">The direction that the non-player tile is moving from</param>
+        /// <returns>True if the tile was moved, false otherwise (depends on the handlers for the <see cref="PlayerMoving"/> event.</returns>
         public bool MoveTile(Player player, TileDirection direction)
         {
             Logger.Info("Moving {0} in direction {1}", player, direction);
@@ -276,29 +290,25 @@ namespace Locima.SlidingBlock.Model
                 case TileDirection.FromAbove:
                     if (player.Position.Y > 0)
                     {
-                        MovePlayer(player.Position, Position.Create(player.Position, 0, -1));
-                        tileMoved = true;
+                        tileMoved = MovePlayer(player.Position, Position.Create(player.Position, 0, -1));
                     }
                     break;
                 case TileDirection.FromBelow:
                     if (player.Position.Y < TilesHigh - 1)
                     {
-                        MovePlayer(player.Position, Position.Create(player.Position, 0, 1));
-                        tileMoved = true;
+                        tileMoved = MovePlayer(player.Position, Position.Create(player.Position, 0, 1));
                     }
                     break;
                 case TileDirection.FromLeft:
                     if (player.Position.X > 0)
                     {
-                        MovePlayer(player.Position, Position.Create(player.Position, -1, 0));
-                        tileMoved = true;
+                        tileMoved = MovePlayer(player.Position, Position.Create(player.Position, -1, 0));
                     }
                     break;
                 case TileDirection.FromRight:
                     if (player.Position.X < TilesAcross - 1)
                     {
-                        MovePlayer(player.Position, Position.Create(player.Position, 1, 0));
-                        tileMoved = true;
+                        tileMoved = MovePlayer(player.Position, Position.Create(player.Position, 1, 0));
                     }
                     break;
                 default:
@@ -309,16 +319,24 @@ namespace Locima.SlidingBlock.Model
         }
 
 
-        private void MovePlayer(Position currentPosition, Position newPosition)
+        /// <summary>
+        /// Swaps the position of the two tiles at <paramref name="currentPosition"/> and <paramref name="newPosition"/>
+        /// </summary>
+        /// <remarks></remarks>
+        /// <param name="currentPosition">The current position of the player tile</param>
+        /// <param name="newPosition">The new position of the player tile</param>
+        /// <returns>True if the tile was moved, false otherwise (depends on the handlers for the <see cref="PlayerMoving"/> event.</returns>
+        private bool MovePlayer(Position currentPosition, Position newPosition)
         {
             TileModel swapTile = TileAt(newPosition);
             TileModel playerTile = TileAt(currentPosition);
             PlayerMovingEventArgs args = new PlayerMovingEventArgs {PlayerTile = playerTile, PuzzleTile = swapTile};
             SafeRaise.Raise(PlayerMoving, this, args);
-
+            bool didPlayerMove;
             if (args.Cancel)
             {
                 Logger.Info("Move cancelled by event PlayerMoving event handler");
+                didPlayerMove = false;
             } else
             {
 
@@ -329,10 +347,16 @@ namespace Locima.SlidingBlock.Model
                 _puzzleGrid[newPosition.Y][newPosition.X] = playerTile;
                 SafeRaise.Raise(PlayerMoved, this,
                                 new PlayerMovedEventArgs { PlayerTile = playerTile, PuzzleTile = swapTile});
+                didPlayerMove = true;
             }
+            return didPlayerMove;
         }
 
 
+        /// <summary>
+        /// Returns a single dimension enumeration of all the tiles within the puzzle
+        /// </summary>
+        /// <returns>a single dimension enumeration of all the tiles within the puzzle</returns>
         public IEnumerable<TileModel> AllTiles()
         {
             List<TileModel> tiles = new List<TileModel>();
@@ -347,12 +371,20 @@ namespace Locima.SlidingBlock.Model
         }
 
 
+        /// <summary>
+        /// Retrieves the brush to paint a tile with
+        /// </summary>
+        /// <param name="tileModel">The tile model that wants its brush</param>
+        /// <returns>A part of the total puzzle image</returns>
         public Brush GetTileBrush(TileModel tileModel)
         {
             return _tileBrushFactory.GetTileBrush(tileModel.SolvedPosition.X, tileModel.SolvedPosition.Y);
         }
 
 
+        /// <summary>
+        /// Logs entire puzzle grid in a readable format to the trace, used for debugging
+        /// </summary>
         public void LogPuzzleGrid()
         {
             if (Logger.IsDebugEnabled)
@@ -373,7 +405,14 @@ namespace Locima.SlidingBlock.Model
         }
 
 
-        // TODO Surely there's a better way of doing this?  This is how a TileModel knows where it is in the puzzle
+        /// <summary>
+        /// Returns the position of a tile in the puzzle
+        /// </summary>
+        /// <remarks>
+        /// TODO Surely there's a better way of doing this?  This is how a TileModel knows where it is in the puzzle
+        /// </remarks>
+        /// <param name="tileModel">The tile to retrieve the position of</param>
+        /// <returns>The current postion of the tile within the puzzle</returns>
         public Position TilePosition(TileModel tileModel)
         {
             for (int y = 0; y < TilesHigh; y++)

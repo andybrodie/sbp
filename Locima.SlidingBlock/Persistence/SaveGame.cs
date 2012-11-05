@@ -9,30 +9,64 @@ using Locima.SlidingBlock.Model;
 
 namespace Locima.SlidingBlock.Persistence
 {
+
+    /// <summary>
+    /// Represents a saved game, i.e. a game in progress that has been persisted to storage
+    /// </summary>
     [DataContract]
     public class SaveGame : IPersistedObject
     {
+
+        /// <summary>
+        /// The width of the thumbnail image that can be shown when selecting this game
+        /// </summary>
         public static readonly int ThumbnailWidth = 64;
+
+        /// <summary>
+        /// The height of the thumbnail image that can be shown when selecting this game
+        /// </summary>
         public static readonly int ThumbnailHeight = 64;
 
         //private ExtensionDataObject ExtensionData { get; set; }
 
         #region GameTypes enum
 
+        /// <summary>
+        /// Simple enumeration of the types of game (note <see cref="Multiplayer"/> is currentlyunused
+        /// </summary>
         public enum GameTypes
         {
+            /// <summary>
+            /// A single player game (one local player)
+            /// </summary>
             SinglePlayer,
+
+            /// <summary>
+            /// A game with multiple player (some local, some remote)
+            /// </summary>
             Multiplayer
         }
 
         #endregion
 
+
+        /// <summary>
+        /// An ordered list of all the levels that make up the game
+        /// </summary>
         [DataMember]
         public List<LevelState> Levels { get; set; }
 
+
+        /// <summary>
+        /// The index of the level currently being played
+        /// </summary>
         [DataMember]
         public int CurrentLevelIndex { get; set; }
 
+
+        /// <summary>
+        /// Shorthand for <see cref="Levels"/>[<see cref="CurrentLevelIndex"/>]
+        /// </summary>
         public LevelState CurrentLevel
         {
             get
@@ -50,9 +84,19 @@ namespace Locima.SlidingBlock.Persistence
             }
         }
 
+
+        /// <summary>
+        /// The local player's position and ID
+        /// </summary>
         [DataMember]
         public PlayerLink LocalPlayer { get; set; }
 
+
+        /// <summary>
+        /// Shorthand for <see cref="IPlayerStorageManager.CurrentPlayer"/>
+        /// </summary>
+        /// <remarks>Also asserts that <see cref="LocalPlayer"/>'s <see cref="PlayerLink.PlayerDetailsId"/> member matches <see cref="PlayerDetails.Id"/>.  If it doesn't, then
+        /// we've loaded this save game with the wrong player profile active.</remarks>
         public PlayerDetails LocalPlayerDetails
         {
             get
@@ -81,11 +125,9 @@ namespace Locima.SlidingBlock.Persistence
         }
 
 
-        public string Name
-        {
-            get { return string.Format("level {0} {1}", LocalPlayerDetails.Name, DateTime.Now.ToString("dd/MM HH:mm")); }
-        }
-
+        /// <summary>
+        /// The type of game (only <see cref="GameTypes.Multiplayer"/> is currently supported at the moment).
+        /// </summary>
         [DataMember]
         public GameTypes GameType { get; set; }
 

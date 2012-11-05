@@ -9,19 +9,39 @@ using NLog;
 
 namespace Locima.SlidingBlock
 {
+
+    /// <summary>
+    /// Simple "code-behind" style page that shows the high score table, containing a configurable button in the application bar that allows the user to proceed
+    /// </summary>
     public partial class HighScores : PhoneApplicationPage
     {
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        /// <summary>
+        /// The Uri query parameter that contains the label for the single application bar button that allows the user to proceed
+        /// </summary>
         public const string ButtonLabelQueryParameter = "ButtonTextLabel";
+
+        /// <summary>
+        /// The Uri query parameter that contains the Uri for the page to navigate to that allows the user to proceed
+        /// </summary>
         public const string ButtonUriQueryParameter = "ButtonUri";
 
+
+        /// <summary>
+        /// Calls <see cref="InitializeComponent"/>
+        /// </summary>
         public HighScores()
         {
             InitializeComponent();
         }
 
 
+        /// <summary>
+        /// Perform view model initialisation
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Logger.Info("OnNavigatedTo entry");

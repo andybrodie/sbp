@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
@@ -13,16 +14,22 @@ using Locima.SlidingBlock.ViewModel;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using NLog;
-using Locima.SlidingBlock.Model;
 
 namespace Locima.SlidingBlock
 {
+
+    /// <summary>
+    /// A regular "code-behind" page which allows the user the pick an image from their albums, or use the camera to take a new image
+    /// </summary>
     public partial class ImageChooser : PhoneApplicationPage
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly PhotoChooserTask _photoChooserTask;
 
+        /// <summary>
+        /// Calls <see cref="InitializeComponent"/> and sets up the <see cref="_photoChooserTask"/>
+        /// </summary>
         public ImageChooser()
         {
             InitializeComponent();
@@ -31,6 +38,10 @@ namespace Locima.SlidingBlock
         }
 
 
+        /// <summary>
+        /// Creates the data context for the page (which is a list of places where images can be obtained from) and sets it to <see cref="FrameworkElement.DataContext"/>
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -135,6 +146,10 @@ namespace Locima.SlidingBlock
         }
 
 
+        /// <summary>
+        /// Creates a Uri to navigate to this page
+        /// </summary>
+        /// <returns>An Uri </returns>
         public static Uri CreateNavigationUri()
         {
             return new Uri("/ImageChooser.xaml", UriKind.Relative);

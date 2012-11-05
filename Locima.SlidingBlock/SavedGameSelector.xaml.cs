@@ -7,6 +7,10 @@ using NLog;
 
 namespace Locima.SlidingBlock
 {
+
+    /// <summary>
+    /// MVVM view that shows a list of save games, along the user to select one to load that game and continue playing from where they left off
+    /// </summary>
     public partial class SavedGameSelector : PhoneApplicationPage
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -21,12 +25,19 @@ namespace Locima.SlidingBlock
         }
 
 
+        /// <summary>
+        /// Invokes <see cref="InitializeComponent"/>
+        /// </summary>
         public SavedGameSelector()
         {
             InitializeComponent();
         }
 
 
+        /// <summary>
+        /// Registers default view message handlers (<see cref="DefaultMessageHandlers.Register"/> and initialises the <see cref="ViewModel"/>
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -47,6 +58,9 @@ namespace Locima.SlidingBlock
         }
 
 
+        /// <summary>
+        /// Creates a Uri that can be navigated to, to launch this page
+        /// </summary>
         public static Uri CreateNavigationUri()
         {
             return new Uri("/SavedGameSelector.xaml", UriKind.Relative);
