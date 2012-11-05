@@ -6,12 +6,23 @@ using NLog;
 
 namespace Locima.SlidingBlock.IO.IsolatedStorage
 {
+
+    /// <summary>
+    /// Manages the catalogue of images (mapping of Url source to local filename) in <see cref="IsolatedStorageSettings.ApplicationSettings"/>
+    /// </summary>
     public class ImageCatalogueIsolatedStorageManager
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// The key in the <see cref="IsolatedStorageSettings.ApplicationSettings"/> used to store the catalogue 
+        /// </summary>
         public static string ImageCatalogueKey = "ImageCatalogue";
 
+        /// <summary>
+        /// Gets the image catalogue from <see cref="IsolatedStorageSettings.ApplicationSettings"/>, or create a new one if one doesn't exist
+        /// </summary>
+        /// <returns></returns>
         private static Dictionary<string, string> GetImageCatalogue()
         {
             Dictionary<string, string> imageCat;
@@ -30,6 +41,13 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
 
+        /// <summary>
+        /// Adds a new image to the catalogue, returning the key to use to get it back later
+        /// </summary>
+        /// <remarks></remarks>
+        /// If the <paramref name="uri"/> already exists in the catalogue, this call is ignored
+        /// <param name="uri">The Uri to store in the catalogue, must not be null</param>
+        /// <returns>The filename in isolated storage to retrieve the contents of the Uri from in future</returns>
         public static string AddToCatalogue(Uri uri)
         {
             Dictionary<string, string> imageCat = GetImageCatalogue();
@@ -52,6 +70,11 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
 
+        /// <summary>
+        /// Serialises the image catalogue contents as a string
+        /// </summary>
+        /// <remarks>Used for debugging</remarks>
+        /// <returns>A multi-line string</returns>
         private static string ImageCatalogueToString()
         {
             StringBuilder s = new StringBuilder("Image Catalogue Contents:");

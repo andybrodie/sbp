@@ -8,6 +8,10 @@ using NLog;
 namespace Locima.SlidingBlock.IO.IsolatedStorage
 {
 
+
+    /// <summary>
+    /// The implementation of <see cref="ISaveGameStorageManager"/> that uses isolated storage for all persistence.
+    /// </summary>
     public class SaveGameIsolatedStorageManager : ISaveGameStorageManager
     {
         private const string SaveGameDirectory = "SaveGames";
@@ -27,17 +31,23 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
 
+        /// <summary>
+        /// Ensures that the <see cref="SaveGameDirectory"/> exists.
+        /// </summary>
         public void Initialise()
         {
             IOHelper.EnsureDirectory(SaveGameDirectory);
         }
 
 
+        /// <inheritdoc/>
         public void DeleteGame(SaveGame saveGame)
         {
             DeleteGame(saveGame.Id);
         }
 
+
+        /// <inheritdoc/>
         public void DeleteGame(string saveGameId)
         {
             Logger.Info("Deleting save game {0}", saveGameId);
@@ -110,6 +120,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<SaveGame> LoadGames()
         {
             return PlayerStorageManager.Instance.CurrentPlayer == null
@@ -118,6 +129,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
 
+        /// <inheritdoc/>
         public SaveGame GetContinuableGame(string playerId)
         {
             return LoadGames(playerId).FirstOrDefault();

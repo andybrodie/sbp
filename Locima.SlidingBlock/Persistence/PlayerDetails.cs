@@ -6,12 +6,24 @@ using Locima.SlidingBlock.IO;
 namespace Locima.SlidingBlock.Persistence
 {
 
+
+    /// <summary>
+    /// The details of a player represented within a <see cref="SaveGame"/> object.
+    /// </summary>
     [DataContract]
     public class PlayerDetails : IPersistedObject
     {
+
+        /// <summary>
+        /// The name of the player
+        /// </summary>
         [DataMember]
         public string Name { get; set; }
 
+
+        /// <summary>
+        /// The preferred colour the player plays with
+        /// </summary>
         [DataMember]
         public Color PreferredColor { get; set; }
 
@@ -26,6 +38,10 @@ namespace Locima.SlidingBlock.Persistence
         /// </summary>
         public DateTimeOffset LastUpdate { get; set; }
 
+        /// <summary>
+        /// Override to append the <see cref="Name"/> and <see cref="Id"/> (filename) of the player
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return string.Format("{0}(Name={1}, Filename={2})", base.ToString(), Name, Id);

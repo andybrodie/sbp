@@ -147,12 +147,10 @@
     <Compile Include="Messaging\MessageHandler.cs" />
     <Compile Include="Messaging\NavigationMessageArgs.cs" />
     <Compile Include="Messaging\ScrollToViewMessage.cs" />
-    <Compile Include="Model\DirectionPreference.cs" />
     <Compile Include="Model\ImageDivider.cs" />
     <Compile Include="Model\PlayerLink.cs" />
     <Compile Include="Model\PlayerMoveEventArgs.cs" />
     <Compile Include="Model\PlayerType.cs" />
-    <Compile Include="Model\PuzzleResizedEventArgs.cs" />
     <Compile Include="Model\StopwatchModel.cs" />
     <Compile Include="Model\TileDirection.cs" />
     <Compile Include="Model\Player.cs" />

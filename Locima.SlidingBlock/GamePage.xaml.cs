@@ -111,11 +111,11 @@ namespace Locima.SlidingBlock
 
 
         /// <summary>
-        /// This is the event handler for the <see cref="Grid.SizeChanged"/> event.
+        /// This is the event handler for the <see cref="FrameworkElement.SizeChanged"/> event.
         /// </summary>
         /// <remarks>
         /// When the size of the available space within the grid cell for the puzzle changes, it's important that the puzzle is resized take advantage of the full amount of screen space avaialble.
-        /// In the case of our control hierarchy, the puzzle is contained within a <see cref="PuzzleBorder"/> control, so we'll set the <see cref="Border.Width"/> and <see cref="Border.Height"/>
+        /// In the case of our control hierarchy, the puzzle is contained within a <see cref="PuzzleBorder"/> control, so we'll set the <see cref="FrameworkElement.Width"/> and <see cref="FrameworkElement.Height"/>
         /// to the largest square within that space.</remarks>
         /// <param name="unused"></param>
         /// <param name="unused2"></param>

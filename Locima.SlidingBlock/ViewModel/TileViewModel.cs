@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Locima.SlidingBlock.Common;
@@ -121,7 +120,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This is what the <see cref="TileControl.Width"/> property should be bound to</para>
+        /// This is what the <see cref="FrameworkElement.Width"/> property should be bound to</para>
         /// <para>
         /// Changing this has two knock-on effects:
         /// <list type="number">
@@ -148,7 +147,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This is what the <see cref="SimpleTile.Height"/> property should be bound to</para>
+        /// This is what the <see cref="FrameworkElement.Height"/> property should be bound to</para>
         /// <para>
         /// Changing this has two knock-on effects:
         /// <list type="number">

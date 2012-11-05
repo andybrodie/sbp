@@ -388,9 +388,9 @@ namespace Locima.SlidingBlock.ViewModel
         {
             Point relativeToBlank = Subtract(tapPosition,
                                              ConvertTilePositionToPoint(_puzzleModel.LocalPlayer.Position));
-            DirectionPreference preferredDirections = CalculateDirectionPreferences(relativeToBlank);
+            IEnumerable<TileDirection> preferredDirections = CalculateDirectionPreferences(relativeToBlank);
 
-            foreach (TileDirection dir in preferredDirections.Preferences)
+            foreach (TileDirection dir in preferredDirections)
             {
                 // Attempt to move in each of the preferred directions in order, but stop as soon as we successfully move
                 if (_puzzleModel.MoveTile(_puzzleModel.LocalPlayer, dir)) break;
@@ -403,7 +403,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         /// <param name="tapPointRelativeToBlank"> A point offset from the centre of the blank tile (e.g. 0,0 would be right in the middle of the blank tile) </param>
         /// <returns> The order of preference for which tile to swap with the player's blank tile </returns>
-        private static DirectionPreference CalculateDirectionPreferences(Point tapPointRelativeToBlank)
+        private static IEnumerable<TileDirection> CalculateDirectionPreferences(Point tapPointRelativeToBlank)
         {
             // TODO Fix this to work better WRT non 1:1 aspect ratios (assuming we ever need that!)
             TileDirection[] dirsArray = new TileDirection[4];
@@ -419,7 +419,7 @@ namespace Locima.SlidingBlock.ViewModel
             dirsArray[vertOffset + 2] = tapPointRelativeToBlank.Y < 0
                                             ? TileDirection.FromBelow
                                             : TileDirection.FromAbove;
-            return new DirectionPreference(dirsArray);
+            return dirsArray;
         }
 
 

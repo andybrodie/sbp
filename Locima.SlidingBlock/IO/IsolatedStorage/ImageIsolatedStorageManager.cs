@@ -14,8 +14,16 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+
+        /// <summary>
+        /// The directory within which all downloaded images will be stored
+        /// </summary>
         public static string ImageDirectory = "Images";
 
+
+        /// <summary>
+        /// Ensures that <see cref="ImageDirectory"/> exists
+        /// </summary>
         public void Initialise()
         {
             IOHelper.EnsureDirectory(ImageDirectory);
@@ -41,6 +49,11 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
 
+        /// <summary>
+        /// Loads the image specified by <paramref name="imageFilename"/> from Isolated Storage and return it as a <see cref="WriteableBitmap"/>
+        /// </summary>
+        /// <param name="imageFilename">The image to load, must not be null</param>
+        /// <returns>A bitmap version of the image</returns>
         public WriteableBitmap LoadImage(string imageFilename)
         {
             Logger.Info("Loading {0}", imageFilename);
@@ -62,6 +75,11 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
             return new WriteableBitmap(bitmap);
         }
 
+        /// <summary>
+        /// Loads the image from the Uri passed in <paramref name="xapImageUri"/> and returns it as a <see cref="WriteableBitmap"/>
+        /// </summary>
+        /// <param name="xapImageUri">The Uri of the image contained within the XAP for this app</param>
+        /// <returns>A bitmap</returns>
         public WriteableBitmap LoadImage(Uri xapImageUri)
         {
             // TODO Check performance to make sure that sync loading is ok.  Should be quick as the image is small and it's local

@@ -5,8 +5,17 @@ using Locima.SlidingBlock.SinglePlayer;
 
 namespace Locima.SlidingBlock.Test
 {
+
+    /// <summary>
+    /// Sets up some simple test data for testing the <see cref="GameEnd"/> screen.
+    /// </summary>
     public class EndGameTestSetup
     {
+
+        /// <summary>
+        /// Create a <see cref="SaveGame"/> with some level completion data to try out the display of stats.
+        /// </summary>
+        /// <returns></returns>
         public static Uri TestEndGameScreen()
         {
             SaveGame sg = GameFactory.CreateSinglePlayerGame(3, 3);

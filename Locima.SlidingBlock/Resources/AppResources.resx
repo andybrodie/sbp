@@ -309,6 +309,10 @@
     <value>resume</value>
     <comment>Application bar text for button that resumes a paused game</comment>
   </data>
+  <data name="SaveGameLevelTitle" xml:space="preserve">
+    <value>level {0}</value>
+    <comment>Title for a save game item in the save game selector page</comment>
+  </data>
   <data name="SaveGameSelectorDeleteGame" xml:space="preserve">
     <value>delete</value>
     <comment>The context menu header for the option to delete a previously saved game</comment>

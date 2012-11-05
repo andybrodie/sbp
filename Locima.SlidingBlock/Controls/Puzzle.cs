@@ -186,6 +186,9 @@ namespace Locima.SlidingBlock.Controls
         }
 
 
+        /// <summary>
+        /// Hook up events and tells the <see cref="ViewModel"/> that its ready to calculate its maximum size.
+        /// </summary>
         public void Initialise()
         {
             Logger.Debug("Puzzle control initialise entry");

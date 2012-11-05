@@ -21,17 +21,30 @@ namespace Locima.SlidingBlock
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+
+
+        /// <summary>
+        /// Calls <see cref="InitializeComponent"/>
+        /// </summary>
         public PlayerSelector()
         {
             InitializeComponent();
         }
 
+        
+        /// <summary>
+        /// Convenience access for the view model that is initialise in the XAML
+        /// </summary>
         public PlayerSelectorViewModel ViewModel
         {
             get { return ((PlayerSelectorViewModel) Resources["viewModel"]); }
         }
 
 
+        /// <summary>
+        /// Sets up the application bar and registered the default message handlers
+        /// </summary>
+        /// <param name="e">unused</param>
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);

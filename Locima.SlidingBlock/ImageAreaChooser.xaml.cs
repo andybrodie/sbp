@@ -15,6 +15,9 @@ using NLog;
 
 namespace Locima.SlidingBlock
 {
+    /// <summary>
+    /// MVVM view for the Image Area Chooser, that allows the user to select part of an image to use for a puzzle
+    /// </summary>
     public partial class ImageAreaChooser : PhoneApplicationPage
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -30,23 +33,35 @@ namespace Locima.SlidingBlock
         private const string ImageStoredInSaveGameQueryParameterName = "imageStoredInPuzzle";
         private const string AcceptUriQueryParameterName = "acceptUri";
 
+
+        /// <summary>
+        /// Call <see cref="InitializeComponent"/> and build the application bar
+        /// </summary>
         public ImageAreaChooser()
         {
             InitializeComponent();
             BuildApplicationBar();
         }
 
+        /// <summary>
+        /// Convenience access for the view model, initalised in XAML
+        /// </summary>
         private ImageAreaChooserViewModel ViewModel
         {
             get { return Resources["imageChooserViewModel"] as ImageAreaChooserViewModel; }
         }
 
 
+        /// <summary>
+        /// Initialise the view model constants
+        /// </summary>
+        /// <param name="e"></param>
+
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             _puzzle = SaveGameStorageManager.Instance.GetContinuableGame(PlayerStorageManager.Instance.CurrentPlayer.Id);
-            ImageAreaChooserViewModel iacvm = (ImageAreaChooserViewModel) Resources["imageChooserViewModel"];
+            ImageAreaChooserViewModel iacvm = ViewModel;
             Debug.Assert(iacvm != null);
             iacvm.CropTop = 30;
             iacvm.CropLeft = 30;
@@ -207,14 +222,14 @@ namespace Locima.SlidingBlock
             UpdateImage(1, new Point(e.HorizontalChange, e.VerticalChange));
         }
 
-        public double WithinBounds(double value, double min, double max)
+        private double WithinBounds(double value, double min, double max)
         {
             if (value < min) return min;
             if (value > max) return max;
             return value;
         }
 
-        public Point WithinBounds(Point point, Point topLeft, Point bottomRight)
+        private Point WithinBounds(Point point, Point topLeft, Point bottomRight)
         {
             if (point.X < topLeft.X) point.X = topLeft.X;
             if (point.X > bottomRight.X) point.X = bottomRight.X;
@@ -252,7 +267,13 @@ namespace Locima.SlidingBlock
             Dispatcher.BeginInvoke(() => NavigationService.Navigate(acceptUri));
         }
 
-
+        
+        /// <summary>
+        /// Create a Uri to navigate to this page
+        /// </summary>
+        /// <param name="currentUri">The Uri to navigate to if if the user accepts an area of the image</param>
+        /// <param name="imageStoredInSaveGame">If true then the image will be loaded from the latest save game</param>
+        /// <returns></returns>
         public static Uri CreateNavigationUri(Uri currentUri, bool imageStoredInSaveGame)
         {
             return new Uri(

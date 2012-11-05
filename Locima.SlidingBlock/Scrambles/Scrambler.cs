@@ -19,6 +19,9 @@ namespace Locima.SlidingBlock.Scrambles
     {
         #region ScrambleType enum
 
+        /// <summary>
+        /// The difference types of scramble (see <see cref="Scrambler"/>)
+        /// </summary>
         public enum ScrambleType
         {
             /// <summary>
@@ -69,6 +72,13 @@ namespace Locima.SlidingBlock.Scrambles
             Instance = new Scrambler();
         }
 
+        /// <summary>
+        /// Apply the <paramref name="type"/> scramble to a new position grid
+        /// </summary>
+        /// <param name="type">The type of scramble to apply</param>
+        /// <param name="tilesAcross">Horizontal dimension of the puzzle</param>
+        /// <param name="tilesHigh">Vertical dimension of the puzzle</param>
+        /// <returns>A grid of solved positions for each each tile</returns>
         public Position[][] Scramble(ScrambleType type, int tilesAcross, int tilesHigh)
         {
             Position[][] scramble;
