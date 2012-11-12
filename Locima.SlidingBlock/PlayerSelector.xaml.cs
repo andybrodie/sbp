@@ -48,14 +48,20 @@ namespace Locima.SlidingBlock
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            BuildApplicationBar();
+            this.RegisterDefaultMessageHandlers(ViewModel);
+            
+            ViewModel.Initialise();
+
+        }
+
+        private void BuildApplicationBar()
+        {
             ApplicationBar = new ApplicationBar();
             IApplicationBarIconButton icon = ApplicationBarHelper.AddButton(ApplicationBar,
                                                                             ApplicationBarHelper.ButtonIcons["New"],
                                                                             LocalizationHelper.GetString("AddPlayer"));
             icon.Click += (o, args) => NavigationService.Navigate(AddPlayer.CreateNavigationUri(null));
-            this.RegisterDefaultMessageHandlers(ViewModel);
-            
-            ViewModel.Initialise();
 
         }
 

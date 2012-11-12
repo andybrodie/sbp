@@ -394,7 +394,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
 
         #endregion
 
-     
+
         /// <summary>
         /// Determines whether or not a file exists in isolated storage
         /// </summary>
@@ -404,7 +404,77 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         {
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                return store.FileExists(filename);
+                bool fileExists = store.FileExists(filename);
+                Logger.Info("Determined that {0} file does{1} exist", filename, fileExists ? string.Empty : "n't");
+                return fileExists;
+            }
+        }
+
+        /// <summary>
+        /// Joins all the parmaters passed in <paramref name="pathElements"/> together using the <see cref="PathSeparator"/>
+        /// </summary>
+        /// <param name="pathElements">The elements that make up the path</param>
+        /// <returns>A single string</returns>
+        public static string CreatePath(params string[] pathElements)
+        {
+            return string.Join(PathSeparator, pathElements);
+        }
+
+
+
+        /// <summary>
+        /// Searches a directory for a file which, when deserialised, matches the <paramref name="appId"/> with the <see cref="IPersistedObject.AppId"/> member.
+        /// </summary>
+        /// <typeparam name="T">The type of object that each file should deserialise to</typeparam>
+        /// <param name="directory">The directory to search (non-recursively)</param>
+        /// <param name="appId">The <see cref="IPersistedObject.AppId"/> to search for</param>
+        /// <returns>The object of type <typeparamref name="T"/> that has an <see cref="IPersistedObject.AppId"/> matching <paramref name="appId"/></returns>
+        public static T LoadFileByAppId<T>(string directory, string appId) where T : class, IPersistedObject
+        {
+            if (string.IsNullOrEmpty(appId)) throw new ArgumentException("appId must not be null", "appId");
+            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                List<string> filenames = GetFileNames(directory, store);
+                Logger.Info("Searching {0} files within {1} for one with an AppId of {2}", filenames.Count, directory,
+                            appId);
+                foreach (string filename in filenames)
+                {
+                    T obj = LoadObject<T>(store, filename);
+                    if (obj.AppId == appId)
+                    {
+                        Logger.Debug("Loaded file {0} and found matching AppId {1}", filename, obj.AppId);
+                        return obj;
+                    }
+                    Logger.Debug("Loaded file {0} and found unmatching AppId \"{1}\"", filename, obj.AppId);
+                }
+            }
+            Logger.Info("No match found in {0} for AppId {1}", directory, appId);
+            return default(T);
+        }
+
+        /// <summary>
+        /// Downloads the full contents of a stream and returns it as a byte array
+        /// </summary>
+        /// <param name="stream">The stream to download</param>
+        /// <returns>The stream as a byte array</returns>
+        public static byte[] DownloadStream(Stream stream)
+        {
+            MemoryStream ms = new MemoryStream();
+            CopyStream(stream, ms);
+            ms.Close();
+            return ms.ToArray();
+
+        }
+
+        public static void Save(string filename, byte[] data)
+        {
+            Logger.Info("Writing {0} bytes to {1}", data.Length, filename);
+            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                using (IsolatedStorageFileStream stream = store.CreateFile(filename))
+                {
+                    stream.Write(data, 0, data.Length);
+                }
             }
         }
     }

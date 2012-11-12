@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Scrambles;
 
 namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
@@ -17,10 +18,16 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
         private const string TemplatePath = "/GameTemplates/SinglePlayer/";
 
         /// <summary>
+        /// A fixed ID for this game as it only needs to get created once, so we need a reliable way of checking it when the application first starts
+        /// </summary>
+        public static readonly string SinglePlayerGamePersistentId = "33F575EC-5205-456E-81B9-E1CEABE9AEDF";
+
+        /// <summary>
         /// Creates the game definition for the default single player game.
         /// </summary>
         /// <remarks>
-        /// Creates 3 levels, using the JPG files contained within the same directory (GameTemplates/SinglePlayer), adds the licensing information and sets up the <see cref="Scrambler.ScrambleType"/></remarks>
+        /// Creates 3 levels, using the JPG files contained within the same directory (GameTemplates/SinglePlayer),
+        /// adds the licensing information and sets up the <see cref="Scrambler.ScrambleType"/></remarks>
         public static GameDefinition Create()
         {
             const string andy = "Andy Brodie";
@@ -38,6 +45,9 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
 
             GameDefinition gm = new GameDefinition
                 {
+                    AppId = SinglePlayerGamePersistentId,  // We fix the ID here as we only want one instance of this definition
+                    Title = LocalizationHelper.GetString("SinglePlayerGameTitle"),
+                    Author = "Andy Brodie",
                     Levels = new List<LevelDefinition>(3)
                         {
                             new LevelDefinition
@@ -50,8 +60,6 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
                                     OwnerUri = andyLink,
                                     License = ccby30,
                                     ScrambleType = scramble
-
-                                   
                                 },
                             new LevelDefinition
                                 {

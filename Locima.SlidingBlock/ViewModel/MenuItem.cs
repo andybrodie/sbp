@@ -187,32 +187,27 @@ namespace Locima.SlidingBlock.ViewModel
                 navUri = SelectedAction();
                 Logger.Debug("Invoked SelectedAction on menu item which returned Uri {0}", navUri);
             }
+            // No SelectedAction has been set, so look at TargetUri
+            else if (TargetUri != null)
+            {
+                Logger.Debug("Returning TargetUri {0}", TargetUri);
+                navUri = TargetUri;
+            }
+            // No SelectedAction or TargetUri so must be TargetPage
+            else if (!string.IsNullOrEmpty(TargetPage))
+            {
+                Logger.Debug("Returning TargetPage \"{0}\"", TargetPage);
+                navUri = MainPage.CreateNavigationUri(TargetPage);
+            }
+            // No SelectedAction, TargetUri or TargetPage, so this is a bug
             else
             {
-                navUri = null;
+                throw new InvalidStateException("MenuPage bug, {0} has no SelectedAction, TargetUri or TargetPage set");
             }
+
 
             // If navUri has been set by SelectedAction, then follow that, if not look in TargetUri and TargetPage
 
-            if (navUri == null)
-            {
-                if (TargetUri != null)
-                {
-                    Logger.Debug("Returning TargetUri {0}", TargetUri);
-                    navUri = TargetUri;
-                }
-                else if (!string.IsNullOrEmpty(TargetPage))
-                {
-                    string currentUrl = ((App) Application.Current).RootFrame.CurrentSource.ToString();
-                    if (currentUrl.Contains("?"))
-                    {
-                        currentUrl = currentUrl.Substring(currentUrl.IndexOf("?", StringComparison.Ordinal));
-                    }
-                    navUri = new Uri(string.Format("{0}?menuPage={1}", currentUrl, TargetPage),
-                                     UriKind.Relative);
-                    Logger.Debug("Returning TargetPage \"{0}\"", TargetPage);
-                }
-            }
             Logger.Debug("Menu item {0}(Title=\"{1}\",Text=\"{2}\") returning Uri {3}", this, Title, Text,
                          navUri == null ? "null" : navUri.ToString());
             return navUri;

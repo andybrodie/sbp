@@ -17,6 +17,7 @@ namespace Locima.SlidingBlock.Scrambles
     /// </remarks>
     public class Scrambler
     {
+
         #region ScrambleType enum
 
         /// <summary>

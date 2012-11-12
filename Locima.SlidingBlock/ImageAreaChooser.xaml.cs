@@ -259,7 +259,7 @@ namespace Locima.SlidingBlock
                 puzzleBitmap.Resize(480, 480, WriteableBitmapExtensions.Interpolation.Bilinear);
             }
 
-            _puzzle.CurrentLevel.SetAndSaveImage(puzzleBitmap); // TODO Fix this, it's messy
+            _puzzle.CurrentLevel.SetImage(puzzleBitmap); // TODO Fix this, it's messy
             SaveGameStorageManager.Instance.SaveGame(_puzzle);
 
             Uri acceptUri = new Uri(HttpUtility.UrlDecode(NavigationContext.QueryString[AcceptUriQueryParameterName]),UriKind.Relative);

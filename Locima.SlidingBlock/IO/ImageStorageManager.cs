@@ -1,4 +1,6 @@
-﻿using Locima.SlidingBlock.IO.IsolatedStorage;
+﻿using System.IO;
+using System.Windows.Media.Imaging;
+using Locima.SlidingBlock.IO.IsolatedStorage;
 
 namespace Locima.SlidingBlock.IO
 {
@@ -12,7 +14,7 @@ namespace Locima.SlidingBlock.IO
         /// </summary>
         public static IImageStorageManager Instance { get; private set; }
 
-        
+
         /// <summary>
         /// Set up <see cref="Instance"/> ready for by <see cref="StorageManagerManager.Initialise"/>.
         /// </summary>
@@ -20,5 +22,6 @@ namespace Locima.SlidingBlock.IO
         {
             Instance = new ImageIsolatedStorageManager();
         }
+        
     }
 }

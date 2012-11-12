@@ -3,6 +3,7 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
@@ -21,6 +22,7 @@ namespace Locima.SlidingBlock
     /// </summary>
     public partial class GamePage : PhoneApplicationPage
     {
+
         private const string SaveGameQueryParameterName = "SaveGame";
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -106,7 +108,23 @@ namespace Locima.SlidingBlock
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
+
+            ViewModel.Thumbnail = CreateThumbnail();
             ViewModel.OnNavigatingFrom(e);
+        }
+
+
+        /// <summary>
+        /// Creates a screenshot of the level in its current state
+        /// </summary>
+        /// <returns></returns>
+        private WriteableBitmap CreateThumbnail()
+        {
+            Logger.Info("Creating thumbnail image for current level state");
+            WriteableBitmap thumbnail = new WriteableBitmap(Puzzle, null);
+            thumbnail.Resize(LevelState.ThumbnailSize, LevelState.ThumbnailSize,
+                             WriteableBitmapExtensions.Interpolation.Bilinear);
+            return thumbnail;
         }
 
 

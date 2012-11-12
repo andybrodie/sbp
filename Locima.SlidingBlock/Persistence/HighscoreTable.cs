@@ -13,6 +13,9 @@ namespace Locima.SlidingBlock.Persistence
     public class HighScoreTable : IPersistedObject
     {
 
+        /// <inheritdoc/>
+        public string AppId { get; set; }
+
         /// <summary>
         /// A list of all the scores in the table
         /// </summary>

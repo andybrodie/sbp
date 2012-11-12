@@ -28,7 +28,8 @@ namespace Locima.SlidingBlock.Controls
                 {"Resume", GetIconUri("appbar.transport.play.rest.png")},
                 {"Save", GetIconUri("appbar.save.rest.png")},
                 {"New", GetIconUri("appbar.new.rest.png")},
-                {"Autosolve", GetIconUri("appbar.transport.ff.rest.png")}
+                {"Autosolve", GetIconUri("appbar.transport.ff.rest.png")},
+                {"Edit", GetIconUri("appbar.edittext.rest.png")}
             };
 
         /// <summary>

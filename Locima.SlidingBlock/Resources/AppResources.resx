@@ -133,9 +133,17 @@
     <value>add player</value>
     <comment>Application bar button label for adding a new player</comment>
   </data>
+  <data name="AppendLevelButton" xml:space="preserve">
+    <value>add level</value>
+    <comment>GameEditor add level application bar button</comment>
+  </data>
   <data name="ApplicationName" xml:space="preserve">
     <value>SLIDING BLOCK</value>
     <comment>The title of the application</comment>
+  </data>
+  <data name="AuthorName" xml:space="preserve">
+    <value>author</value>
+    <comment>GameEditor prompt for author name</comment>
   </data>
   <data name="Autosolve" xml:space="preserve">
     <value>autosolve</value>
@@ -161,13 +169,29 @@
     <value>Continue the current game</value>
     <comment>Menu item description for continuing the current game</comment>
   </data>
+  <data name="CreateCustomGame" xml:space="preserve">
+    <value>new</value>
+    <comment>Application bar icon in GameDefinitionSelector to create a new one</comment>
+  </data>
+  <data name="CreateLevel" xml:space="preserve">
+    <value>create level</value>
+    <comment>Page title for the create level page</comment>
+  </data>
   <data name="Custom" xml:space="preserve">
-    <value>custom</value>
+    <value>edit game template</value>
     <comment>Indicates a custom game</comment>
   </data>
   <data name="CustomDescription" xml:space="preserve">
     <value>Start a new custom game</value>
     <comment>Describes a custom game</comment>
+  </data>
+  <data name="CustomGameContextMenuDelete" xml:space="preserve">
+    <value>delete</value>
+    <comment>Label on the custom game context menu to delete the game</comment>
+  </data>
+  <data name="DefaultGameDefinitionTitle" xml:space="preserve">
+    <value>Untitled Game</value>
+    <comment>The name given to a game definition that isn't assigned a title by the user</comment>
   </data>
   <data name="DefaultPlayerName" xml:space="preserve">
     <value>Player</value>
@@ -185,6 +209,10 @@
     <value>easy</value>
     <comment>Indicates an easy difficulty game</comment>
   </data>
+  <data name="EditLevel" xml:space="preserve">
+    <value>edit level</value>
+    <comment>Page title for editing an existing level page</comment>
+  </data>
   <data name="EditPlayerTitle" xml:space="preserve">
     <value>edit player</value>
     <comment>Page title for the AddPlayer.xaml page when an existing player is being edited</comment>
@@ -201,12 +229,16 @@
     <value>Start a game using a {0} x {1} grid</value>
     <comment>Describes an easy, medium or hard game</comment>
   </data>
+  <data name="GameName" xml:space="preserve">
+    <value>game name</value>
+    <comment>GameEditor prompt for game name</comment>
+  </data>
   <data name="GamePageTitle" xml:space="preserve">
     <value>level {0}</value>
     <comment>The title displayed on the GamePage.xaml main page (this will be the number of the level)</comment>
   </data>
   <data name="GoToHighscores" xml:space="preserve">
-    <value>highscores</value>
+    <value>high scores</value>
     <comment>Shown on the application menu bar to navigate to the highscore table</comment>
   </data>
   <data name="Hard" xml:space="preserve">
@@ -214,12 +246,20 @@
     <comment>Indicates a hard difficulty game</comment>
   </data>
   <data name="HighscorePageTitle" xml:space="preserve">
-    <value>highscores</value>
-    <comment>Page title for the highscore table</comment>
+    <value>high scores</value>
+    <comment>Page title for the high score table</comment>
   </data>
   <data name="HighscoreStats" xml:space="preserve">
     <value>{0} moves in {1}</value>
-    <comment>Used on the highscore table, this is the string shown beneath each player name containing the stats of their game (number of moves and elapsed time)</comment>
+    <comment>Used on the high score table, this is the string shown beneath each player name containing the stats of their game (number of moves and elapsed time)</comment>
+  </data>
+  <data name="ImageTextLabel" xml:space="preserve">
+    <value>Image Description</value>
+    <comment>Label on the level editor to edit the image text</comment>
+  </data>
+  <data name="ImageTitleLabel" xml:space="preserve">
+    <value>Image Title</value>
+    <comment>Label on level editor to edit the image title</comment>
   </data>
   <data name="LevelFinishedCaption" xml:space="preserve">
     <value>LEVEL COMPLETE</value>
@@ -232,6 +272,18 @@
   <data name="LevelLabel" xml:space="preserve">
     <value>level:</value>
     <comment>Prompt on the screen for which level number this is</comment>
+  </data>
+  <data name="LevelList" xml:space="preserve">
+    <value>levels</value>
+    <comment>GameEditor prompt for level list</comment>
+  </data>
+  <data name="LicenceUriLabel" xml:space="preserve">
+    <value>License Uri</value>
+    <comment>Label on the level editor to more license information o</comment>
+  </data>
+  <data name="LicenseLabel" xml:space="preserve">
+    <value>License</value>
+    <comment>Label on level editor to change image license label</comment>
   </data>
   <data name="LittleWatson_Message" xml:space="preserve">
     <value>A problem occurred the last time you ran this application. Would you like to send an email to report it?</value>
@@ -282,7 +334,7 @@
     <comment>Menu item description for starting a new game</comment>
   </data>
   <data name="NoHighscoresFound" xml:space="preserve">
-    <value>no highscores yet!</value>
+    <value>no high scores yet!</value>
     <comment>text shown where there are no high scores</comment>
   </data>
   <data name="NoSavedGamesFound" xml:space="preserve">
@@ -325,6 +377,42 @@
     <value>save</value>
     <comment>Application bar button label for saving a new player</comment>
   </data>
+  <data name="ScramblerType_Identity" xml:space="preserve">
+    <value>identity</value>
+    <comment>Scramble type</comment>
+  </data>
+  <data name="ScramblerType_OneMoveToFinish" xml:space="preserve">
+    <value>one move to finish</value>
+    <comment>Scramble type</comment>
+  </data>
+  <data name="ScramblerType_Random" xml:space="preserve">
+    <value>random</value>
+    <comment>Scramble type</comment>
+  </data>
+  <data name="ScramblerType_XFlip" xml:space="preserve">
+    <value>flip along y-axis</value>
+    <comment>Scramble type</comment>
+  </data>
+  <data name="ScramblerType_XYFlip" xml:space="preserve">
+    <value>flip along both axes</value>
+    <comment>Scramble type</comment>
+  </data>
+  <data name="ScramblerType_YFlip" xml:space="preserve">
+    <value>flip along x-axis</value>
+    <comment>Scramble type</comment>
+  </data>
+  <data name="SelectCustomGamePageName" xml:space="preserve">
+    <value>select game</value>
+    <comment>Page title for the SelectCustomPage page</comment>
+  </data>
+  <data name="SelectImageButton" xml:space="preserve">
+    <value>select image</value>
+    <comment>Button on AddEditLevelDefition to select an image to use for a puzzle</comment>
+  </data>
+  <data name="SelectLicense" xml:space="preserve">
+    <value>select license</value>
+    <comment>Select license applicaiton bar button label on the level editor</comment>
+  </data>
   <data name="SelectPlayer" xml:space="preserve">
     <value>select player</value>
     <comment>Select player page screen title</comment>
@@ -332,6 +420,10 @@
   <data name="SettingsMenuOption" xml:space="preserve">
     <value>settings</value>
     <comment>Application bar option for configuration of application settings</comment>
+  </data>
+  <data name="SinglePlayerGameTitle" xml:space="preserve">
+    <value>default</value>
+    <comment>The name for the default game</comment>
   </data>
   <data name="SinglePlayerTitle" xml:space="preserve">
     <value>single player game</value>

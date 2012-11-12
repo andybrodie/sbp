@@ -86,6 +86,13 @@ namespace Locima.SlidingBlock.ViewModel
                                     TargetUri = SavedGameSelector.CreateNavigationUri(),
                                     IsEnabled = continuableGame!=null
                                 }
+                                /*,
+                            new MenuItemViewModel
+                                {
+                                    Title = LocalizationHelper.GetString("Custom"),
+                                    Text = LocalizationHelper.GetString("CustomDescription"),
+                                    TargetUri = GameDefinitionSelector.GetNavigationUri(),
+                                }*/
                         },
                     PageTitle = LocalizationHelper.GetString("MainMenu")
                 };
@@ -167,18 +174,11 @@ namespace Locima.SlidingBlock.ViewModel
         private static ObservableCollection<MenuItemViewModel> GetNewGameTypes()
         {
             ObservableCollection<MenuItemViewModel> gameTypeList = new ObservableCollection<MenuItemViewModel>
-                                           {
-                                               CreateGameMenuItem("Easy", 3,3),
-                                               CreateGameMenuItem("Medium", 4,4),
-                                               CreateGameMenuItem("Hard", 5,5)
-
-//                                                ,new MenuItemViewModel
-//                                                    {
-//                                                        Title = LocalizationHelper.GetString("Custom"),
-//                                                        Text = LocalizationHelper.GetString("CustomDescription"),
-//                                                        TargetUri = new Uri("/CreateCustomGame.xaml", UriKind.Relative)
-//                                                    }
-                                           };
+                                                                       {
+                                                                           CreateGameMenuItem("Easy", 3, 3),
+                                                                           CreateGameMenuItem("Medium", 4, 4),
+                                                                           CreateGameMenuItem("Hard", 5, 5)
+                                                                       };
             return gameTypeList;
         }
 

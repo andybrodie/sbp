@@ -32,46 +32,29 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
 
 
         /// <summary>
-        /// Synchronously downloads an image from the XAP content (built-in content) to the image store in isolated storage
+        /// Loads the image specified by <paramref name="imageId"/> from Isolated Storage and return it as a <see cref="WriteableBitmap"/>
         /// </summary>
-        /// <param name="uri"></param>
-        public string DownloadFileFromXapContent(Uri uri)
-        {
-            string filename = ImageCatalogueIsolatedStorageManager.AddToCatalogue(uri);
-            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                using (IsolatedStorageFileStream fileStream = store.CreateFile(filename))
-                {
-                    IOHelper.DownloadStream(uri, fileStream);
-                }
-            }
-            return filename;
-        }
-
-
-        /// <summary>
-        /// Loads the image specified by <paramref name="imageFilename"/> from Isolated Storage and return it as a <see cref="WriteableBitmap"/>
-        /// </summary>
-        /// <param name="imageFilename">The image to load, must not be null</param>
+        /// <param name="imageId">The image to load, must not be null</param>
         /// <returns>A bitmap version of the image</returns>
-        public WriteableBitmap LoadImage(string imageFilename)
+        public WriteableBitmap LoadImage(string imageId)
         {
-            Logger.Info("Loading {0}", imageFilename);
+            Logger.Info("Loading image {0} from isolated storage", imageId);
             BitmapImage bitmap = new BitmapImage();
 
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                if (!store.FileExists(imageFilename))
+                if (!store.FileExists(imageId))
                 {
-                    throw new InvalidStateException("File {0} does not exist", imageFilename);
+                    throw new InvalidStateException("File {0} does not exist", imageId);
                 }
                 using (
-                    IsolatedStorageFileStream fileStream = store.OpenFile(imageFilename, FileMode.Open, FileAccess.Read,
+                    IsolatedStorageFileStream fileStream = store.OpenFile(imageId, FileMode.Open, FileAccess.Read,
                                                                           FileShare.Read))
                 {
                     bitmap.SetSource(fileStream);
                 }
             }
+            Logger.Info("Loaded image {0} from isolated storage successfully");
             return new WriteableBitmap(bitmap);
         }
 
@@ -83,11 +66,26 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         public WriteableBitmap LoadImage(Uri xapImageUri)
         {
             // TODO Check performance to make sure that sync loading is ok.  Should be quick as the image is small and it's local
+            Logger.Info("Loading image from XAP content {0}", xapImageUri);
             BitmapImage bitmap = new BitmapImage();
             bitmap.CreateOptions = BitmapCreateOptions.None;
             bitmap.UriSource = xapImageUri;
             WriteableBitmap wbitmap = new WriteableBitmap(bitmap);
+            Logger.Debug("Loaded image from XAP content {0} successfully", xapImageUri);
             return wbitmap;
+        }
+
+        public string Save(Stream imageStream)
+        {
+            string filename = Path.Combine(ImageDirectory, Guid.NewGuid().ToString());
+            byte[] data = IOHelper.DownloadStream(imageStream);
+            IOHelper.Save(filename, data);
+            return filename;
+        }
+
+        public string Save(WriteableBitmap image)
+        {
+            throw new NotImplementedException();
         }
     }
 }
