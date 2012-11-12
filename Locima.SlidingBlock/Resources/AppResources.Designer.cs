@@ -97,11 +97,29 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to add level.
+        /// </summary>
+        public static string AppendLevelButton {
+            get {
+                return ResourceManager.GetString("AppendLevelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SLIDING BLOCK.
         /// </summary>
         public static string ApplicationName {
             get {
                 return ResourceManager.GetString("ApplicationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to author.
+        /// </summary>
+        public static string AuthorName {
+            get {
+                return ResourceManager.GetString("AuthorName", resourceCulture);
             }
         }
         
@@ -160,7 +178,25 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to custom.
+        ///   Looks up a localized string similar to new.
+        /// </summary>
+        public static string CreateCustomGame {
+            get {
+                return ResourceManager.GetString("CreateCustomGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to create level.
+        /// </summary>
+        public static string CreateLevel {
+            get {
+                return ResourceManager.GetString("CreateLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to edit game template.
         /// </summary>
         public static string Custom {
             get {
@@ -174,6 +210,24 @@ namespace Locima.SlidingBlock.Resources {
         public static string CustomDescription {
             get {
                 return ResourceManager.GetString("CustomDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to delete.
+        /// </summary>
+        public static string CustomGameContextMenuDelete {
+            get {
+                return ResourceManager.GetString("CustomGameContextMenuDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Untitled Game.
+        /// </summary>
+        public static string DefaultGameDefinitionTitle {
+            get {
+                return ResourceManager.GetString("DefaultGameDefinitionTitle", resourceCulture);
             }
         }
         
@@ -214,6 +268,15 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to edit level.
+        /// </summary>
+        public static string EditLevel {
+            get {
+                return ResourceManager.GetString("EditLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to edit player.
         /// </summary>
         public static string EditPlayerTitle {
@@ -250,6 +313,15 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to game name.
+        /// </summary>
+        public static string GameName {
+            get {
+                return ResourceManager.GetString("GameName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to level {0}.
         /// </summary>
         public static string GamePageTitle {
@@ -259,7 +331,7 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to highscores.
+        ///   Looks up a localized string similar to high scores.
         /// </summary>
         public static string GoToHighscores {
             get {
@@ -277,7 +349,7 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to highscores.
+        ///   Looks up a localized string similar to high scores.
         /// </summary>
         public static string HighscorePageTitle {
             get {
@@ -291,6 +363,24 @@ namespace Locima.SlidingBlock.Resources {
         public static string HighscoreStats {
             get {
                 return ResourceManager.GetString("HighscoreStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image Description.
+        /// </summary>
+        public static string ImageTextLabel {
+            get {
+                return ResourceManager.GetString("ImageTextLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image Title.
+        /// </summary>
+        public static string ImageTitleLabel {
+            get {
+                return ResourceManager.GetString("ImageTitleLabel", resourceCulture);
             }
         }
         
@@ -318,6 +408,33 @@ namespace Locima.SlidingBlock.Resources {
         public static string LevelLabel {
             get {
                 return ResourceManager.GetString("LevelLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to levels.
+        /// </summary>
+        public static string LevelList {
+            get {
+                return ResourceManager.GetString("LevelList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to License Uri.
+        /// </summary>
+        public static string LicenceUriLabel {
+            get {
+                return ResourceManager.GetString("LicenceUriLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to License.
+        /// </summary>
+        public static string LicenseLabel {
+            get {
+                return ResourceManager.GetString("LicenseLabel", resourceCulture);
             }
         }
         
@@ -430,7 +547,7 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to no highscores yet!.
+        ///   Looks up a localized string similar to no high scores yet!.
         /// </summary>
         public static string NoHighscoresFound {
             get {
@@ -529,6 +646,87 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to identity.
+        /// </summary>
+        public static string ScramblerType_Identity {
+            get {
+                return ResourceManager.GetString("ScramblerType_Identity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to one move to finish.
+        /// </summary>
+        public static string ScramblerType_OneMoveToFinish {
+            get {
+                return ResourceManager.GetString("ScramblerType_OneMoveToFinish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to random.
+        /// </summary>
+        public static string ScramblerType_Random {
+            get {
+                return ResourceManager.GetString("ScramblerType_Random", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to flip along y-axis.
+        /// </summary>
+        public static string ScramblerType_XFlip {
+            get {
+                return ResourceManager.GetString("ScramblerType_XFlip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to flip along both axes.
+        /// </summary>
+        public static string ScramblerType_XYFlip {
+            get {
+                return ResourceManager.GetString("ScramblerType_XYFlip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to flip along x-axis.
+        /// </summary>
+        public static string ScramblerType_YFlip {
+            get {
+                return ResourceManager.GetString("ScramblerType_YFlip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to select game.
+        /// </summary>
+        public static string SelectCustomGamePageName {
+            get {
+                return ResourceManager.GetString("SelectCustomGamePageName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to select image.
+        /// </summary>
+        public static string SelectImageButton {
+            get {
+                return ResourceManager.GetString("SelectImageButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to select license.
+        /// </summary>
+        public static string SelectLicense {
+            get {
+                return ResourceManager.GetString("SelectLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to select player.
         /// </summary>
         public static string SelectPlayer {
@@ -543,6 +741,15 @@ namespace Locima.SlidingBlock.Resources {
         public static string SettingsMenuOption {
             get {
                 return ResourceManager.GetString("SettingsMenuOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to default.
+        /// </summary>
+        public static string SinglePlayerGameTitle {
+            get {
+                return ResourceManager.GetString("SinglePlayerGameTitle", resourceCulture);
             }
         }
         

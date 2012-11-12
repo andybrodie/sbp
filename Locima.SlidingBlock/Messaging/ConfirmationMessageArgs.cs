@@ -31,7 +31,7 @@ namespace Locima.SlidingBlock.Messaging
         /// Will be invoked if the Cancel button is pressed
         /// </summary>
         /// <remarks>
-        /// May be null</remarks>
+        /// If null, then no cancel option will be presented to the user</remarks>
         public ICommand OnCancelCommand { get; set; }
     }
 }

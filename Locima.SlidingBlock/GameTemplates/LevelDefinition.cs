@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Windows.Media.Imaging;
+using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Scrambles;
+using NLog;
 
 namespace Locima.SlidingBlock.GameTemplates
 {
-
-
     /// <summary>
     /// Defines a single level of a <see cref="GameDefinition"/></summary>
     [DataContract]
     public class LevelDefinition
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private WriteableBitmap _image;
+
         /// <summary>
         /// If the image for the level is in isolated storage (e.g. if a download image has been cropped), then this is set
         /// </summary>
@@ -28,7 +33,6 @@ namespace Locima.SlidingBlock.GameTemplates
         /// </summary>
         [DataMember]
         public LicenseDefinition License { get; set; }
-
 
         /// <summary>
         /// A link associated with image (.e.g to the license holders home page)
@@ -60,5 +64,37 @@ namespace Locima.SlidingBlock.GameTemplates
         /// </summary>
         [DataMember]
         public Scrambler.ScrambleType ScrambleType { get; set; }
+
+        /// <summary>
+        /// Retrieves the image for the level definition
+        /// </summary>
+        /// <returns>The imgae for the level</returns>
+        public WriteableBitmap GetImage()
+        {
+            if (_image == null)
+            {
+                _image = !string.IsNullOrEmpty(IsolatedStorageFilename)
+                             ? ImageStorageManager.Instance.LoadImage(IsolatedStorageFilename)
+                             : ImageStorageManager.Instance.LoadImage(XapImageUri);
+            }
+            return _image;
+        }
+
+
+        /// <summary>
+        /// Create a resized thumbnail of the image
+        /// </summary>
+        /// <param name="width">The width of the thumbnail</param>
+        /// <param name="height">The height of the thumbnail</param>
+        /// <returns>A thumbnail image</returns>
+        public WriteableBitmap CreateThumbnail(int width, int height)
+        {
+            WriteableBitmap bitmap = GetImage();
+            Logger.Info("Creating a {0}x{1} thumbnail of the {2}x{3} iamge", width, height, _image.PixelWidth,
+                        _image.PixelHeight);
+            WriteableBitmap thumbnail = bitmap.Clone();
+            thumbnail.Resize(width, height, WriteableBitmapExtensions.Interpolation.Bilinear);
+            return thumbnail;
+        }
     }
 }

@@ -29,7 +29,6 @@
                        Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
         <StackPanel Grid.Row="1" Grid.Column="0">
             <TextBlock Text="Name" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBox x:Name="NameTextBox">

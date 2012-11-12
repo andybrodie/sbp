@@ -12,5 +12,7 @@ namespace Locima.SlidingBlock.Messaging
         /// </summary>
         public bool Success { get; set; }
 
+        public bool Complete { get; set; }
+
     }
 }

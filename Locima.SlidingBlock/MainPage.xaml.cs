@@ -39,6 +39,7 @@ namespace Locima.SlidingBlock
             base.OnNavigatedTo(e);
 //            NavigationService.Navigate(EndGameTestSetup.TestEndGameScreen());
 //            NavigationService.Navigate(new Uri("/YourLastAboutDialog;component/AboutPage.xaml", UriKind.Relative));
+//5            NavigationService.Navigate(new Uri("/GameEditor.xaml?gameDefId=GameDefinitions\\ba4d2757-dc0e-4621-ac0a-9cfcd173c074", UriKind.Relative));
             LittleWatson.CheckForPreviousException();
 
             string pageId;

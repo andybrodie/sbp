@@ -61,11 +61,10 @@ namespace Locima.SlidingBlock.SinglePlayer
         {
             LevelState level = new LevelState
                 {
-                    IsolatedStorageFilename = levelDefinition.IsolatedStorageFilename,
-                    ElapsedTime = new TimeSpan(0),
+                    ImageId = levelDefinition.IsolatedStorageFilename,
                     XapImageUri = levelDefinition.XapImageUri,
-                    SolvedTilePositions =
-                        Scrambler.Instance.Scramble(levelDefinition.ScrambleType, tilesAcross, tilesHigh)
+                    ElapsedTime = new TimeSpan(0),
+                    SolvedTilePositions = Scrambler.Instance.Scramble(levelDefinition.ScrambleType, tilesAcross, tilesHigh)
                 };
             return level;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 using Locima.SlidingBlock.Messaging;
 using NLog;
 
@@ -118,7 +119,7 @@ namespace Locima.SlidingBlock.ViewModel
             }
             else
             {
-                Logger.Debug("No handler registered for {0} on {1}", args.GetType(), this);
+                Logger.Error("No handler registered for {0} on {1}", args.GetType(), this);
                 result = false;
             }
 

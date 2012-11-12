@@ -142,6 +142,9 @@ namespace Locima.SlidingBlock.Persistence
         /// </remarks>
         public DateTimeOffset LastUpdate { get; set; }
 
+        /// <inheritdoc/>
+        public string AppId { get; set; }
+
         /// <summary>
         ///   The name of this filename in isolated storage
         /// </summary>

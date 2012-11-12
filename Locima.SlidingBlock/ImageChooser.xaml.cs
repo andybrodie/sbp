@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows;
@@ -51,46 +50,23 @@ namespace Locima.SlidingBlock
 
         private MenuPageViewModel GetImageProviders()
         {
-            MenuPageViewModel mpvm = new MenuPageViewModel();
-            mpvm.MenuItems = new ObservableCollection<MenuItemViewModel>();
-            MenuItemViewModel item = new MenuItemViewModel();
-            item.Title = LocalizationHelper.GetString("LocalPictures");
-            item.SelectedAction = delegate
-                                      {
-                                          LaunchChooserSafely(_photoChooserTask);
-                                          return null;
-                                      };
-            item.Text = LocalizationHelper.GetString("LocalPicturesDescription");
+            MenuPageViewModel mpvm = new MenuPageViewModel {MenuItems = new ObservableCollection<MenuItemViewModel>()};
+            MenuItemViewModel item = new MenuItemViewModel
+                                         {
+                                             Title = LocalizationHelper.GetString("LocalPictures"),
+                                             SelectedAction = delegate
+                                                                  {
+                                                                      this.LaunchChooserSafely(_photoChooserTask);
+                                                                      return null;
+                                                                  },
+                                             Text = LocalizationHelper.GetString("LocalPicturesDescription")
+                                         };
             mpvm.MenuItems.Add(item);
 
-            item = new MenuItemViewModel();
-            item.Title = "Enter URL";
-            item.Text = "Enter or paste a URL to an image on line";
+            item = new MenuItemViewModel {Title = "Enter URL", Text = "Enter or paste a URL to an image on line"};
             mpvm.MenuItems.Add(item);
 
-            item = new MenuItemViewModel();
-            item.Title = "Twitter Search";
-            item.Text = "Search for tweets containing puzzle definitions";
-            mpvm.MenuItems.Add(item);
             return mpvm;
-        }
-
-
-        /// <summary>
-        ///   Launches a chooser task, suppressing the <see cref="InvalidOperationException" /> thrown if the chooser is launched twice (where the user double-taps the icon to choose)
-        /// </summary>
-        private static void LaunchChooserSafely<TTaskEventArgs>(ChooserBase<TTaskEventArgs> chooser)
-            where TTaskEventArgs : TaskEventArgs
-        {
-            try
-            {
-                chooser.Show();
-            }
-            catch (InvalidOperationException)
-            {
-                Logger.Debug(
-                    "Supressed InvalidOperationException caused by user double-tapping the control that launches a chooser");
-            }
         }
 
 
@@ -101,9 +77,10 @@ namespace Locima.SlidingBlock
                 // We don't have to be too careful here with the format or size of the file.  This is coming out of the phone image chooser, so we're going
                 // to assume that 1) it gives us valid images; 2) the images aren't too big for the phone to handle.  TODO Verify whether these assumptions are valid?
                 ISaveGameStorageManager psm = SaveGameStorageManager.Instance;
+                throw new InvalidStateException("Need to implement how to pick which level to insert the image in");
                 SaveGame puzzle = null; // BUG psm.GetContinuableGame();
                 puzzle.EnsureLevels(1);
-                puzzle.Levels[0].SetAndSaveImage(e.ChosenPhoto); // TODO Make this level aware
+                puzzle.Levels[0].SetImage(e.ChosenPhoto); // TODO Make this level aware
                 psm.SaveGame(puzzle);
 
                 // Navigate to the Image Area Chooser (which allows you to select the portion of the image used in the puzzle)

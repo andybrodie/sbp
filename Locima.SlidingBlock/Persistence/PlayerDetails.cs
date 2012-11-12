@@ -14,6 +14,9 @@ namespace Locima.SlidingBlock.Persistence
     public class PlayerDetails : IPersistedObject
     {
 
+        /// <inheritdoc/>
+        public string AppId { get; set; }
+
         /// <summary>
         /// The name of the player
         /// </summary>

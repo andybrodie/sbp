@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.GameTemplates;
 using Locima.SlidingBlock.IO;
-using Microsoft.Phone;
+using Microsoft.Phone.Tasks;
 using NLog;
 
 namespace Locima.SlidingBlock.Persistence
@@ -24,7 +24,7 @@ namespace Locima.SlidingBlock.Persistence
         /// <summary>
         ///   The size of the <see cref="ThumbnailData" /> image
         /// </summary>
-        public static readonly int ThumbnailSize = 32;
+        public static readonly int ThumbnailSize = 64;
 
         private volatile WriteableBitmap _image;
 
@@ -45,23 +45,13 @@ namespace Locima.SlidingBlock.Persistence
         /// <summary>
         /// The data for the thumbnail image
         /// </summary>
+        /// <remarks>
+        /// Unlike the <see cref="Image"/> this is persisted within this object as it's pretty small and won't adversely affect performed</remarks>
         [DataMember]
         public byte[] ThumbnailData { get; set; }
 
         /// <summary>
-        /// The name of the image file when it's held in isolated storage
-        /// </summary>
-        [DataMember]
-        public string IsolatedStorageFilename { get; set; }
-
-        /// <summary>
-        /// The Uri of the image file when it's held in the XAP distribution
-        /// </summary>
-        [DataMember]
-        public Uri XapImageUri { get; set; }
-
-        /// <summary>
-        /// The amount of time the player 
+        /// The amount of time the player has been playing this level for
         /// </summary>
         [DataMember]
         public TimeSpan ElapsedTime { get; set; }
@@ -72,7 +62,6 @@ namespace Locima.SlidingBlock.Persistence
         [DataMember]
         public Position[][] SolvedTilePositions { get; set; }
 
-
         /// <summary>
         /// Gets the bitmap thumbnail for the level
         /// </summary>
@@ -82,16 +71,17 @@ namespace Locima.SlidingBlock.Persistence
             {
                 if (_thumbnail == null)
                 {
-                    _thumbnail = SerialisedJpegToWriteableBitmap(ThumbnailData);
+                    _thumbnail = ImageHelper.FromJpeg(ThumbnailData, ThumbnailSize, ThumbnailSize);
                 }
                 return _thumbnail;
             }
             set
             {
                 _thumbnail = value;
-                ThumbnailData = WriteableBitmapToSerialisedJpeg(_thumbnail);
+                ThumbnailData = ImageHelper.ToJpeg(_thumbnail, ThumbnailSize, ThumbnailSize);
             }
         }
+
 
         /// <summary>
         /// The number of tiles across this level has
@@ -118,6 +108,8 @@ namespace Locima.SlidingBlock.Persistence
         /// <summary>
         /// The image that the player is trying to arrange
         /// </summary>
+        /// <remarks>
+        /// This is lazily instantiated as the image file is not actually held within this object.</remarks>
         public WriteableBitmap Image
         {
             get
@@ -128,8 +120,12 @@ namespace Locima.SlidingBlock.Persistence
                     {
                         if (_image == null)
                         {
-                            WriteableBitmap loadedImage = LoadImage();
-                            _image = loadedImage;
+                            if (string.IsNullOrEmpty(ImageId))
+                            {
+                                _image = !string.IsNullOrEmpty(ImageId)
+                                             ? ImageStorageManager.Instance.LoadImage(ImageId)
+                                             : ImageStorageManager.Instance.LoadImage(XapImageUri);
+                            }
                         }
                     }
                 }
@@ -144,6 +140,26 @@ namespace Locima.SlidingBlock.Persistence
         [DataMember]
         public int MoveCount { get; set; }
 
+
+        /// <summary>
+        /// If the image is stored by the <see cref="ImageStorageManager"/>, then this is set to the Id of the image
+        /// </summary>
+        /// <remarks>
+        /// If this is set, then <see cref="XapImageUri"/> should be null and vice versa.
+        /// </remarks>
+        [DataMember]
+        public string ImageId { get; set; }
+
+        /// <summary>
+        /// If the image is stored in the Xap as content, then this is set
+        /// </summary>
+        /// <remarks>
+        /// If this is set, then <see cref="ImageId"/> should be null and vice versa.
+        /// </remarks>
+        [DataMember]
+        public Uri XapImageUri { get; set; }
+
+
         /// <summary>
         ///   Re-initialises any non-serialised objects which require initialisation (typically via a constructor which isn't called during deserialisation)
         /// </summary>
@@ -153,77 +169,30 @@ namespace Locima.SlidingBlock.Persistence
             _lockObject = new object();
         }
 
-        /// <summary>
-        /// Loads the bitmap for the image in to this object
-        /// </summary>
-        /// <returns></returns>
-        public WriteableBitmap LoadImage()
-        {
-            WriteableBitmap bitmap;
-            if (!string.IsNullOrEmpty(IsolatedStorageFilename))
-            {
-                bitmap = ImageStorageManager.Instance.LoadImage(IsolatedStorageFilename);
-            }
-            else
-            {
-                bitmap = ImageStorageManager.Instance.LoadImage(XapImageUri);
-            }
-            return bitmap;
-        }
-
-        
-        /// <summary>
-        /// Writes the image passed to a 480 x 480 image as a JPEG to.... NOWHERE!
-        /// </summary>
-        /// <param name="image">The image to save</param>
-        public void SetAndSaveImage(WriteableBitmap image)
-        {
-            // Save the selected image area back to to the puzzle metadata
-            MemoryStream ms = new MemoryStream();
-            image.SaveJpeg(ms, 480, 480, 0, 70);
-            ms.Close();
-            throw new NotImplementedException();
-        }
-
- 
-        /// <summary>
-        /// NOT IMPLEMENTED YET (<see cref="ImageChooser"/>)
-        /// </summary>
-        /// <param name="imageDataStream"></param>
-        public void SetAndSaveImage(Stream imageDataStream)
-        {
-            throw new NotImplementedException();
-        }
-
 
         /// <summary>
-        ///   Convert image from a JPEG stored as a byte array back in to a <see cref="WriteableBitmap" />
+        /// Initialises the image for this level using the image stream <paramref name="stream"/>
         /// </summary>
-        /// <param name="imageData"> </param>
-        /// <returns> </returns>
-        private static WriteableBitmap SerialisedJpegToWriteableBitmap(byte[] imageData)
+        /// <remarks>
+        /// <para>This method saves image to the <see cref="ImageStorageManager"/> and records the automatically generated ID</para>
+        /// <para>This is useful when using the <see cref="PhotoChooserTask"/>, the chosen photo comes back as a stream</para></remarks>
+        /// <param name="stream">A stream that an image can be read from</param>
+        public void SetImage(Stream stream)
         {
-            Logger.Info("Converting input array to WriteableBitmap");
-            if (imageData == null) return null;
-            using (MemoryStream imageDataStream = new MemoryStream())
-            {
-                imageDataStream.Write(imageData, 0, imageData.Length);
-                imageDataStream.Seek(0, SeekOrigin.Begin);
-                Logger.Info("Converting input array to WriteableBitmap compelted");
-                return PictureDecoder.DecodeJpeg(imageDataStream);
-            }
+            ImageId = ImageStorageManager.Instance.Save(stream);
         }
 
-
-        private static byte[] WriteableBitmapToSerialisedJpeg(WriteableBitmap image)
+        /// <summary>
+        /// Sets the image for this level using a bitmap <paramref name="bitmap"/>
+        /// </summary>
+        /// <remarks>
+        /// <para>This method saves image to the <see cref="ImageStorageManager"/> and records the automatically generated ID</para>
+        /// <para>This is useful when using the <see cref="PhotoChooserTask"/>, the chosen photo comes back as a stream</para></remarks>
+        /// <param name="bitmap">A bitmap</param>
+        public void SetImage(WriteableBitmap bitmap)
         {
-            Logger.Info("Converting image to JPEG byte array");
-            MemoryStream jpegStream = new MemoryStream();
-            image.SaveJpeg(jpegStream, image.PixelWidth, image.PixelHeight, 0, 70);
-            jpegStream.Close();
-            byte[] result = jpegStream.ToArray();
-            Logger.Info("Created {0} bytes from input image", result.Length);
-            return result;
+            ImageId = ImageStorageManager.Instance.Save(bitmap);
+            _image = bitmap;
         }
     }
 }

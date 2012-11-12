@@ -178,6 +178,8 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+        public WriteableBitmap Thumbnail { get; set; }
+
 
         /// <summary>
         /// Initialises the view model, creating a new <see cref="PuzzleModel"/>.
@@ -485,6 +487,8 @@ namespace Locima.SlidingBlock.ViewModel
             // Copy down tile positions from current grid in to the save game
             _currentGame.CurrentLevel.SolvedTilePositions = _puzzleModel.GetCurrentPuzzleState();
             _currentGame.LocalPlayer.Position = _puzzleModel.LocalPlayer.Position;
+
+            // Create the thumbnail image
             _currentGame.CurrentLevel.Thumbnail = CreateThumbnailBitmap();
         }
 
@@ -497,8 +501,13 @@ namespace Locima.SlidingBlock.ViewModel
         /// <returns>An empty bitmap of size <see cref="SaveGame.ThumbnailWidth"/> by <see cref="SaveGame.ThumbnailHeight"/></returns>
         private WriteableBitmap CreateThumbnailBitmap()
         {
-            Logger.Debug("Haven't implemented thumbnail generation yet!");
-            return new WriteableBitmap(SaveGame.ThumbnailWidth, SaveGame.ThumbnailHeight);
+            return Thumbnail;
         }
+
+    }
+
+    internal class PuzzleImageCaptureMessageArgs : MessageArgs
+    {
+        public WriteableBitmap Image { get; set; }       
     }
 }
