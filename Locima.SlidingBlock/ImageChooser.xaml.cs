@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.IO;
-using Locima.SlidingBlock.Persistence;
 using Locima.SlidingBlock.ViewModel;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
@@ -16,15 +14,18 @@ using NLog;
 
 namespace Locima.SlidingBlock
 {
-
     /// <summary>
     /// A regular "code-behind" page which allows the user the pick an image from their albums, or use the camera to take a new image
     /// </summary>
     public partial class ImageChooser : PhoneApplicationPage
     {
+        private const string LevelIndexQueryParameterName = "levelIndex";
+        private const string GameTemplateIdQueryParameterName = "gameTemplateId";
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly PhotoChooserTask _photoChooserTask;
+        private string _gameTemplateId;
+        private int _levelIndex;
 
         /// <summary>
         /// Calls <see cref="InitializeComponent"/> and sets up the <see cref="_photoChooserTask"/>
@@ -44,6 +45,14 @@ namespace Locima.SlidingBlock
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            Initialise();
+        }
+
+
+        private void Initialise()
+        {
+            _gameTemplateId = this.GetQueryParameter(GameTemplateIdQueryParameterName, s => s);
+            _levelIndex = this.GetQueryParameterAsInt(LevelIndexQueryParameterName);
             DataContext = GetImageProviders();
         }
 
@@ -74,24 +83,8 @@ namespace Locima.SlidingBlock
         {
             if (e.TaskResult == TaskResult.OK)
             {
-                // We don't have to be too careful here with the format or size of the file.  This is coming out of the phone image chooser, so we're going
-                // to assume that 1) it gives us valid images; 2) the images aren't too big for the phone to handle.  TODO Verify whether these assumptions are valid?
-                ISaveGameStorageManager psm = SaveGameStorageManager.Instance;
-                throw new InvalidStateException("Need to implement how to pick which level to insert the image in");
-                SaveGame puzzle = null; // BUG psm.GetContinuableGame();
-                puzzle.EnsureLevels(1);
-                puzzle.Levels[0].SetImage(e.ChosenPhoto); // TODO Make this level aware
-                psm.SaveGame(puzzle);
-
-                // Navigate to the Image Area Chooser (which allows you to select the portion of the image used in the puzzle)
-                // Note that you can only navigate off the main UI thread, so we have to use an async invocation
-                // Note we have to tell the image chooser where to come back to
-
-                JournalEntry back = NavigationService.BackStack.Reverse().First();
-                Uri currentUri = back.Source;
-
-                Uri areaChooserUri = ImageAreaChooser.CreateNavigationUri(currentUri, true);
-
+                string photoId = ImageStorageManager.Instance.SaveTemporary(e.ChosenPhoto);
+                Uri areaChooserUri = ImageAreaChooser.CreateNavigationUri(_gameTemplateId, _levelIndex, photoId);
                 Dispatcher.BeginInvoke(() => NavigationService.Navigate(areaChooserUri));
             }
         }
@@ -99,37 +92,48 @@ namespace Locima.SlidingBlock
 
         private void MainMenuListboxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            MenuItemViewModel item = mainMenuListbox.SelectedItem as MenuItemViewModel;
-            Debug.Assert(item != null,
-                         string.Format(
-                             "Selected item {0} was null or not an instance of MenuItemViewModel.  This is a bug.",
-                             mainMenuListbox.SelectedItem));
-            if (item.SelectedAction == null)
+            ListBox listBox = (ListBox) sender;
+            if (listBox.SelectedIndex > -1)
             {
-                Uri navUri = item.TargetUri ??
-                             new Uri("/MainPage.xaml?menuPage=" + HttpUtility.UrlEncode(item.TargetPage),
-                                     UriKind.Relative);
-                NavigationService.Navigate(navUri);
+                MenuItemViewModel item = mainMenuListbox.SelectedItem as MenuItemViewModel;
+                Debug.Assert(item != null,
+                             string.Format(
+                                 "Selected item {0} was null or not an instance of MenuItemViewModel.  This is a bug.",
+                                 mainMenuListbox.SelectedItem));
+                if (item.SelectedAction == null)
+                {
+                    Uri navUri = item.TargetUri ??
+                                 new Uri("/MainPage.xaml?menuPage=" + HttpUtility.UrlEncode(item.TargetPage),
+                                         UriKind.Relative);
+                    NavigationService.Navigate(navUri);
+                }
+                else
+                {
+                    item.SelectedAction();
+                }
+
+                // Reset selected index back to -1 so if we navigate back to this page it won't instantly fire this
+                mainMenuListbox.SelectedIndex = -1;
             }
             else
             {
-                item.SelectedAction();
+                Logger.Debug("Ignoring selection changed event as CurrentIndex is -1");
             }
-
-            // Reset selected index to -1
-            // TODO Work out why I have to do this
-            mainMenuListbox.SelectedIndex = -1;
         }
 
 
         /// <summary>
-        /// Creates a Uri to navigate to this page
+        /// Creates a Uri to navigate to this page and prompt the user for a source to find an image
         /// </summary>
-        /// <returns>An Uri </returns>
-        public static Uri CreateNavigationUri()
+        /// <param name="gameTemplateId">The ID of the game template to replace the picture of</param>
+        /// <param name="levelIndex"></param>
+        /// <returns>A Uri to navigate to this page</returns>
+        public static Uri CreateNavigationUri(string gameTemplateId, int levelIndex)
         {
-            return new Uri("/ImageChooser.xaml", UriKind.Relative);
+            return new Uri(
+                string.Format("/ImageChooser.xaml?{0}={1}&{2}={3}", GameTemplateIdQueryParameterName,
+                              HttpUtility.UrlEncode(gameTemplateId), LevelIndexQueryParameterName, levelIndex
+                    ), UriKind.Relative);
         }
     }
 }

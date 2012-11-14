@@ -8,19 +8,29 @@ using NLog;
 namespace Locima.SlidingBlock.GameTemplates
 {
     /// <summary>
-    /// Defines a single level of a <see cref="GameDefinition"/></summary>
+    /// Defines a single level of a <see cref="GameTemplate"/></summary>
     [DataContract]
     public class LevelDefinition
     {
+        /// <summary>
+        /// The width of the image as it should be stored for a level (this is the maximum size that the display will ever need to show the image at.
+        /// </summary>
+        public static readonly int ImageSizeX = 480;
+
+        /// <summary>
+        /// The height of the image as it should be stored for a level (this is the maximum size that the display will ever need to show the image at.
+        /// </summary>
+        public static readonly int ImageSizeY = 480;
+
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private WriteableBitmap _image;
 
         /// <summary>
-        /// If the image for the level is in isolated storage (e.g. if a download image has been cropped), then this is set
+        /// If the image for the level is managed by the <see cref="ImageStorageManager"/> (e.g. if a download image has been cropped), then this is set
         /// </summary>
         [DataMember]
-        public string IsolatedStorageFilename { get; set; }
+        public string ImageId { get; set; }
 
         /// <summary>
         /// If the image for the level is contained as content of the XAP file (i.e. it's a built-in level), then this is set
@@ -73,9 +83,9 @@ namespace Locima.SlidingBlock.GameTemplates
         {
             if (_image == null)
             {
-                _image = !string.IsNullOrEmpty(IsolatedStorageFilename)
-                             ? ImageStorageManager.Instance.LoadImage(IsolatedStorageFilename)
-                             : ImageStorageManager.Instance.LoadImage(XapImageUri);
+                _image = !string.IsNullOrEmpty(ImageId)
+                             ? ImageStorageManager.Instance.Load(ImageId)
+                             : ImageStorageManager.Instance.Load(XapImageUri);
             }
             return _image;
         }

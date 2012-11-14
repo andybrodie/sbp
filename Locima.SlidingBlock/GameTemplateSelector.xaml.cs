@@ -14,7 +14,7 @@ namespace Locima.SlidingBlock
     /// <summary>
     /// MVVM view to show a list of custom game types to select and edit
     /// </summary>
-    public partial class GameDefinitionSelector : PhoneApplicationPage
+    public partial class GameTemplateSelector : PhoneApplicationPage
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -22,7 +22,7 @@ namespace Locima.SlidingBlock
         /// <summary>
         /// Calls <see cref="InitializeComponent"/>
         /// </summary>
-        public GameDefinitionSelector()
+        public GameTemplateSelector()
         {
             InitializeComponent();
         }
@@ -30,9 +30,9 @@ namespace Locima.SlidingBlock
         /// <summary>
         /// Convenience access for the view model that is initialise in the XAML
         /// </summary>
-        public GameDefinitionSelectorViewModel ViewModel
+        public GameTemplateSelectorViewModel ViewModel
         {
-            get { return ((GameDefinitionSelectorViewModel) Resources["viewModel"]); }
+            get { return ((GameTemplateSelectorViewModel) Resources["viewModel"]); }
         }
 
 
@@ -54,7 +54,7 @@ namespace Locima.SlidingBlock
                                                                             ApplicationBarHelper.ButtonIcons["New"],
                                                                             LocalizationHelper.GetString(
                                                                                 "CreateCustomGame"));
-            icon.Click += (o, args) => ViewModel.CreateGameDefinitionCommand.Execute(null);
+            icon.Click += (o, args) => ViewModel.CreateGameTemplateCommand.Execute(null);
         }
 
 
@@ -64,7 +64,7 @@ namespace Locima.SlidingBlock
         /// <returns></returns>
         public static Uri GetNavigationUri()
         {
-            return new Uri("/GameDefinitionSelector.xaml", UriKind.Relative);
+            return new Uri("/GameTemplateSelector.xaml", UriKind.Relative);
         }
 
         private void CustomGameListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -72,7 +72,7 @@ namespace Locima.SlidingBlock
             ListBox gameListListBox = (ListBox) sender;
             if (gameListListBox.SelectedIndex != -1)
             {
-                ViewModel.SelectGameDefinitionCommand.Execute(gameListListBox.SelectedItem);
+                ViewModel.SelectGameTemplateCommand.Execute(gameListListBox.SelectedItem);
                 gameListListBox.SelectedIndex = -1;
             }
         }

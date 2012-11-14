@@ -9,14 +9,14 @@ namespace Locima.SlidingBlock.ViewModel
     /// <summary>
     /// 
     /// </summary>
-    public class AddEditGameDefinitionViewModel : ViewModelBase
+    public class GameTemplateEditorViewModel : ViewModelBase
     {
         private string _author;
-        private GameDefinition _gameDefinition;
+        private GameTemplate _gameTemplate;
         private ObservableCollection<LevelDefinitionViewModel> _levelList;
         private string _title;
 
-        public AddEditGameDefinitionViewModel()
+        public GameTemplateEditorViewModel()
         {
             ConfirmSaveAndContinue = new DelegateCommand(ConfirmSaveAndContinueAction);
             ConfirmCancel = new DelegateCommand(ConfirmCancelAction);
@@ -27,7 +27,7 @@ namespace Locima.SlidingBlock.ViewModel
 
         protected ICommand ConfirmCancel { get; private set; }
 
-        public string GameDefinitionId { get; set; }
+        public string GameTemplateId { get; set; }
 
         public string Title
         {
@@ -67,32 +67,31 @@ namespace Locima.SlidingBlock.ViewModel
 
         private void ConfirmSaveAndContinueAction(object obj)
         {
-            RefreshGameDefinition();
-            GameDefinitionStorageManager.Instance.Save(_gameDefinition);
+            RefreshGameTemplate();
+            GameTemplateStorageManager.Instance.Save(_gameTemplate);
         }
 
-        private void RefreshGameDefinition()
+        private void RefreshGameTemplate()
         {
-            if (_gameDefinition == null)
+            if (_gameTemplate == null)
             {
-                _gameDefinition = new GameDefinition();
+                _gameTemplate = new GameTemplate();
             }
-            _gameDefinition.Title = Title;
-            _gameDefinition.Author = Author;
+            _gameTemplate.Title = Title;
+            _gameTemplate.Author = Author;
         }
 
 
         public void AddEditLevel(bool createNew, int levelIndex)
         {
-            if (_gameDefinition != null)
+            if (_gameTemplate != null)
             {
                 SendViewMessage(
-                    new NavigationMessageArgs(LevelEditor.CreateNavigationUri(_gameDefinition.Id, levelIndex,
-                                                                                         createNew)));
+                    new NavigationMessageArgs(LevelEditor.CreateNavigationUri(_gameTemplate.Id, levelIndex, createNew)));
             }
             else
             {
-                if (_gameDefinition == null)
+                if (_gameTemplate == null)
                 {
                     SendViewMessage(new ConfirmationMessageArgs
                                         {
@@ -109,20 +108,20 @@ namespace Locima.SlidingBlock.ViewModel
         public void EditLevel(int levelIndex)
         {
             SendViewMessage(
-                new NavigationMessageArgs(LevelEditor.CreateNavigationUri(_gameDefinition.Id, levelIndex,
+                new NavigationMessageArgs(LevelEditor.CreateNavigationUri(_gameTemplate.Id, levelIndex,
                                                                                      false)));
         }
 
 
         public void Initialise()
         {
-            if (!string.IsNullOrEmpty(GameDefinitionId))
+            if (!string.IsNullOrEmpty(GameTemplateId))
             {
-                _gameDefinition = GameDefinitionStorageManager.Instance.Load(GameDefinitionId);
-                Title = _gameDefinition.Title;
-                Author = _gameDefinition.Author;
+                _gameTemplate = GameTemplateStorageManager.Instance.Load(GameTemplateId);
+                Title = _gameTemplate.Title;
+                Author = _gameTemplate.Author;
                 LevelList.Clear();
-                foreach (LevelDefinition level in _gameDefinition.Levels)
+                foreach (LevelDefinition level in _gameTemplate.Levels)
                 {
                     LevelList.Add(new LevelDefinitionViewModel(level));
                 }

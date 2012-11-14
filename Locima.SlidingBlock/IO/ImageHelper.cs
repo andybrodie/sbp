@@ -12,6 +12,13 @@ namespace Locima.SlidingBlock.IO
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// The quality factor to apply to JPEGs when exporting them. 
+        /// </summary>
+        /// <remarks>
+        /// Used for the <c>quality</c> parameter of <see cref="Extensions.SaveJpeg"/></remarks>
+        public const int JpegQuality = 70;
+
 
         /// <summary>
         /// Converts a JPEG stored in a byte array in to a <see cref="WriteableBitmap"/> object
@@ -62,7 +69,7 @@ namespace Locima.SlidingBlock.IO
             {
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    bitmap.SaveJpeg(ms, bitmap.PixelWidth, bitmap.PixelHeight, 0, 70);
+                    bitmap.SaveJpeg(ms, bitmap.PixelWidth, bitmap.PixelHeight, 0, JpegQuality);
                     jpegData = ms.ToArray();
                     Logger.Info("Saved thumbnail for {0} using JPEG of {1} bytes", jpegData.Length);
                 }

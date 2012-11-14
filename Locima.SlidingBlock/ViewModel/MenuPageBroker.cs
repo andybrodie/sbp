@@ -85,14 +85,13 @@ namespace Locima.SlidingBlock.ViewModel
                                     Text = LocalizationHelper.GetString("LoadGameDescription"),
                                     TargetUri = SavedGameSelector.CreateNavigationUri(),
                                     IsEnabled = continuableGame!=null
-                                }
-                                /*,
+                                },
                             new MenuItemViewModel
                                 {
                                     Title = LocalizationHelper.GetString("Custom"),
                                     Text = LocalizationHelper.GetString("CustomDescription"),
-                                    TargetUri = GameDefinitionSelector.GetNavigationUri(),
-                                }*/
+                                    TargetUri = GameTemplateSelector.GetNavigationUri(),
+                                }
                         },
                     PageTitle = LocalizationHelper.GetString("MainMenu")
                 };

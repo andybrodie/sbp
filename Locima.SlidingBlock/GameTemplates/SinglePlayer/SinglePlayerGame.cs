@@ -11,7 +11,7 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
     /// This programatically creates the default single player game within the application.
     /// </summary>
     /// <remarks>
-    /// I could have created this offline and included the serialised version of the <see cref="GameDefinition"/> as content within the XAP, but, to be honest, that's just
+    /// I could have created this offline and included the serialised version of the <see cref="GameTemplate"/> as content within the XAP, but, to be honest, that's just
     /// too much hassle as creating it on the fly is quick enough.</remarks>
     public class SinglePlayerGame
     {
@@ -23,12 +23,12 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
         public static readonly string SinglePlayerGamePersistentId = "33F575EC-5205-456E-81B9-E1CEABE9AEDF";
 
         /// <summary>
-        /// Creates the game definition for the default single player game.
+        /// Creates the game template for the default single player game.
         /// </summary>
         /// <remarks>
         /// Creates 3 levels, using the JPG files contained within the same directory (GameTemplates/SinglePlayer),
         /// adds the licensing information and sets up the <see cref="Scrambler.ScrambleType"/></remarks>
-        public static GameDefinition Create()
+        public static GameTemplate Create()
         {
             const string andy = "Andy Brodie";
             Uri andyLink = new Uri("http://www.locima.co.uk");
@@ -43,7 +43,7 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
                                                   ? Scrambler.ScrambleType.OneMoveToFinish
                                                   : Scrambler.ScrambleType.XyFlip;
 
-            GameDefinition gm = new GameDefinition
+            GameTemplate gm = new GameTemplate
                 {
                     AppId = SinglePlayerGamePersistentId,  // We fix the ID here as we only want one instance of this definition
                     Title = LocalizationHelper.GetString("SinglePlayerGameTitle"),

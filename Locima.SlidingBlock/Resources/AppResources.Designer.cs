@@ -225,9 +225,9 @@ namespace Locima.SlidingBlock.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Untitled Game.
         /// </summary>
-        public static string DefaultGameDefinitionTitle {
+        public static string DefaultGameTemplateTitle {
             get {
-                return ResourceManager.GetString("DefaultGameDefinitionTitle", resourceCulture);
+                return ResourceManager.GetString("DefaultGameTemplateTitle", resourceCulture);
             }
         }
         

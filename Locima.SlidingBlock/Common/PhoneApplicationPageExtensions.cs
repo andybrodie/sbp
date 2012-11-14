@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net;
+using System.Windows.Navigation;
+using System.Windows.Threading;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using NLog;
@@ -9,6 +11,11 @@ namespace Locima.SlidingBlock.Common
     public static class PhoneApplicationPageExtensions
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        public static string GetQueryParameter(this PhoneApplicationPage page, string queryParamName)
+        {
+            return GetQueryParameter(page, queryParamName, s => s);
+        }
 
         public static T GetQueryParameter<T>(this PhoneApplicationPage page, string parameterName,
                                              Func<string, T> parser)
@@ -36,7 +43,8 @@ namespace Locima.SlidingBlock.Common
                                                                   if (!int.TryParse(s, out i))
                                                                   {
                                                                       i = default(int);
-                                                                      Logger.Error("Unable to parse {0} to an integer",s);
+                                                                      Logger.Error("Unable to parse {0} to an integer",
+                                                                                   s);
                                                                   }
                                                                   return i;
                                                               });
@@ -47,7 +55,8 @@ namespace Locima.SlidingBlock.Common
         /// </summary>
         /// <param name="page">The page to launch the chooser from</param>
         /// <param name="chooser">Th chooser to launch</param>
-        public static void LaunchChooserSafely<TTaskEventArgs>(this PhoneApplicationPage page, ChooserBase<TTaskEventArgs> chooser)
+        public static void LaunchChooserSafely<TTaskEventArgs>(this PhoneApplicationPage page,
+                                                               ChooserBase<TTaskEventArgs> chooser)
             where TTaskEventArgs : TaskEventArgs
         {
             try
@@ -57,11 +66,28 @@ namespace Locima.SlidingBlock.Common
             catch (InvalidOperationException)
             {
                 Logger.Debug(
-                    "Supressed InvalidOperationException caused by user double-tapping the control that launched the {0} chooser", chooser);
+                    "Supressed InvalidOperationException caused by user double-tapping the control that launched the {0} chooser",
+                    chooser);
             }
         }
 
-
-
+        /// <summary>
+        /// Navigates back <paramref name="skip"/> pages in to the backstack
+        /// </summary>
+        /// <param name="page">TThe page this extension method is attached to</param>
+        /// <param name="skip">The number of backstack entries to skip (0 means none)</param>
+        public static void GoBack(this PhoneApplicationPage page, int skip)
+        {
+            Logger.Info("Removing {0} entries from the backstack", skip);
+            while (skip-- > 0)
+            {
+                JournalEntry removedEntry = page.NavigationService.RemoveBackEntry();
+                Logger.Debug("Removed {0} from the backstack", removedEntry.Source);
+            }
+            Logger.Info("Navigating back");
+            page.Dispatcher.BeginInvoke(() => page.NavigationService.GoBack());
+        }
     }
+
+
 }
