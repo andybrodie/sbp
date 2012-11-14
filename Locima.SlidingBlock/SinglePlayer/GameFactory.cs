@@ -43,7 +43,7 @@ namespace Locima.SlidingBlock.SinglePlayer
 
             Logger.Info("Creating a new SaveGame for {0} using {1}x{2}", PlayerStorageManager.Instance.CurrentPlayer.Name, tilesAcross, tilesHigh);
 
-            GameDefinition spgGame = SinglePlayerGame.Create();
+            GameTemplate spgGame = SinglePlayerGame.Create();
 
             sg.Levels = new List<LevelState>(spgGame.Levels.Count);
             foreach (LevelDefinition levelDefinition in spgGame.Levels)
@@ -61,7 +61,7 @@ namespace Locima.SlidingBlock.SinglePlayer
         {
             LevelState level = new LevelState
                 {
-                    ImageId = levelDefinition.IsolatedStorageFilename,
+                    ImageId = levelDefinition.ImageId,
                     XapImageUri = levelDefinition.XapImageUri,
                     ElapsedTime = new TimeSpan(0),
                     SolvedTilePositions = Scrambler.Instance.Scramble(levelDefinition.ScrambleType, tilesAcross, tilesHigh)

@@ -15,7 +15,7 @@
     shell:SystemTray.IsVisible="True">
 
     <phone:PhoneApplicationPage.Resources>
-        <ViewModel:AddEditGameDefinitionViewModel x:Key="viewModel"/>
+        <ViewModel:GameTemplateEditorViewModel x:Key="viewModel"/>
         <Converters:ScrambleTextConverter x:Key="scrambleTypeConverter" />
     </phone:PhoneApplicationPage.Resources>
 

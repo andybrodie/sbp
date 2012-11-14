@@ -15,13 +15,14 @@ namespace Locima.SlidingBlock.ViewModel
 
         private bool _createNew;
         private LevelDefinition _currentLevel;
-        private GameDefinition _gameDefinition;
+        private GameTemplate _gameTemplate;
         private string _imageText;
         private string _imageTitle;
         private string _licenseTitle;
         private Uri _licenseUri;
         private string _pageTitle;
         private WriteableBitmap _image;
+        private string _newImageId;
 
         public LevelEditorViewModel()
         {
@@ -55,7 +56,7 @@ namespace Locima.SlidingBlock.ViewModel
 
         public int LevelIndex { protected get; set; }
 
-        public string GameDefinitionId { protected get; set; }
+        public string GameTemplateId { protected get; set; }
 
         public ICommand SaveCommand { get; set; }
 
@@ -104,21 +105,44 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
-
         public ICommand SelectImageCommand { get; set; }
 
-        public WriteableBitmap Image { get { return _image; } private set { _image = value;
-        OnNotifyPropertyChanged("Image");} }
-
-        private void SelectImageAction(object obj)
+        public WriteableBitmap Image
         {
-            SendViewMessage(new NavigationMessageArgs(ImageChooser.CreateNavigationUri()));
+            get { return _image; }
+            private set
+            {
+                _image = value;
+                OnNotifyPropertyChanged("Image");
+            }
         }
+
+        public string NewImageId
+        {
+            private get { return _newImageId; }
+            set
+            {
+                _newImageId = value;
+                UpdateImage();
+            }
+        }
+
+
+        /// <summary>
+        /// When an image has been selected 
+        /// </summary>
+        /// <param name="unused"></param>
+        private void SelectImageAction(object unused)
+        {
+            SendViewMessage(new NavigationMessageArgs(ImageChooser.CreateNavigationUri(GameTemplateId, _gameTemplate.Levels.IndexOf(_currentLevel))));
+        }
+        
 
         private void SaveAction(object obj)
         {
-            throw new NotImplementedException();
+            GameTemplateStorageManager.Instance.Save(_gameTemplate);
         }
+
 
         private void CancelAction(object obj)
         {
@@ -128,27 +152,54 @@ namespace Locima.SlidingBlock.ViewModel
 
         public void Initialise()
         {
-            _gameDefinition = GameDefinitionStorageManager.Instance.Load(GameDefinitionId);
+            _gameTemplate = GameTemplateStorageManager.Instance.Load(GameTemplateId);
             if (CreateNew)
             {
-                Logger.Info("Inserting new level at index {0} within {1}", LevelIndex, _gameDefinition.Levels.Count);
-                _gameDefinition.Levels.Insert(LevelIndex, new LevelDefinition());
+                Logger.Info("Inserting new level at index {0} within {1}", LevelIndex, _gameTemplate.Levels.Count);
+                _gameTemplate.Levels.Insert(LevelIndex, new LevelDefinition());
                 PageTitle = LocalizationHelper.GetString("CreateLevel");
             }
             else
             {
-                Logger.Info("Editing existing level {0} of {1}", LevelIndex, _gameDefinition.Levels.Count);
+                Logger.Info("Editing existing level {0} of {1}", LevelIndex, _gameTemplate.Levels.Count);
                 PageTitle = LocalizationHelper.GetString("CreateLevel");
             }
-            _currentLevel = _gameDefinition.Levels[LevelIndex];
+            _currentLevel = _gameTemplate.Levels[LevelIndex];
+
+            // At this point, if a NewImageId has been specified, replace the existing image in the level with the new image
+            UpdateImage();
+
             Image = _currentLevel.GetImage();
             PopulateViewModelWithLevel();
         }
 
 
+        private void UpdateImage()
+        {
+            if (!string.IsNullOrEmpty(NewImageId))
+            {
+                if (Image == null)
+                {
+                    Logger.Info("Setting image in level to image {0}", NewImageId);
+                }
+                else
+                {
+                    Logger.Info("Replacing existing image in level definition with new image {0}", NewImageId);
+                }
+
+                // TODO Yuk!  This is because the image is a temporary image, it needs promoting to a persistent image or it'll get deleted the next time we start the app
+                WriteableBitmap newImage = ImageStorageManager.Instance.Load(NewImageId);
+                string imageId = ImageStorageManager.Instance.Save(newImage);
+                _currentLevel.ImageId = imageId;
+                
+                Image = newImage;
+            }
+        }
+
+
         private void PopulateViewModelWithLevel()
         {
-            _currentLevel = _gameDefinition.Levels[LevelIndex];
+            _currentLevel = _gameTemplate.Levels[LevelIndex];
             ImageTitle = _currentLevel.ImageTitle;
             ImageText = _currentLevel.ImageText;
             if (_currentLevel.License == null)

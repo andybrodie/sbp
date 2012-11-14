@@ -78,12 +78,13 @@
     <Compile Include="GameEditor.xaml.cs">
       <DependentUpon>GameEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IO\IGameTemplateManager.cs" />
     <Compile Include="IO\ImageHelper.cs" />
     <Compile Include="LevelEditor.xaml.cs">
       <DependentUpon>LevelEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddPlayer.xaml.cs">
-      <DependentUpon>AddPlayer.xaml</DependentUpon>
+    <Compile Include="PlayerEditor.xaml.cs">
+      <DependentUpon>PlayerEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\ArrayTools.cs" />
     <Compile Include="Common\InvalidStateException.cs" />
@@ -115,7 +116,7 @@
     <Compile Include="GameEnd.xaml.cs">
       <DependentUpon>GameEnd.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GameTemplates\GameDefinition.cs" />
+    <Compile Include="GameTemplates\GameTemplate.cs" />
     <Compile Include="GameTemplates\LevelDefinition.cs" />
     <Compile Include="GameTemplates\LicenseDefinition.cs" />
     <Compile Include="GameTemplates\SinglePlayer\SinglePlayerGame.cs" />
@@ -128,7 +129,7 @@
     <Compile Include="ImageChooser.xaml.cs">
       <DependentUpon>ImageChooser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IO\GameDefinitionStorageManager.cs" />
+    <Compile Include="IO\GameTemplateStorageManager.cs" />
     <Compile Include="IO\HighscoresStorageManager.cs" />
     <Compile Include="IO\IHighscoresStorageManager.cs" />
     <Compile Include="IO\IImageStorageManager.cs" />
@@ -186,14 +187,14 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GameDefinitionSelector.xaml.cs">
-      <DependentUpon>GameDefinitionSelector.xaml</DependentUpon>
+    <Compile Include="GameTemplateSelector.xaml.cs">
+      <DependentUpon>GameTemplateSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="SinglePlayer\GameFactory.cs" />
     <Compile Include="Test\EndGameTestSetup.cs" />
-    <Compile Include="ViewModel\AddEditGameDefinitionViewModel.cs" />
+    <Compile Include="ViewModel\GameTemplateEditorViewModel.cs" />
     <Compile Include="ViewModel\LevelEditorViewModel.cs" />
-    <Compile Include="ViewModel\GameDefinitionViewModel.cs" />
+    <Compile Include="ViewModel\GameTemplateViewModel.cs" />
     <Compile Include="ViewModel\HighscoreItemViewModel.cs" />
     <Compile Include="ViewModel\HighScoresViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
@@ -226,7 +227,7 @@
     <Compile Include="Common\Tuple.cs" />
     <Compile Include="ViewModel\SaveGameMenuItem.cs" />
     <Compile Include="ViewModel\SaveGameSelectorViewModel.cs" />
-    <Compile Include="ViewModel\GameDefinitionSelectorViewModel.cs" />
+    <Compile Include="ViewModel\GameTemplateSelectorViewModel.cs" />
     <Compile Include="ViewModel\TileAnimator.cs" />
     <Compile Include="ViewModel\TileViewModel.cs">
       <SubType>Code</SubType>
@@ -246,7 +247,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddPlayer.xaml">
+    <Page Include="PlayerEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -298,7 +299,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GameDefinitionSelector.xaml">
+    <Page Include="GameTemplateSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

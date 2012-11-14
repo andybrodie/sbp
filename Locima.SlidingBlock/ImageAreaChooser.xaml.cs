@@ -4,10 +4,11 @@ using System.Net;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
+using Locima.SlidingBlock.GameTemplates;
 using Locima.SlidingBlock.IO;
-using Locima.SlidingBlock.Persistence;
 using Locima.SlidingBlock.ViewModel;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -20,19 +21,18 @@ namespace Locima.SlidingBlock
     /// </summary>
     public partial class ImageAreaChooser : PhoneApplicationPage
     {
+        private const string ImageIdQueryParameterName = "ImageId";
+        private const string LevelIndexQueryParameterName = "levelIndex";
+        private const string GameTemplateIdQueryParameterName = "gameTemplateId";
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static string _gameTemplateId;
+        private static int _levelIndex;
 
         private Point _imagePosition = new Point(0, 0);
-
         private Point _oldFinger1;
         private Point _oldFinger2;
         private double _oldScaleFactor;
         private double _totalImageScale = 1d;
-
-        private SaveGame _puzzle;
-        private const string ImageStoredInSaveGameQueryParameterName = "imageStoredInPuzzle";
-        private const string AcceptUriQueryParameterName = "acceptUri";
-
 
         /// <summary>
         /// Call <see cref="InitializeComponent"/> and build the application bar
@@ -55,12 +55,13 @@ namespace Locima.SlidingBlock
         /// <summary>
         /// Initialise the view model constants
         /// </summary>
-        /// <param name="e"></param>
-
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            _puzzle = SaveGameStorageManager.Instance.GetContinuableGame(PlayerStorageManager.Instance.CurrentPlayer.Id);
+
+            _gameTemplateId = this.GetQueryParameter(GameTemplateIdQueryParameterName);
+            _levelIndex = this.GetQueryParameterAsInt(LevelIndexQueryParameterName);
+
             ImageAreaChooserViewModel iacvm = ViewModel;
             Debug.Assert(iacvm != null);
             iacvm.CropTop = 30;
@@ -69,37 +70,8 @@ namespace Locima.SlidingBlock
             iacvm.CropHeight = 420;
             iacvm.TotalWidth = ContentCanvas.ActualWidth;
             iacvm.TotalHeight = ContentCanvas.ActualHeight;
-
-            string value;
-            if (NavigationContext.QueryString.TryGetValue(ImageStoredInSaveGameQueryParameterName, out value))
-            {
-                // If loading the image from within the application, then it's already loaded, just pass a reference to the viewmodel
-                if (Boolean.TrueString.Equals(value,StringComparison.InvariantCultureIgnoreCase))
-                {
-                    Logger.Info("Loading image from current puzzle model metadata");
-                    iacvm.Image = _puzzle.CurrentLevel.Image;
-                }
-            }
-            else if (NavigationContext.QueryString.TryGetValue("imageUrl", out value))
-            {
-                // If the image needs to be downloaded, then download it asynchronously and pass to the viewmodel in BitmapOnImageOpened
-                if (!string.IsNullOrEmpty(value))
-                {
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.CreateOptions = BitmapCreateOptions.BackgroundCreation;
-                    bitmap.ImageOpened += BitmapOnImageOpened;
-                    bitmap.ImageFailed += BitmapOnImageFailed;
-                    
-                    string imageFileUrl = HttpUtility.UrlDecode(value);
-                    bitmap.UriSource = new Uri(imageFileUrl, UriKind.Relative);
-
-                    // TODO Add a progress bar or something...
-                }
-            }
-            else
-            {
-                MessageBox.Show("No image found"); // TODO Localize
-            }
+            iacvm.ImageId = this.GetQueryParameter(ImageIdQueryParameterName);
+            iacvm.Initialise();
         }
 
 
@@ -107,25 +79,16 @@ namespace Locima.SlidingBlock
         {
             IApplicationBar appBar = new ApplicationBar();
 
-            ApplicationBarHelper.AddButton(appBar, ApplicationBarHelper.ButtonIcons["Tick"],
-                                           LocalizationHelper.GetString("OK"));
+            IApplicationBarIconButton ok = ApplicationBarHelper.AddButton(appBar,
+                                                                          ApplicationBarHelper.ButtonIcons["Tick"],
+                                                                          LocalizationHelper.GetString("OK"));
+            ok.Click += AcceptImage;
+
             ApplicationBarHelper.AddButton(appBar, ApplicationBarHelper.ButtonIcons["Cancel"],
                                            LocalizationHelper.GetString("Cancel"));
+            ok.Click += (sender, args) => Dispatcher.BeginInvoke(() => NavigationService.GoBack());
 
             ApplicationBar = appBar;
-        }
-
-
-        private void BitmapOnImageFailed(object sender, ExceptionRoutedEventArgs exceptionRoutedEventArgs)
-        {
-            Logger.Fatal("Image opening failed", exceptionRoutedEventArgs);
-        }
-
-
-        private void BitmapOnImageOpened(object sender, RoutedEventArgs routedEventArgs)
-        {
-            Logger.Info("Loaded bitmap successfully");
-            ViewModel.Image = new WriteableBitmap((BitmapImage) sender);
         }
 
 
@@ -215,12 +178,13 @@ namespace Locima.SlidingBlock
             Logger.Info("Drag started: {0}", e.Direction);
         }
 
+
         private void OnDragDelta(object sender, DragDeltaGestureEventArgs e)
         {
             Logger.Debug("Drag delta in {2}.  H:{0}.  V:{1}", e.HorizontalChange, e.VerticalChange, e.Direction);
-//            ImageAreaChooserViewModel viewModel = ViewModel;
             UpdateImage(1, new Point(e.HorizontalChange, e.VerticalChange));
         }
+
 
         private double WithinBounds(double value, double min, double max)
         {
@@ -253,35 +217,33 @@ namespace Locima.SlidingBlock
             WriteableBitmap sourceBitmap = new WriteableBitmap(ViewModel.Image);
             WriteableBitmap puzzleBitmap = sourceBitmap.Crop(offsetX, offsetY, imageSizeX, imageSizeY);
 
-            if (imageSizeX > 480)
+            // Reduce the size of the image to the largest size it will ever be displayed at
+            if (imageSizeX > LevelDefinition.ImageSizeX || imageSizeY > LevelDefinition.ImageSizeY)
             {
-                Logger.Debug("Resizing to 480 x 480");
-                puzzleBitmap.Resize(480, 480, WriteableBitmapExtensions.Interpolation.Bilinear);
+                Logger.Debug("Resizing to {0} x {1}", LevelDefinition.ImageSizeX, LevelDefinition.ImageSizeY);
+                puzzleBitmap.Resize(LevelDefinition.ImageSizeX, LevelDefinition.ImageSizeY,
+                                    WriteableBitmapExtensions.Interpolation.Bilinear);
             }
 
-            _puzzle.CurrentLevel.SetImage(puzzleBitmap); // TODO Fix this, it's messy
-            SaveGameStorageManager.Instance.SaveGame(_puzzle);
+            ImageStorageManager.Instance.Save(ViewModel.ImageId, ViewModel.Image);
 
-            Uri acceptUri = new Uri(HttpUtility.UrlDecode(NavigationContext.QueryString[AcceptUriQueryParameterName]),UriKind.Relative);
-            Logger.Info("Navigating accept to {0}", acceptUri);
-            Dispatcher.BeginInvoke(() => NavigationService.Navigate(acceptUri));
+            Dispatcher.BeginInvoke(
+                () =>
+                NavigationService.Navigate(LevelEditor.CreateNavigationUri(_gameTemplateId, _levelIndex, false,
+                                                                           ViewModel.ImageId)));
         }
 
-        
+
         /// <summary>
         /// Create a Uri to navigate to this page
         /// </summary>
-        /// <param name="currentUri">The Uri to navigate to if if the user accepts an area of the image</param>
-        /// <param name="imageStoredInSaveGame">If true then the image will be loaded from the latest save game</param>
         /// <returns></returns>
-        public static Uri CreateNavigationUri(Uri currentUri, bool imageStoredInSaveGame)
+        public static Uri CreateNavigationUri(string gameTemplateId, int levelIndex, string imageId)
         {
             return new Uri(
-                string.Format(
-                    "/ImageAreaChooser.xaml?&{0}={1}&{2}={3}", AcceptUriQueryParameterName,
-                    HttpUtility.UrlEncode(currentUri.ToString()), ImageStoredInSaveGameQueryParameterName, imageStoredInSaveGame),
-                UriKind.Relative);
+                string.Format("/ImageAreaChooser.xaml?&{0}={1}&{2}={3}&{4}={5}", GameTemplateIdQueryParameterName,
+                              HttpUtility.UrlEncode(gameTemplateId), LevelIndexQueryParameterName, levelIndex, ImageIdQueryParameterName,
+                              HttpUtility.UrlEncode(imageId)), UriKind.Relative);
         }
-
     }
-} 
+}

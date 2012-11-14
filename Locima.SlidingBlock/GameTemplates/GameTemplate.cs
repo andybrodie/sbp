@@ -11,7 +11,7 @@ namespace Locima.SlidingBlock.GameTemplates
     /// Used to define a game, which consists of a sequence of level (<see cref="LevelDefinition"/> instances)
     /// </summary>
     [DataContract]
-    public class GameDefinition : IPersistedObject
+    public class GameTemplate : IPersistedObject
     {
 
         /// <inheritdoc/>
@@ -19,9 +19,9 @@ namespace Locima.SlidingBlock.GameTemplates
         public string AppId { get; set; }
 
         /// <summary>
-        /// The default name given to a game definition when the user doesn't give it a title
+        /// The default name given to a game template when the user doesn't give it a title
         /// </summary>
-        public static readonly string DefaultTitle = LocalizationHelper.GetString("DefaultGameDefinitionTitle");
+        public static readonly string DefaultTitle = LocalizationHelper.GetString("DefaultGameTemplateTitle");
 
         /// <summary>
         /// A sequence of levels that make up the game
@@ -30,7 +30,7 @@ namespace Locima.SlidingBlock.GameTemplates
         public List<LevelDefinition> Levels { get; set; }
 
         /// <summary>
-        /// Who created this game definition
+        /// Who created this game template
         /// </summary>
         [DataMember]
         public string Author { get;  set; }

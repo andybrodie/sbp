@@ -171,7 +171,7 @@
   </data>
   <data name="CreateCustomGame" xml:space="preserve">
     <value>new</value>
-    <comment>Application bar icon in GameDefinitionSelector to create a new one</comment>
+    <comment>Application bar icon in GameTemplateSelector to create a new one</comment>
   </data>
   <data name="CreateLevel" xml:space="preserve">
     <value>create level</value>
@@ -189,9 +189,9 @@
     <value>delete</value>
     <comment>Label on the custom game context menu to delete the game</comment>
   </data>
-  <data name="DefaultGameDefinitionTitle" xml:space="preserve">
+  <data name="DefaultGameTemplateTitle" xml:space="preserve">
     <value>Untitled Game</value>
-    <comment>The name given to a game definition that isn't assigned a title by the user</comment>
+    <comment>The name given to a game template that isn't assigned a title by the user</comment>
   </data>
   <data name="DefaultPlayerName" xml:space="preserve">
     <value>Player</value>
@@ -215,7 +215,7 @@
   </data>
   <data name="EditPlayerTitle" xml:space="preserve">
     <value>edit player</value>
-    <comment>Page title for the AddPlayer.xaml page when an existing player is being edited</comment>
+    <comment>Page title for the PlayerEditor.xaml page when an existing player is being edited</comment>
   </data>
   <data name="EndGameMessage" xml:space="preserve">
     <value>Congratulations!  You've completed the single player game in a total of {0} using {1} moves, which places you {2} on the high score table.  Times for each level are shown below.</value>

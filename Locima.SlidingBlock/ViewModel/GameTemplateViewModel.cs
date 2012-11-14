@@ -3,9 +3,9 @@ using Locima.SlidingBlock.GameTemplates;
 namespace Locima.SlidingBlock.ViewModel
 {
     /// <summary>
-    /// MVVM view model for a single item in the list of custom games (<see cref="GameDefinitionSelectorViewModel"/>)
+    /// MVVM view model for a single item in the list of custom games (<see cref="GameTemplateSelectorViewModel"/>)
     /// </summary>
-    public class GameDefinitionViewModel : ViewModelBase
+    public class GameTemplateViewModel : ViewModelBase
     {
         private string _title;
 
@@ -13,8 +13,8 @@ namespace Locima.SlidingBlock.ViewModel
         /// Initialise this view model and all its fields using the <paramref name="game"/> passed
         /// </summary>
         /// <param name="parent">The view model that owns this specific custom game</param>
-        /// <param name="game">The game definition that this item represents</param>
-        public GameDefinitionViewModel(GameDefinitionSelectorViewModel parent, GameDefinition game)
+        /// <param name="game">The game template that this item represents</param>
+        public GameTemplateViewModel(GameTemplateSelectorViewModel parent, GameTemplate game)
         {
             ShareMessageHandlers(parent);
             Title = game.Title;

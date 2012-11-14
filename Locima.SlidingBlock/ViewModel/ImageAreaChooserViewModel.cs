@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Media.Imaging;
+using Locima.SlidingBlock.IO;
 
 namespace Locima.SlidingBlock.ViewModel
 {
@@ -25,9 +26,10 @@ namespace Locima.SlidingBlock.ViewModel
         /// <summary>
         /// Hooks our own <see cref="ViewModelBase.PropertyChanged"/> events with <see cref="OnPropertyChanged"/>
         /// </summary>
-        public ImageAreaChooserViewModel()
+        public void Initialise()
         {
             PropertyChanged += OnPropertyChanged;
+            Image = ImageStorageManager.Instance.Load(ImageId);
         }
 
 
@@ -201,6 +203,13 @@ namespace Locima.SlidingBlock.ViewModel
             set { _zoomAmount = value;
             OnNotifyPropertyChanged("ZoomAmount");}
         }
+
+
+        /// <summary>
+        /// The identity of the image to update 
+        /// </summary>
+        /// <remarks>For use with <see cref="IImageStorageManager"/></remarks>
+        public string ImageId { get; set; }
 
         /// <summary>
         ///   Raises <see cref="ViewModelBase.PropertyChanged" /> events for properties which are dependent on other properties within this viewmodel

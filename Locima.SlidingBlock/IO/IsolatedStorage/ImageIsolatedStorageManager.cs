@@ -14,11 +14,15 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-
         /// <summary>
         /// The directory within which all downloaded images will be stored
         /// </summary>
         public static string ImageDirectory = "Images";
+
+        /// <summary>
+        /// The directory within which all temporary images will be stored
+        /// </summary>
+        public static string ImageTempDirectory = "TempImages";
 
 
         /// <summary>
@@ -27,6 +31,10 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         public void Initialise()
         {
             IOHelper.EnsureDirectory(ImageDirectory);
+            if (!IOHelper.EnsureDirectory(ImageTempDirectory))
+            {
+                DeleteAllTemporary();
+            }
         }
 
 
@@ -36,7 +44,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         /// </summary>
         /// <param name="imageId">The image to load, must not be null</param>
         /// <returns>A bitmap version of the image</returns>
-        public WriteableBitmap LoadImage(string imageId)
+        public WriteableBitmap Load(string imageId)
         {
             Logger.Info("Loading image {0} from isolated storage", imageId);
             BitmapImage bitmap = new BitmapImage();
@@ -54,7 +62,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
                     bitmap.SetSource(fileStream);
                 }
             }
-            Logger.Info("Loaded image {0} from isolated storage successfully");
+            Logger.Info("Loaded image {0} from isolated storage successfully", imageId);
             return new WriteableBitmap(bitmap);
         }
 
@@ -63,7 +71,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         /// </summary>
         /// <param name="xapImageUri">The Uri of the image contained within the XAP for this app</param>
         /// <returns>A bitmap</returns>
-        public WriteableBitmap LoadImage(Uri xapImageUri)
+        public WriteableBitmap Load(Uri xapImageUri)
         {
             // TODO Check performance to make sure that sync loading is ok.  Should be quick as the image is small and it's local
             Logger.Info("Loading image from XAP content {0}", xapImageUri);
@@ -78,14 +86,59 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         public string Save(Stream imageStream)
         {
             string filename = Path.Combine(ImageDirectory, Guid.NewGuid().ToString());
-            byte[] data = IOHelper.DownloadStream(imageStream);
-            IOHelper.Save(filename, data);
+            IOHelper.Save(filename, imageStream);
             return filename;
         }
 
+        
         public string Save(WriteableBitmap image)
         {
-            throw new NotImplementedException();
+            string filename = Path.Combine(ImageDirectory, Guid.NewGuid().ToString());
+            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                using (IsolatedStorageFileStream stream = store.OpenFile(filename, FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    image.SaveJpeg(stream, image.PixelWidth, image.PixelHeight, 0, ImageHelper.JpegQuality);
+                }
+
+            }
+            return filename;
+        }
+
+
+        public string SaveTemporary(Stream imageStream)
+        {
+            string filename = Path.Combine(ImageTempDirectory, Guid.NewGuid().ToString());
+            Logger.Info("Saving temporary image {0}", filename);
+            IOHelper.Save(filename, imageStream);
+            return filename;
+        }
+
+
+        public bool Delete(string imageId)
+        {
+            return IOHelper.DeleteFile(imageId);
+        }
+
+        public int DeleteAllTemporary()
+        {
+            Logger.Info("Deleting all existing files within {0}", ImageTempDirectory);
+            return IOHelper.DeleteFiles(ImageTempDirectory);
+        }
+
+        public void Save(string imageId, WriteableBitmap image)
+        {
+            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                Logger.Info("{0} file {1} and saving image ({2},{3}) to it in JPEG format",
+                            store.FileExists(imageId) ? "Overwriting existing" : "Creating",
+                            imageId, image.PixelWidth, image.PixelHeight);
+                using (IsolatedStorageFileStream fileStream = store.OpenFile(imageId, FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    image.SaveJpeg(fileStream, image.PixelWidth, image.PixelHeight, 0, 100);
+                }
+                Logger.Info("Saved image {0} successfully", imageId);
+            }
         }
     }
 }

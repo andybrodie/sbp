@@ -13,7 +13,7 @@ namespace Locima.SlidingBlock
 {
     public partial class GameEditor : PhoneApplicationPage
     {
-        public const string GameDefinitionQueryParameterName = "gameDefId";
+        public const string GameTemplateQueryParameterName = "gameTemplateId";
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -26,9 +26,9 @@ namespace Locima.SlidingBlock
         /// <summary>
         /// Convenience access for the view model that is initialise in the XAML
         /// </summary>
-        public AddEditGameDefinitionViewModel ViewModel
+        public GameTemplateEditorViewModel ViewModel
         {
-            get { return ((AddEditGameDefinitionViewModel) Resources["viewModel"]); }
+            get { return ((GameTemplateEditorViewModel) Resources["viewModel"]); }
         }
 
 
@@ -38,8 +38,8 @@ namespace Locima.SlidingBlock
             BuildApplicationBar();
             DefaultMessageHandlers.Register(this, ViewModel);
 
-            string gameDefinitionId = this.GetQueryParameter(GameDefinitionQueryParameterName, s => s);
-            ViewModel.GameDefinitionId = gameDefinitionId;
+            string gameTemplateId = this.GetQueryParameter(GameTemplateQueryParameterName, s => s);
+            ViewModel.GameTemplateId = gameTemplateId;
 
             ViewModel.Initialise();
         }
@@ -65,12 +65,12 @@ namespace Locima.SlidingBlock
         }
 
 
-        public static Uri CreateNavigationUri(string gameDefinitionId)
+        public static Uri CreateNavigationUri(string gameTemplateId)
         {
             string baseUri = "/GameEditor.xaml";
-            if (!string.IsNullOrEmpty(gameDefinitionId))
+            if (!string.IsNullOrEmpty(gameTemplateId))
             {
-                baseUri = string.Format("{0}?{1}={2}", baseUri, GameDefinitionQueryParameterName, gameDefinitionId);
+                baseUri = string.Format("{0}?{1}={2}", baseUri, GameTemplateQueryParameterName, gameTemplateId);
             }
             return new Uri(baseUri, UriKind.Relative);
         }

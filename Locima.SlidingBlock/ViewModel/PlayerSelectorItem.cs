@@ -40,7 +40,7 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
         /// <summary>
-        /// Invoked to edit this player (navigates to the <see cref="AddPlayer"/> page)
+        /// Invoked to edit this player (navigates to the <see cref="PlayerEditor"/> page)
         /// </summary>
         /// <see cref="EditPlayerAction"/>
         public ICommand EditPlayerCommand { get; private set; }
@@ -100,14 +100,14 @@ namespace Locima.SlidingBlock.ViewModel
 
 
         /// <summary>
-        /// Navigates on to the edit player screen for this player (<see cref="AddPlayer"/>)
+        /// Navigates on to the edit player screen for this player (<see cref="PlayerEditor"/>)
         /// </summary>
         /// <see cref="EditPlayerCommand"/>
         private void EditPlayerAction(object unused)
         {
             Logger.Info("Editing player : {0}", Name);
             SendViewMessage(new NavigationMessageArgs
-                                {Uri = AddPlayer.CreateNavigationUri(_playerDetails.Id)});
+                                {Uri = PlayerEditor.CreateNavigationUri(_playerDetails.Id)});
         }
 
 

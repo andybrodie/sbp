@@ -20,7 +20,7 @@
             PlayerStorageManager.Instance.Initialise();
             ImageStorageManager.Instance.Initialise();
             HighScoresStorageManager.Instance.Initialise();
-            GameDefinitionStorageManager.Instance.Initialise();
+            GameTemplateStorageManager.Instance.Initialise();
         }
     }
 }

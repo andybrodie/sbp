@@ -16,7 +16,7 @@ namespace Locima.SlidingBlock
     /// <summary>
     /// Very simple (non-MVVM) page that allows an existing player to be edited or a new one created.
     /// </summary>
-    public partial class AddPlayer : PhoneApplicationPage
+    public partial class PlayerEditor : PhoneApplicationPage
     {
         /// <summary>
         /// The query parameter to specify an existing player to edit
@@ -28,7 +28,7 @@ namespace Locima.SlidingBlock
         /// <summary>
         /// Calls <see cref="InitializeComponent"/> and hooks the <see cref="FrameworkElement.Loaded"/> event to invoke <see cref="FocusNameElement"/>
         /// </summary>
-        public AddPlayer()
+        public PlayerEditor()
         {
             InitializeComponent();
             Loaded += FocusNameElement;
@@ -119,9 +119,9 @@ namespace Locima.SlidingBlock
         public static Uri CreateNavigationUri(string playerId)
         {
             return string.IsNullOrEmpty(playerId)
-                       ? new Uri("/AddPlayer.xaml", UriKind.Relative)
+                       ? new Uri("/PlayerEditor.xaml", UriKind.Relative)
                        : new Uri(
-                             string.Format("/AddPlayer.xaml?{0}={1}", PlayerIdQueryParameterName,
+                             string.Format("/PlayerEditor.xaml?{0}={1}", PlayerIdQueryParameterName,
                                            HttpUtility.UrlEncode(playerId)), UriKind.Relative);
         }
     }

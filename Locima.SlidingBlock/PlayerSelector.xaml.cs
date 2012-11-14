@@ -61,7 +61,7 @@ namespace Locima.SlidingBlock
             IApplicationBarIconButton icon = ApplicationBarHelper.AddButton(ApplicationBar,
                                                                             ApplicationBarHelper.ButtonIcons["New"],
                                                                             LocalizationHelper.GetString("AddPlayer"));
-            icon.Click += (o, args) => NavigationService.Navigate(AddPlayer.CreateNavigationUri(null));
+            icon.Click += (o, args) => NavigationService.Navigate(PlayerEditor.CreateNavigationUri(null));
 
         }
 

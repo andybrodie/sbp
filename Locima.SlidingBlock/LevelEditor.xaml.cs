@@ -4,7 +4,6 @@ using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
 using Locima.SlidingBlock.Messaging;
 using Locima.SlidingBlock.ViewModel;
-using Microsoft.Phone;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using NLog;
@@ -13,9 +12,10 @@ namespace Locima.SlidingBlock
 {
     public partial class LevelEditor : PhoneApplicationPage
     {
-        public const string LevelIndexQueryParameterName = "levelIndex";
-        public const string CreateNewQueryParameterName = "createNew";
-        public const string GameDefinitionIdParameterName = "gameDef";
+        private const string LevelIndexQueryParameterName = "levelIndex";
+        private const string GameTemplateIdParameterName = "gameTemplatedId";
+        private const string CreateNewQueryParameterName = "createNew";
+        private const string ImageIdQueryParameterName = "imageId";
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -46,10 +46,15 @@ namespace Locima.SlidingBlock
         public void Initialise()
         {
             BuildApplicationBar();
-            ViewModel.GameDefinitionId = this.GetQueryParameter(GameDefinitionIdParameterName, s => s);
+
+            ViewModel.GameTemplateId = this.GetQueryParameter(GameTemplateIdParameterName);
             ViewModel.CreateNew = this.GetQueryParameter(CreateNewQueryParameterName, s => Boolean.TrueString.Equals(s));
             ViewModel.LevelIndex = this.GetQueryParameterAsInt(LevelIndexQueryParameterName);
+
             ViewModel.Initialise();
+
+            ViewModel.NewImageId = this.GetQueryParameter(ImageIdQueryParameterName);
+
             DefaultMessageHandlers.Register(this, ViewModel);
         }
 
@@ -82,24 +87,43 @@ namespace Locima.SlidingBlock
             ViewModel.SaveCommand.Execute(null);
         }
 
+
         /// <summary>
-        /// Create a Uri to navigate to this page with parameter poroviders
+        /// Creates a navigation Uri to this page
         /// </summary>
-        /// <param name="gameDefinitionId"></param>
-        /// <param name="levelIndex"></param>
-        /// <param name="createNew"></param>
+        /// <param name="gameTemplateId">The ID game template ID that we want to edit a level on</param>
+        /// <param name="levelIndex">The index of the level within the <paramref name="gameTemplateId"/> that we're editing</param>
+        /// <param name="createNew">If true, then a new level will be inserted in the game template at <paramref name="levelIndex"/>, otherwise the existing definition will be edited</param>
+        /// <param name="imageId">The ID of the image to replace the existing image for the level with (this is used when navigating here from <see cref="ImageAreaChooser"/>.  If null
+        /// or empty then no action is taken.</param>
         /// <returns></returns>
-        public static Uri CreateNavigationUri(string gameDefinitionId, int levelIndex, bool createNew)
+        public static Uri CreateNavigationUri(string gameTemplateId, int levelIndex, bool createNew, string imageId)
         {
-            return new Uri(string.Format("/LevelEditor.xaml?{0}={1}&{2}={3}&{4}={5}",
-                                         GameDefinitionIdParameterName,
-                                         HttpUtility.UrlEncode(gameDefinitionId),
+            return new Uri(string.Format("/LevelEditor.xaml?{0}={1}&{2}={3}&{4}={5}&{6}={7}",
+                                         GameTemplateIdParameterName,
+                                         HttpUtility.UrlEncode(gameTemplateId),
                                          LevelIndexQueryParameterName,
                                          levelIndex,
                                          CreateNewQueryParameterName,
-                                         createNew
+                                         createNew,
+                                         ImageIdQueryParameterName,
+                                         HttpUtility.UrlEncode(imageId)
                                ), UriKind.Relative);
         }
+
+
+        /// <summary>
+        /// Creates a navigation Uri to this page
+        /// </summary>
+        /// <param name="gameTemplateId">The ID game template ID that we want to edit a level on</param>
+        /// <param name="levelIndex">The index of the level within the <paramref name="gameTemplateId"/> that we're editing</param>
+        /// <param name="createNew">If true, then a new level will be inserted in the game template at <paramref name="levelIndex"/>, otherwise the existing definition will be edited</param>
+        /// <returns></returns>
+        public static Uri CreateNavigationUri(string gameTemplateId, int levelIndex, bool createNew)
+        {
+            return CreateNavigationUri(gameTemplateId, levelIndex, createNew, String.Empty);
+        }
+
 
         private void PreviewImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {

@@ -9,13 +9,13 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
 {
     public class GameTemplateIsolatedStorageManager : IGameTemplateManager
     {
-        public const string GameDefinitionDirectory = "GameDefinitions";
+        public const string GameTemplateDirectory = "GameTemplates";
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public void Initialise()
         {
-            IOHelper.EnsureDirectory(GameDefinitionDirectory);
+            IOHelper.EnsureDirectory(GameTemplateDirectory);
             EnsureSinglePlayerGame();
         }
 
@@ -25,74 +25,75 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         /// </summary>
         private void EnsureSinglePlayerGame()
         {
-            GameDefinition singlePlayerGame = IOHelper.LoadFileByAppId<GameDefinition>(GameDefinitionDirectory,
+            GameTemplate singlePlayerGame = IOHelper.LoadFileByAppId<GameTemplate>(GameTemplateDirectory,
                                                                        SinglePlayerGame.SinglePlayerGamePersistentId);
             if (singlePlayerGame == null)
             {
-                Logger.Info("Creating default game definition");
+                Logger.Info("Creating default game template");
                 Save(SinglePlayerGame.Create());
             }
             else
             {
-                Logger.Info("Verified that default game definition exists");
+                Logger.Info("Verified that default game template exists");
             }
         }
 
 
-        public List<GameDefinition> GetCustomGameDefinitions()
+        public List<GameTemplate> GetGameTemplates()
         {
-            List<GameDefinition> games = new List<GameDefinition>();
+            List<GameTemplate> games = new List<GameTemplate>();
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                List<string> filenames = IOHelper.GetFileNames(GameDefinitionDirectory, store);
+                List<string> filenames = IOHelper.GetFileNames(GameTemplateDirectory, store);
                 foreach (string filename in filenames)
                 {
-                    games.Add(IOHelper.LoadObject<GameDefinition>(store, filename));
+                    games.Add(IOHelper.LoadObject<GameTemplate>(store, filename));
                 }
             }
             return games;
         }
 
         /// <summary>
-        /// Loads the game definition with the ID of <paramref name="id"/>
+        /// Loads the game template with the ID of <paramref name="id"/>
         /// </summary>
-        /// <param name="id">The ID of the game definition</param>
-        /// <returns>The loaded game definition object</returns>
-        public GameDefinition Load(string id)
+        /// <param name="id">The ID of the game template</param>
+        /// <returns>The loaded game template object</returns>
+        public GameTemplate Load(string id)
         {
-            return IOHelper.LoadObject<GameDefinition>(id);
+            return IOHelper.LoadObject<GameTemplate>(id);
         }
 
-        public void Save(GameDefinition game)
+
+        public void Save(GameTemplate gameTemplate)
         {
-            if (game == null) throw new ArgumentException("puzzle");
-            if (string.IsNullOrEmpty(game.Id))
+            if (gameTemplate == null) throw new ArgumentException("puzzle");
+            if (string.IsNullOrEmpty(gameTemplate.Id))
             {
-                game.Id = IOHelper.CreatePath(GameDefinitionDirectory, Guid.NewGuid().ToString());
-                Logger.Info("Saving new game definition {0} by {1}", game.Title, game.Author);
+                gameTemplate.Id = IOHelper.CreatePath(GameTemplateDirectory, Guid.NewGuid().ToString());
+                Logger.Info("Saving new game template {0} by {1}", gameTemplate.Title, gameTemplate.Author);
             }
             else
             {
-                Logger.Info("Saving existing game definition {0} by {1}", game.Title, game.Author);
+                Logger.Info("Saving existing game template {0} by {1}", gameTemplate.Title, gameTemplate.Author);
             }
 
-            if (string.IsNullOrEmpty(game.Title))
+            if (string.IsNullOrEmpty(gameTemplate.Title))
             {
-                game.Title = GameDefinition.DefaultTitle;
+                gameTemplate.Title = GameTemplate.DefaultTitle;
             }
 
-            if (string.IsNullOrEmpty(game.Author))
+            if (string.IsNullOrEmpty(gameTemplate.Author))
             {
                 PlayerStorageManager.Instance.EnsureCurrentPlayer();
-                game.Author = PlayerStorageManager.Instance.CurrentPlayer.Name;
+                gameTemplate.Author = PlayerStorageManager.Instance.CurrentPlayer.Name;
             }
 
-            if (game.Levels ==null)
+            if (gameTemplate.Levels ==null)
             {
-                game.Levels = new List<LevelDefinition>(0);
+                gameTemplate.Levels = new List<LevelDefinition>(0);
             }
 
-            IOHelper.SaveObject(game);
+            IOHelper.SaveObject(gameTemplate);
 
         }
     }

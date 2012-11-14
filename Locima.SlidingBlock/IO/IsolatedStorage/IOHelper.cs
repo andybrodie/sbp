@@ -111,11 +111,13 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
 
 
         /// <summary>
+        /// Saves the stream of data in <paramref name="stream"/>to the file named <paramref name="filename"/>
         /// </summary>
-        /// <param name="filename"> </param>
-        /// <param name="stream"> </param>
-        public void SaveStream(string filename, Stream stream)
+        /// <param name="filename">The file to save the stream <paramref name="stream"/> to</param>
+        /// <param name="stream">The stream to save to <paramref name="filename"/></param>
+        public static void Save(string filename, Stream stream)
         {
+            int totalBytesWritten = 0;
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 IsolatedStorageFileStream s = store.CreateFile(filename);
@@ -126,9 +128,12 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
                 {
                     count = stream.Read(buffer, 0, buffer.Length);
                     s.Write(buffer, 0, count);
+                    totalBytesWritten += count;
                 } while (count > 0);
             }
+            Logger.Info("Written {0} bytes to {1}", totalBytesWritten, filename);
         }
+
 
         /// <summary>
         ///   Copies the data from <paramref name="inStream" /> to <paramref name="outStream" />
@@ -466,7 +471,12 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
 
         }
 
-        public static void Save(string filename, byte[] data)
+        /// <summary>
+        /// Saves the data passed in <paramref name="data"/> to a file named <paramref name="filename"/>
+        /// </summary>
+        /// <param name="filename">The filename to save <paramref name="data"/> to</param>
+        /// <param name="data">The data to save to <paramref name="filename"/></param>
+        public static int Save(string filename, byte[] data)
         {
             Logger.Info("Writing {0} bytes to {1}", data.Length, filename);
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
@@ -476,6 +486,55 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
                     stream.Write(data, 0, data.Length);
                 }
             }
+            return data.Length;
         }
+
+        /// <summary>
+        /// Delete all the files in a directory hierarchy recursively
+        /// </summary>
+        /// <param name="directoryName">The root directory to start deleting at</param>
+        /// <returns>The total number of files removed</returns>
+        public static int DeleteFiles(string directoryName)
+        {
+            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                return DeleteFiles(directoryName, store);
+            }
+        }
+
+
+        /// <summary>
+        /// Delete all the files in a directory hierarchy recursively
+        /// </summary>
+        /// <param name="directoryName">The root directory to start deleting at</param>
+        /// <param name="store">The store to delete files from</param>
+        /// <returns>The total number of files removed</returns>
+        public static int DeleteFiles(string directoryName, IsolatedStorageFile store)
+        {
+            int total = 0;
+            if (store.DirectoryExists(directoryName))
+            {
+                string[] filenames = store.GetFileNames(directoryName);
+                Logger.Info("Deleting {0} files in {1}", filenames.Length, directoryName);
+                total += filenames.Length;
+                foreach (string filename in filenames)
+                {
+                    DeleteFile(filename);
+                }
+                string[] dirNames = store.GetDirectoryNames(Path.Combine(directoryName,"*"));
+                Logger.Info("Deleting {0} sub-directories of {1}", dirNames.Length, directoryName);
+                foreach (string dirName in dirNames)
+                {
+                    total += DeleteFiles(dirName);
+                }
+            }
+            else
+            {
+                Logger.Info("Ignoring call to DeleteFile as directory {0} does not exist", directoryName);
+            }
+            return total;
+        }
+
+
     }
 }
