@@ -62,7 +62,7 @@ namespace Locima.SlidingBlock
         /// Creates a Uri that can be used to navigate to this page
         /// </summary>
         /// <returns></returns>
-        public static Uri GetNavigationUri()
+        public static Uri CreateNavigationUri()
         {
             return new Uri("/GameTemplateSelector.xaml", UriKind.Relative);
         }

@@ -13,7 +13,7 @@ namespace Locima.SlidingBlock
     public partial class LevelEditor : PhoneApplicationPage
     {
         private const string LevelIndexQueryParameterName = "levelIndex";
-        private const string GameTemplateIdParameterName = "gameTemplatedId";
+        private const string GameTemplateIdParameterName = "gameTemplateId";
         private const string CreateNewQueryParameterName = "createNew";
         private const string ImageIdQueryParameterName = "imageId";
 
@@ -42,6 +42,7 @@ namespace Locima.SlidingBlock
             base.OnNavigatedTo(e);
             Initialise();
         }
+
 
         public void Initialise()
         {

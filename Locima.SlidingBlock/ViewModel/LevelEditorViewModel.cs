@@ -141,6 +141,7 @@ namespace Locima.SlidingBlock.ViewModel
         private void SaveAction(object obj)
         {
             GameTemplateStorageManager.Instance.Save(_gameTemplate);
+            SendViewMessage(new NavigationMessageArgs(GameTemplateSelector.CreateNavigationUri()));
         }
 
 

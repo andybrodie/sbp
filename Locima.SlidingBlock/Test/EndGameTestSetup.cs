@@ -1,7 +1,8 @@
 ﻿using System;
+using Locima.SlidingBlock.GameTemplates;
+using Locima.SlidingBlock.GameTemplates.SinglePlayer;
 using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Persistence;
-using Locima.SlidingBlock.SinglePlayer;
 
 namespace Locima.SlidingBlock.Test
 {
@@ -18,7 +19,7 @@ namespace Locima.SlidingBlock.Test
         /// <returns></returns>
         public static Uri TestEndGameScreen()
         {
-            SaveGame sg = GameFactory.CreateSinglePlayerGame(3, 3);
+            SaveGame sg = SaveGameFactory.CreateSaveGame(SinglePlayerGame.SinglePlayerGamePersistentId, 3, 3);
             sg.Levels[0].MoveCount = 100;
             sg.Levels[0].ElapsedTime = new TimeSpan(0, 0, 10, 00);
 

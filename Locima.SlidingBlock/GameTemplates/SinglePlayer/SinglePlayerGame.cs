@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Locima.SlidingBlock.Common;
+using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Scrambles;
 
 namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
@@ -11,8 +12,9 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
     /// This programatically creates the default single player game within the application.
     /// </summary>
     /// <remarks>
-    /// I could have created this offline and included the serialised version of the <see cref="GameTemplate"/> as content within the XAP, but, to be honest, that's just
-    /// too much hassle as creating it on the fly is quick enough.</remarks>
+    /// A "cleaner" way to do this would have been to generate the XML for the single player game "off-line" and just embed it as content within the XAP,
+    /// however this way is simpler and the overhead of the creation (done during <see cref="IGameTemplateManager.Initialise"/>) is minimal.
+    /// </remarks>
     public class SinglePlayerGame
     {
         private const string TemplatePath = "/GameTemplates/SinglePlayer/";
