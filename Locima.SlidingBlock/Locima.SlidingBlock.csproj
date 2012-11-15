@@ -78,6 +78,7 @@
     <Compile Include="GameEditor.xaml.cs">
       <DependentUpon>GameEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameTemplates\SaveGameFactory.cs" />
     <Compile Include="IO\IGameTemplateManager.cs" />
     <Compile Include="IO\ImageHelper.cs" />
     <Compile Include="LevelEditor.xaml.cs">
@@ -190,7 +191,6 @@
     <Compile Include="GameTemplateSelector.xaml.cs">
       <DependentUpon>GameTemplateSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SinglePlayer\GameFactory.cs" />
     <Compile Include="Test\EndGameTestSetup.cs" />
     <Compile Include="ViewModel\GameTemplateEditorViewModel.cs" />
     <Compile Include="ViewModel\LevelEditorViewModel.cs" />

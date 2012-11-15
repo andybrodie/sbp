@@ -3,9 +3,10 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Locima.SlidingBlock.Common;
+using Locima.SlidingBlock.GameTemplates;
+using Locima.SlidingBlock.GameTemplates.SinglePlayer;
 using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Persistence;
-using Locima.SlidingBlock.SinglePlayer;
 
 namespace Locima.SlidingBlock.ViewModel
 {
@@ -90,7 +91,7 @@ namespace Locima.SlidingBlock.ViewModel
                                 {
                                     Title = LocalizationHelper.GetString("Custom"),
                                     Text = LocalizationHelper.GetString("CustomDescription"),
-                                    TargetUri = GameTemplateSelector.GetNavigationUri(),
+                                    TargetUri = GameTemplateSelector.CreateNavigationUri(),
                                 }
                         },
                     PageTitle = LocalizationHelper.GetString("MainMenu")
@@ -156,7 +157,7 @@ namespace Locima.SlidingBlock.ViewModel
                     Text = LocalizationHelper.GetString("GameDescription", tilesAcross, tilesHigh),
                     SelectedAction = delegate
                         {
-                            SaveGame sg = GameFactory.CreateSinglePlayerGame(tilesAcross, tilesHigh);
+                            SaveGame sg = SaveGameFactory.CreateSaveGame(SinglePlayerGame.SinglePlayerGamePersistentId, tilesAcross, tilesHigh);
                             /* We want to suppress navigating back to this page because otherwise clicking "Back" from a game would put you back to this menu item
                              * which isn't useful for the user (i.e. in the middle of a game, clicking back would give you the "Easy", "Medium", "Hard" choice again
                              */

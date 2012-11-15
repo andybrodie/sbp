@@ -159,6 +159,23 @@ namespace Locima.SlidingBlock.Persistence
         [DataMember]
         public Uri XapImageUri { get; set; }
 
+        /// <summary>
+        /// The title of the level
+        /// </summary>
+        [DataMember]
+        public string Title { get; set; }
+
+        /// <summary>
+        /// The text of the level
+        /// </summary>
+        [DataMember]
+        public string Text { get; set; }
+
+        /// <summary>
+        /// The license associated with the image
+        /// </summary>
+        [DataMember]
+        public LicenseDefinition License { get; set; }
 
         /// <summary>
         ///   Re-initialises any non-serialised objects which require initialisation (typically via a constructor which isn't called during deserialisation)

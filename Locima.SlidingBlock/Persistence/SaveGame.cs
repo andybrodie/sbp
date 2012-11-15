@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using Locima.SlidingBlock.Common;
+using Locima.SlidingBlock.GameTemplates;
 using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Model;
 
@@ -161,6 +162,13 @@ namespace Locima.SlidingBlock.Persistence
         {
             get { return CurrentLevelIndex == Levels.Count; }
         }
+
+
+        /// <summary>
+        /// Records which <see cref="GameTemplate"/> was used to make this game
+        /// </summary>
+        [DataMember]
+        public string GameDefinitionId { get; set; }
 
         #endregion
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Windows.Navigation;
-using System.Windows.Threading;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using NLog;
@@ -88,6 +87,4 @@ namespace Locima.SlidingBlock.Common
             page.Dispatcher.BeginInvoke(() => page.NavigationService.GoBack());
         }
     }
-
-
 }
