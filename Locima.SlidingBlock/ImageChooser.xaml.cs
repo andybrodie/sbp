@@ -109,7 +109,7 @@ namespace Locima.SlidingBlock
                 }
                 else
                 {
-                    item.SelectedAction();
+                    item.SelectedAction(item.Parameter);
                 }
 
                 // Reset selected index back to -1 so if we navigate back to this page it won't instantly fire this

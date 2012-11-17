@@ -371,7 +371,7 @@ namespace Locima.SlidingBlock.ViewModel
             {
                 Logger.Info("Moving to level {0} of {1}", _currentGame.CurrentLevelIndex,
                             _currentGame.Levels.Count);
-                nextPageUri = GamePage.CreateNavigationUri(_currentGame.Id, true);
+                nextPageUri = GamePage.CreateNavigationUri(_currentGame.Id, 1);
             }
             Logger.Info("Navigating on to {0}", nextPageUri);
             _dontSaveGameOnNavigatingFrom = true;

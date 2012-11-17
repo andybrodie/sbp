@@ -28,7 +28,8 @@ namespace Locima.SlidingBlock
         }
 
         /// <summary>
-        /// Convenience access for the view model that is initialise in the XAML
+        /// Convenien
+        /// ce access for the view model that is initialise in the XAML
         /// </summary>
         public GameTemplateSelectorViewModel ViewModel
         {
@@ -52,9 +53,8 @@ namespace Locima.SlidingBlock
             ApplicationBar = new ApplicationBar();
             IApplicationBarIconButton icon = ApplicationBarHelper.AddButton(ApplicationBar,
                                                                             ApplicationBarHelper.ButtonIcons["New"],
-                                                                            LocalizationHelper.GetString(
-                                                                                "CreateCustomGame"));
-            icon.Click += (o, args) => ViewModel.CreateGameTemplateCommand.Execute(null);
+                                                                            LocalizationHelper.GetString("CreateGameTemplate"));
+            icon.Click += (o, args) => ViewModel.CreateGameTemplateCommand.Execute(null);                       
         }
 
 

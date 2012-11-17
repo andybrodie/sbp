@@ -71,6 +71,11 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         {
             IOHelper.EnsureDirectory(PlayerProfileDirectory);
             CurrentPlayer = GetLastPlayer();
+            if (CurrentPlayer == null)
+            {
+                // CurrentPlayer = 
+                EnsureCurrentPlayer();
+            }
         }
 
 

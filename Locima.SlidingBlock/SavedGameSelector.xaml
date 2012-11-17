@@ -19,6 +19,7 @@
     <phone:PhoneApplicationPage.Resources>
         <Converters:IntegerToVisibilityConverter x:Key="IntegerToVisibilityConverter" />
         <ViewModel:SaveGameSelectorViewModel x:Key="viewModel"/>        
+        <toolkit:RelativeTimeConverter  x:Key="relativeTimeConverter"/>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -53,7 +54,7 @@
                             </Grid.RowDefinitions>
                             <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" x:Name="thumbnailImage" Source="{Binding Thumbnail}"/>
                             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SaveGameTitle,NotifyOnValidationError=True}" Style="{StaticResource PhoneTextLargeStyle}"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SaveGameDescription}" Style="{StaticResource PhoneTextSmallStyle}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SaveGameLastUpdate, Converter={StaticResource relativeTimeConverter}}" Style="{StaticResource PhoneTextSmallStyle}"/>
                             <toolkit:ContextMenuService.ContextMenu>
                                 <toolkit:ContextMenu Name="MyContextMenu">
                                     <toolkit:MenuItem Header="{Binding Path=Strings.SaveGameSelectorDeleteGame, Source={StaticResource Localization}}" Command="{Binding DeleteGameCommand}" />

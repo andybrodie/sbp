@@ -151,6 +151,42 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to built-in game template &quot;{0}&quot; cannot be deleted.
+        /// </summary>
+        public static string CannotDeleteReadOnlyGameTemplateText {
+            get {
+                return ResourceManager.GetString("CannotDeleteReadOnlyGameTemplateText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cannot delete.
+        /// </summary>
+        public static string CannotDeleteReadOnlyGameTemplateTitle {
+            get {
+                return ResourceManager.GetString("CannotDeleteReadOnlyGameTemplateTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to are you sure you want to delete game template &quot;{0}&quot;?.
+        /// </summary>
+        public static string ConfirmDeleteGameTemplateText {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteGameTemplateText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to confirm delete.
+        /// </summary>
+        public static string ConfirmDeleteGameTemplateTitle {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteGameTemplateTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to continue.
         /// </summary>
         public static string Continue {
@@ -180,9 +216,9 @@ namespace Locima.SlidingBlock.Resources {
         /// <summary>
         ///   Looks up a localized string similar to new.
         /// </summary>
-        public static string CreateCustomGame {
+        public static string CreateGameTemplate {
             get {
-                return ResourceManager.GetString("CreateCustomGame", resourceCulture);
+                return ResourceManager.GetString("CreateGameTemplate", resourceCulture);
             }
         }
         
@@ -210,6 +246,15 @@ namespace Locima.SlidingBlock.Resources {
         public static string CustomDescription {
             get {
                 return ResourceManager.GetString("CustomDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to clone.
+        /// </summary>
+        public static string CustomGameContextMenuCopy {
+            get {
+                return ResourceManager.GetString("CustomGameContextMenuCopy", resourceCulture);
             }
         }
         
@@ -327,6 +372,24 @@ namespace Locima.SlidingBlock.Resources {
         public static string GamePageTitle {
             get {
                 return ResourceManager.GetString("GamePageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to copy of {0}.
+        /// </summary>
+        public static string GameTemplateCopyTitle {
+            get {
+                return ResourceManager.GetString("GameTemplateCopyTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to select game template.
+        /// </summary>
+        public static string GameTemplateSelectorTitle {
+            get {
+                return ResourceManager.GetString("GameTemplateSelectorTitle", resourceCulture);
             }
         }
         
@@ -538,7 +601,7 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starts a new game from scratch.
+        ///   Looks up a localized string similar to starts a brand new game.
         /// </summary>
         public static string NewGameDescription {
             get {

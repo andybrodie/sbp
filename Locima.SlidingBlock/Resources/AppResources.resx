@@ -157,6 +157,22 @@
     <value>cancel</value>
     <comment>Application bar button label for cancelling the creation of a new player</comment>
   </data>
+  <data name="CannotDeleteReadOnlyGameTemplateText" xml:space="preserve">
+    <value>built-in game template "{0}" cannot be deleted</value>
+    <comment>Text for message indicating that a built-in game template cannot be deleted</comment>
+  </data>
+  <data name="CannotDeleteReadOnlyGameTemplateTitle" xml:space="preserve">
+    <value>cannot delete</value>
+    <comment>Title for message indicating that a built-in game template cannot be deleted</comment>
+  </data>
+  <data name="ConfirmDeleteGameTemplateText" xml:space="preserve">
+    <value>are you sure you want to delete game template "{0}"?</value>
+    <comment>Text for message asking user to confirm that a game template should be deleted</comment>
+  </data>
+  <data name="ConfirmDeleteGameTemplateTitle" xml:space="preserve">
+    <value>confirm delete</value>
+    <comment>Title for message asking user to confirm that a game template should be deleted</comment>
+  </data>
   <data name="Continue" xml:space="preserve">
     <value>continue</value>
     <comment>The word "continue", to indicate that an interaction will continue to the next logical part of the application</comment>
@@ -169,7 +185,7 @@
     <value>Continue the current game</value>
     <comment>Menu item description for continuing the current game</comment>
   </data>
-  <data name="CreateCustomGame" xml:space="preserve">
+  <data name="CreateGameTemplate" xml:space="preserve">
     <value>new</value>
     <comment>Application bar icon in GameTemplateSelector to create a new one</comment>
   </data>
@@ -184,6 +200,10 @@
   <data name="CustomDescription" xml:space="preserve">
     <value>Start a new custom game</value>
     <comment>Describes a custom game</comment>
+  </data>
+  <data name="CustomGameContextMenuCopy" xml:space="preserve">
+    <value>clone</value>
+    <comment>Context menu option to clone a game template</comment>
   </data>
   <data name="CustomGameContextMenuDelete" xml:space="preserve">
     <value>delete</value>
@@ -236,6 +256,14 @@
   <data name="GamePageTitle" xml:space="preserve">
     <value>level {0}</value>
     <comment>The title displayed on the GamePage.xaml main page (this will be the number of the level)</comment>
+  </data>
+  <data name="GameTemplateCopyTitle" xml:space="preserve">
+    <value>copy of {0}</value>
+    <comment>The title given to a game template that has been cloned</comment>
+  </data>
+  <data name="GameTemplateSelectorTitle" xml:space="preserve">
+    <value>select game template</value>
+    <comment>Title for the game template selector menu page</comment>
   </data>
   <data name="GoToHighscores" xml:space="preserve">
     <value>high scores</value>
@@ -330,7 +358,7 @@
     <comment>Menu item title for starting a new game</comment>
   </data>
   <data name="NewGameDescription" xml:space="preserve">
-    <value>Starts a new game from scratch</value>
+    <value>starts a brand new game</value>
     <comment>Menu item description for starting a new game</comment>
   </data>
   <data name="NoHighscoresFound" xml:space="preserve">

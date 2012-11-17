@@ -9,5 +9,7 @@ namespace Locima.SlidingBlock.IO
         List<GameTemplate> GetGameTemplates();
         GameTemplate Load(string id);
         void Save(GameTemplate gameTemplate);
+        List<string> GetGameTemplateIds();
+        void Delete(string id);
     }
 }

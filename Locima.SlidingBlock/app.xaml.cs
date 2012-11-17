@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Text;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -218,6 +220,19 @@ namespace Locima.SlidingBlock
 
 
         /// <summary>
+        /// Regular expression to extract query parameters from a URL
+        /// </summary>
+        private readonly static Regex QueryParameterParser = new Regex(@"[\?&](?<name>[^&=]+)=(?<value>[^&=]+)");
+
+        private Dictionary<string, string> PopulateQueryParameters(Uri uri)
+        {
+            var matches = QueryParameterParser.Matches(uri.ToString());
+            return matches.Cast<Match>().ToDictionary(
+                match => HttpUtility.UrlDecode(match.Groups["name"].Value),
+                match => HttpUtility.UrlDecode(match.Groups["value"].Value));
+        }
+
+        /// <summary>
         /// Invoked when a new page is navigated to to suppress the most recent <see cref="PhoneApplicationFrame.BackStack"/> entry if 
         /// a query parameter <see cref="SuppressBackQueryParameterName"/> is specified with the value <c>True</c>.
         /// </summary>
@@ -225,33 +240,47 @@ namespace Locima.SlidingBlock
         /// By adding this method to the Application XAML code-behind, we can have this as a feature available to all pages within the application,
         /// rather than adding it page at a time.</remarks>
         /// <param name="uri">The URI of the page navigated to</param>
-        /// <returns>True if a back entry was removed</returns>
-        private bool HandleBackstackSuppression(Uri uri)
+        /// <returns>The number of backstack entries to remove</returns>
+        private int HandleBackstackSuppression(Uri uri)
         {
-            Boolean suppressed;
-            Regex expression = new Regex(string.Format(@".*{0}=(\w+).*$", SuppressBackQueryParameterName));
-            Match match = expression.Match(uri.ToString());
-            string suppressBackValue = match.Groups[1].Value;
 
-            if (Boolean.TrueString.Equals(suppressBackValue))
+            int numRemoved = 0;
+            var qp = PopulateQueryParameters(uri);
+            string value;
+            if (qp.TryGetValue(SuppressBackQueryParameterName, out value))
             {
-                JournalEntry topEntry = RootFrame.BackStack.FirstOrDefault();
-                Logger.Info("Suppressing top entry in backstack: {0}", topEntry == null ? "None" : topEntry.Source.ToString());
-                RootFrame.RemoveBackEntry();
-                suppressed = true;
-            } else
+                int numberToRemove;
+                if (int.TryParse(value, out numberToRemove))
+                {
+                    if (numberToRemove > 0)
+                    {
+                        Logger.Info("Attempting to removing {0} entries from the backstack", numberToRemove);
+                        for (int i = 0; i < numberToRemove; i++)
+                        {
+                            JournalEntry topEntry = RootFrame.BackStack.FirstOrDefault();
+                            Logger.Info("Removing entry in backstack: {0}", topEntry == null ? "None" : topEntry.Source.ToString());
+                            RootFrame.RemoveBackEntry();
+                            numRemoved++;
+                        }
+                    }
+                }
+                else
+                {
+                    Logger.Error("Invalid value found for {0}: \"{1}\"", SuppressBackQueryParameterName, value);
+                }
+            }
+            else
             {
                 Logger.Debug("No {0} parameter found, defaulting to false", SuppressBackQueryParameterName);
-                suppressed = false;
             }
-            return suppressed;
+
+            return numRemoved;
         }
+
 
         // Do not add any additional code to this method
         private void CompleteInitializePhoneApplication(object sender, NavigationEventArgs e)
         {
-            // If we don't have a current player, then redirect
-
             // Set the root visual to allow the application to render
             if (RootVisual != RootFrame)
                 RootVisual = RootFrame;

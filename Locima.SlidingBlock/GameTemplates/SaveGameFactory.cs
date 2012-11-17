@@ -29,7 +29,6 @@ namespace Locima.SlidingBlock.GameTemplates
             SaveGame sg = new SaveGame {GameType = SaveGame.GameTypes.SinglePlayer, GameDefinitionId = template.Id};
 
             // TODO Allow the level definition to set the player tile
-            PlayerStorageManager.Instance.EnsureCurrentPlayer();
             sg.LocalPlayer = new PlayerLink
                                  {
                                      PlayerDetailsId = PlayerStorageManager.Instance.CurrentPlayer.Id,
@@ -68,17 +67,5 @@ namespace Locima.SlidingBlock.GameTemplates
             return level;
         }
 
-        /// <summary>
-        /// Creates a new <see cref="SaveGame"/> based on the <see cref="GameTemplate"/> identified by it's ID in <paramref name="gameTemplateId"/>
-        /// </summary>
-        /// <param name="gameTemplateId">The ID of the <see cref="GameTemplate"/> to use</param>
-        /// <param name="tilesAcross">Number of tiles across in each puzzle</param>
-        /// <param name="tilesHigh">Number of tiles high in each puzzle</param>
-        /// <returns>A new instance of the game, ready for use on <see cref="GamePage"/></returns>
-        public static SaveGame CreateSaveGame(string gameTemplateId, int tilesAcross, int tilesHigh)
-        {
-            return CreateSaveGame(GameTemplateStorageManager.Instance.Load(gameTemplateId), tilesAcross,
-                                  tilesHigh);
-        }
     }
 }

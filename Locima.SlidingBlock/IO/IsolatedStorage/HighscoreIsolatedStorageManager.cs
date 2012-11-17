@@ -32,7 +32,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
                 Save(defaultTable);
             } else
             {
-                Logger.Info("Found exists high score table in isolated storage file {0}", HighscoreFilename);
+                Logger.Info("Found existing high score table in isolated storage file {0}", HighscoreFilename);
             }
         }
 

@@ -47,6 +47,7 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
 
             GameTemplate gm = new GameTemplate
                 {
+                    IsReadOnly = true,
                     AppId = SinglePlayerGamePersistentId,  // We fix the ID here as we only want one instance of this definition
                     Title = LocalizationHelper.GetString("SinglePlayerGameTitle"),
                     Author = "Andy Brodie",

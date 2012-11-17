@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Windows.Navigation;
 
 namespace Locima.SlidingBlock.ViewModel
 {
@@ -8,7 +10,6 @@ namespace Locima.SlidingBlock.ViewModel
     /// </summary>
     public class MenuPageViewModel : ViewModelBase
     {
-
         /// <summary>
         /// Backing field for <see cref="MenuItems"/>
         /// </summary>
@@ -51,6 +52,11 @@ namespace Locima.SlidingBlock.ViewModel
                 }
             }
         }
+
+        /// <summary>
+        /// The back stack, as obtained from <see cref="NavigationService.BackStack"/>
+        /// </summary>
+        public IEnumerable<JournalEntry> BackStack { get; set; }
 
         /// <summary>
         /// Raised when a new menu item is added or an existing one removed from <see cref="MenuItems"/>

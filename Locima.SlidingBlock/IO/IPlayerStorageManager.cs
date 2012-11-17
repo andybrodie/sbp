@@ -14,7 +14,6 @@ namespace Locima.SlidingBlock.IO
         /// </summary>
         PlayerDetails CurrentPlayer { get; set; }
 
-
         /// <summary>
         /// Retrieves a list of available players, ordered by <see cref="PlayerDetails.LastUpdate"/>
         /// </summary>
@@ -49,6 +48,6 @@ namespace Locima.SlidingBlock.IO
         /// in <see cref="CurrentPlayer"/></para>
         /// <para>This method must be called after <see cref="IStorageManager.Initialise"/> as this method will set the initial current player</para>
         /// </remarks>
-        void EnsureCurrentPlayer();
+ //       void EnsureCurrentPlayer();
     }
 }

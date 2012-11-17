@@ -59,9 +59,9 @@ namespace Locima.SlidingBlock.ViewModel
             _saveGameSelectorViewModel = saveGameSelectorViewModel;
             _game = game;
             SaveGameTitle = LocalizationHelper.GetString("SaveGameLevelTitle", game.CurrentLevelIndex + 1);
-            SaveGameDescription = game.LastUpdate.ToString();
+            SaveGameLastUpdate = game.LastUpdate.DateTime;
             Thumbnail = game.CurrentLevel.Thumbnail;
-            _launchGameUri = GamePage.CreateNavigationUri(game.Id, false);
+            _launchGameUri = GamePage.CreateNavigationUri(game.Id, 0);
 
             DeleteGameCommand = new DelegateCommand(DeleteGameAction);
             LaunchGameCommand = new DelegateCommand(LaunchGameAction);
@@ -76,7 +76,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// <summary>
         /// A description of the game, set in <see cref="Initialise"/>.
         /// </summary>
-        public string SaveGameDescription { get; private set; }
+        public DateTime SaveGameLastUpdate { get; private set; }
 
         /// <summary>
         /// A thumbnail to show representing the current state of the game, set in <see cref="Initialise"/>.

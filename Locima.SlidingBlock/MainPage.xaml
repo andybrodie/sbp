@@ -6,15 +6,17 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Controls="clr-namespace:Locima.SlidingBlock.Controls" mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    xmlns:Controls="clr-namespace:Locima.SlidingBlock.Controls"
+    xmlns:ViewModel="clr-namespace:Locima.SlidingBlock.ViewModel" mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="PortraitOrLandscape"
     Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
-    d:DataContext="{d:DesignData /SampleData/MenuPageViewModelSampleData.xaml}">
-    
+    d:DataContext="{d:DesignData /SampleData/MenuPageViewModelSampleData.xaml}"
+    Style="{StaticResource TransitionPageStyle}">
+
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
