@@ -4,6 +4,7 @@ using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
 using Locima.SlidingBlock.ViewModel;
+using Locima.SlidingBlock.ViewModel.Menus;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using NLog;
@@ -42,16 +43,10 @@ namespace Locima.SlidingBlock
 //            NavigationService.Navigate(new Uri("/LevelEditor.xaml?gameTemplateId=GameTemplates%5cba4d2757-dc0e-4621-ac0a-9cfcd173c074&levelIndex=0&createNew=False", UriKind.Relative));
             LittleWatson.CheckForPreviousException();
 
-            string pageId;
-            if (!NavigationContext.QueryString.TryGetValue(MenuPageQueryParamName, out pageId))
-            {
-                pageId = "MainMenu";
-            }
-
             CreateApplicationBar();
 
-            MenuPageViewModel page = MenuPageBroker.RetrieveMenuPage(pageId);
-
+            string pageId = this.GetQueryParameter(MenuPageQueryParamName) ?? "MainMenu";
+            MenuPageViewModel page = MenuPageBroker.RetrieveMenuPage(pageId, NavigationService.BackStack);
             DataContext = page;
         }
 
@@ -72,9 +67,7 @@ namespace Locima.SlidingBlock
             IApplicationBarMenuItem item = ApplicationBarHelper.AddMenuItem(ApplicationBar,
                                                                             LocalizationHelper.GetString(
                                                                                 "AboutMenuOption"));
-            item.Click +=
-                (sender, args) =>
-                NavigationService.Navigate(GetAboutPageUri());
+            item.Click += (sender, args) => NavigationService.Navigate(GetAboutPageUri());
 
             // Player selection
             item = ApplicationBarHelper.AddMenuItem(ApplicationBar, LocalizationHelper.GetString("SelectPlayer"));
@@ -132,7 +125,6 @@ namespace Locima.SlidingBlock
             {
                 uriString = String.Format("{0}?{1}={2}", uriString, MenuPageQueryParamName, menuPageName);
             }
-
             return new Uri(uriString, UriKind.Relative);
         }
     }

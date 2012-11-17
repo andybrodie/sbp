@@ -19,7 +19,8 @@ namespace Locima.SlidingBlock.Test
         /// <returns></returns>
         public static Uri TestEndGameScreen()
         {
-            SaveGame sg = SaveGameFactory.CreateSaveGame(SinglePlayerGame.SinglePlayerGamePersistentId, 3, 3);
+            GameTemplate template = GameTemplateStorageManager.Instance.GetGameTemplates()[0];
+            SaveGame sg = SaveGameFactory.CreateSaveGame(template, 3, 3);
             sg.Levels[0].MoveCount = 100;
             sg.Levels[0].ElapsedTime = new TimeSpan(0, 0, 10, 00);
 

@@ -17,16 +17,20 @@ namespace Locima.SlidingBlock.ViewModel
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// Initialise <see cref="CustomGameList"/>
+        /// Initialise <see cref="GameTemplateList"/>
         /// </summary>
         public GameTemplateSelectorViewModel()
         {
-            CustomGameList = new ObservableCollection<GameTemplateViewModel>();
+            GameTemplateList = new ObservableCollection<GameTemplateViewModel>();
             CreateGameTemplateCommand = new DelegateCommand(CreateGameTemplateAction);
             SelectGameTemplateCommand = new DelegateCommand(SelectGameTemplateAction);
         }
 
-        public ObservableCollection<GameTemplateViewModel> CustomGameList { get; private set; }
+
+        /// <summary>
+        /// The list of game templates
+        /// </summary>
+        public ObservableCollection<GameTemplateViewModel> GameTemplateList { get; private set; }
 
         /// <summary>
         /// Invoked to create a new custom game template
@@ -34,7 +38,7 @@ namespace Locima.SlidingBlock.ViewModel
         public ICommand CreateGameTemplateCommand { get; private set; }
 
         /// <summary>
-        /// Invoked to select a custom game template to edit
+        /// Invoked to select a game template to edit
         /// </summary>
         public ICommand SelectGameTemplateCommand { get; private set; }
 
@@ -53,15 +57,21 @@ namespace Locima.SlidingBlock.ViewModel
 
         public void Initialise()
         {
-            CustomGameList.Clear();
-            List<GameTemplate> customGames = GameTemplateStorageManager.Instance.GetGameTemplates();
-            customGames.Sort(
+            Refresh();
+        }
+
+        public void Refresh()
+        {
+            GameTemplateList.Clear();
+            List<GameTemplate> gameTemplates = GameTemplateStorageManager.Instance.GetGameTemplates();
+            gameTemplates.Sort(
                 (definition, gameTemplate) =>
                 String.Compare(definition.Title, gameTemplate.Title, StringComparison.InvariantCultureIgnoreCase));
-            foreach (GameTemplate gameTemplate in customGames)
+            foreach (GameTemplate gameTemplate in gameTemplates)
             {
-                CustomGameList.Add(new GameTemplateViewModel(this, gameTemplate));
+                GameTemplateList.Add(new GameTemplateViewModel(this, gameTemplate));
             }
+
         }
     }
 }

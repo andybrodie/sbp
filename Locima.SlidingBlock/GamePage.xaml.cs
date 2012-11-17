@@ -223,7 +223,7 @@ namespace Locima.SlidingBlock
         /// <param name="suppressBack">If true, then the loaded game page will remove the previous page from the backstack.
         /// This is useful when progressing another level</param>
         /// <returns> A <see cref="Uri" /> that will launch the game using the parameters provided </returns>
-        public static Uri CreateNavigationUri(string puzzleMetadataFilename, bool suppressBack)
+        public static Uri CreateNavigationUri(string puzzleMetadataFilename, int suppressBack)
         {
             return
                 new Uri(

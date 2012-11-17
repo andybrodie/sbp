@@ -1,5 +1,4 @@
 using System;
-using System.Windows;
 using System.Windows.Media.Imaging;
 using Locima.SlidingBlock.Common;
 using NLog;
@@ -125,7 +124,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// <para>See <see cref="Invoke"/> to understand the precedence of <see cref="SelectedAction"/>, 
         /// <see cref="TargetPage"/> and <see cref="TargetUri"/></para>
         /// </remarks>
-        public Func<Uri> SelectedAction { get; set; }
+        public Func<object, Uri> SelectedAction { get; set; }
 
         /// <summary>
         ///   Returns true if the menu item should be enabled, false otherwise
@@ -152,6 +151,8 @@ namespace Locima.SlidingBlock.ViewModel
                 OnNotifyPropertyChanged("Icon");
             }
         }
+
+        public object Parameter { get; set; }
 
         /// <summary>
         /// Re-usable defined function for <see cref="IsEnabled"/> that always returns <c>false</c>
@@ -183,8 +184,8 @@ namespace Locima.SlidingBlock.ViewModel
 
             if (SelectedAction != null)
             {
-                Logger.Debug("Invoking SelectedAction on menu item");
-                navUri = SelectedAction();
+                Logger.Debug("Invoking SelectedAction({0}) on menu item {1}", Parameter, this);
+                navUri = SelectedAction(Parameter);
                 Logger.Debug("Invoked SelectedAction on menu item which returned Uri {0}", navUri);
             }
             // No SelectedAction has been set, so look at TargetUri
@@ -204,7 +205,6 @@ namespace Locima.SlidingBlock.ViewModel
             {
                 throw new InvalidStateException("MenuPage bug, {0} has no SelectedAction, TargetUri or TargetPage set");
             }
-
 
             // If navUri has been set by SelectedAction, then follow that, if not look in TargetUri and TargetPage
 

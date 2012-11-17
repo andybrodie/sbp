@@ -39,14 +39,15 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <ListBox x:Name="CustomGameListBox" 
                     Margin="0,0,-12,0" SelectionChanged="CustomGameListBoxSelectionChanged"
-                    ItemsSource="{Binding Path=CustomGameList}">
+                    ItemsSource="{Binding Path=GameTemplateList}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource PhoneTextExtraLargeStyle}" Text="{Binding Path=Title}"/>
                             <toolkit:ContextMenuService.ContextMenu>
                                 <toolkit:ContextMenu Name="MyContextMenu">
-                                    <toolkit:MenuItem Header="{Binding Path=Strings.CustomGameContextMenuDelete, Source={StaticResource Localization}}" Command="{Binding EditCustomGameCommand}" />
+                                    <toolkit:MenuItem Header="{Binding Path=Strings.CustomGameContextMenuDelete, Source={StaticResource Localization}}" Command="{Binding DeleteGameTemplateCommand}" />
+                                    <toolkit:MenuItem Header="{Binding Path=Strings.CustomGameContextMenuCopy, Source={StaticResource Localization}}" Command="{Binding CopyGameTemplateCommand}" />
                                 </toolkit:ContextMenu>
                             </toolkit:ContextMenuService.ContextMenu>
                         </StackPanel>

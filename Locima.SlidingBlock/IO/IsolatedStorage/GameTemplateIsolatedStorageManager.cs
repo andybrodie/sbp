@@ -84,7 +84,6 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
 
             if (string.IsNullOrEmpty(gameTemplate.Author))
             {
-                PlayerStorageManager.Instance.EnsureCurrentPlayer();
                 gameTemplate.Author = PlayerStorageManager.Instance.CurrentPlayer.Name;
             }
 
@@ -95,6 +94,20 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
 
             IOHelper.SaveObject(gameTemplate);
 
+        }
+
+        public List<string> GetGameTemplateIds()
+        {
+            return IOHelper.GetFileNames(GameTemplateDirectory);
+        }
+
+        /// <summary>
+        /// Deletes a game template
+        /// </summary>
+        /// <param name="id">The identity of the game template</param>
+        public void Delete(string id)
+        {
+            IOHelper.DeleteFile(id);
         }
     }
 }

@@ -14,6 +14,14 @@ namespace Locima.SlidingBlock.GameTemplates
     public class GameTemplate : IPersistedObject
     {
 
+
+        /// <summary>
+        /// If this flag is set then the game cannot be deleted.
+        /// </summary>
+        /// <remarks>This is only used for built-in games, it avoid us having to cater for the situation where no game templates exist at all</remarks>
+        [DataMember]
+        public bool IsReadOnly { get; set; }
+
         /// <inheritdoc/>
         [DataMember]
         public string AppId { get; set; }

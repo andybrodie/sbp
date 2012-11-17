@@ -204,6 +204,21 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
             return fullFileNames;
         }
 
+
+        /// <summary>
+        ///   Returns the full path names of files within the direcctory specified by <paramref name="directoryName" />
+        /// </summary>
+        /// <param name="directoryName"> The name of the directory to search within </param>
+        /// <returns> A (potentially empty) list of files </returns>
+        public static List<string> GetFileNames(string directoryName)
+        {
+            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                return GetFileNames(directoryName, store);
+            }
+        }
+
+
         /// <summary>
         ///   Saves an object to isolated storage, creating or overwriting if necessary, using the default <see
         ///    cref="DataContractSerializer" />
@@ -347,7 +362,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
                         }
                         else
                         {
-                            Logger.Error("Call to DeleteGame for file {0} invoked, but no such file exists", filename);
+                            Logger.Error("Call to DeleteFile for file {0} invoked, but no such file exists", filename);
                             result = false;
                         }
                     }
@@ -361,6 +376,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
             }
             return result;
         }
+
 
         #region Nested type: DownloadRequest
 
@@ -534,7 +550,6 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
             }
             return total;
         }
-
 
     }
 }

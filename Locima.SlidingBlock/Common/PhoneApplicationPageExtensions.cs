@@ -16,6 +16,7 @@ namespace Locima.SlidingBlock.Common
             return GetQueryParameter(page, queryParamName, s => s);
         }
 
+
         public static T GetQueryParameter<T>(this PhoneApplicationPage page, string parameterName,
                                              Func<string, T> parser)
         {
@@ -28,11 +29,12 @@ namespace Locima.SlidingBlock.Common
             }
             else
             {
-                Logger.Error("{0} No value specified for {1}", page, parameterName);
+                Logger.Info("On {0}, found no value specified for query parameter {1}", page, parameterName);
                 return default(T);
             }
             return result;
         }
+
 
         public static int GetQueryParameterAsInt(this PhoneApplicationPage page, string parameterName)
         {

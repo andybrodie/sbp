@@ -200,7 +200,6 @@
     <Compile Include="ViewModel\IViewModelBase.cs" />
     <Compile Include="ViewModel\LevelDefinitionViewModel.cs" />
     <Compile Include="ViewModel\MenuItem.cs" />
-    <Compile Include="ViewModel\MenuPageBroker.cs" />
     <Compile Include="ViewModel\MenuPageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.de-DE.Designer.cs">
@@ -221,6 +220,7 @@
     <Compile Include="ViewModel\DelegateCommand.cs" />
     <Compile Include="ViewModel\DependencyViewModelBase.cs" />
     <Compile Include="ViewModel\ImageAreaChooserViewModel.cs" />
+    <Compile Include="ViewModel\Menus\MenuPageBroker.cs" />
     <Compile Include="ViewModel\PlayerSelectorItem.cs" />
     <Compile Include="ViewModel\PlayerSelectorViewModel.cs" />
     <Compile Include="ViewModel\PuzzleViewModel.cs" />
@@ -343,6 +343,7 @@
     <Content Include="Icons\appbar.save.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Icons\appbar.tabs.rest.png" />
     <Content Include="Icons\appbar.transport.ff.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
