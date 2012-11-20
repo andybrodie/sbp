@@ -34,11 +34,6 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
         {
             const string andy = "Andy Brodie";
             Uri andyLink = new Uri("http://www.locima.co.uk");
-            LicenseDefinition ccby30 = new LicenseDefinition
-                {
-                    Link = new Uri("http://ccby3.0.org/licenses/by/3.0/"),
-                    Title = "Creative Commons Attribution 3.0 (CC BY 3.0)"
-                };
 
             // If debugging then use a scramble that allows the level to be finished within one move, to make it easier to test stuff out
             Scrambler.ScrambleType scramble = Debugger.IsAttached
@@ -61,7 +56,7 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
                                         "My wife's dog, \"Dax\", an adorable, dopey yellow labrador",
                                     OwnerName = andy,
                                     OwnerUri = andyLink,
-                                    License = ccby30,
+                                    License = LicenseDefinition.CcBy30,
                                     ScrambleType = scramble
                                 },
                             new LevelDefinition
@@ -71,7 +66,7 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
                                     ImageText = "A holiday snap from when I went to Rome in 2010",
                                     OwnerName = andy,
                                     OwnerUri = andyLink,
-                                    License = ccby30,
+                                    License = LicenseDefinition.CcBy30,
                                     ScrambleType = scramble
                                 },
                             new LevelDefinition
@@ -82,7 +77,7 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
                                         "A flower in Exbury Gardens, Hampshire",
                                     OwnerName = andy,
                                     OwnerUri = andyLink,
-                                    License = ccby30,
+                                    License = LicenseDefinition.CcBy30,
                                     ScrambleType = scramble
                                 }
                         }

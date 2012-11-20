@@ -81,6 +81,7 @@
     <Compile Include="GameTemplates\SaveGameFactory.cs" />
     <Compile Include="IO\IGameTemplateManager.cs" />
     <Compile Include="IO\ImageHelper.cs" />
+    <Compile Include="IO\IShadowableObject.cs" />
     <Compile Include="LevelEditor.xaml.cs">
       <DependentUpon>LevelEditor.xaml</DependentUpon>
     </Compile>
@@ -324,6 +325,9 @@
     </Content>
     <Content Include="Content\About\Data.xml">
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="GameTemplates\DefaultImage.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="GameTemplates\SinglePlayer\1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

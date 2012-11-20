@@ -105,8 +105,15 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+
+        /// <summary>
+        /// The command executed when the user selects an image (<see cref="SelectImageAction"/>)
+        /// </summary>
         public ICommand SelectImageCommand { get; set; }
 
+        /// <summary>
+        /// The image shown on the level editor that is used for this level
+        /// </summary>
         public WriteableBitmap Image
         {
             get { return _image; }
@@ -117,6 +124,11 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+        /// <summary>
+        /// This is set when a new image has been selected for this level (inside <see cref="ImageChooser"/>) and we're returning to this page.
+        /// </summary>
+        /// <remarks>
+        /// This causes the image on the screen to be updated</remarks>
         public string NewImageId
         {
             private get { return _newImageId; }

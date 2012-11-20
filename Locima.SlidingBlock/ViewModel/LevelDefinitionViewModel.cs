@@ -1,30 +1,37 @@
 using System;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Locima.SlidingBlock.GameTemplates;
-using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Scrambles;
+using NLog;
 
 namespace Locima.SlidingBlock.ViewModel
 {
     public class LevelDefinitionViewModel : ViewModelBase
     {
-        private LevelDefinition _level;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public LevelDefinitionViewModel(LevelDefinition level)
+        private LevelDefinition _level;
+        private GameTemplateEditorViewModel _parent;
+
+        public LevelDefinitionViewModel(GameTemplateEditorViewModel gameTemplateEditorViewModel, LevelDefinition level)
         {
+            _parent = gameTemplateEditorViewModel;
             _level = level;
+            AddLevelBeforeCommand = new DelegateCommand(parameter => _parent.AddLevelBefore(_level));
+            AddLevelAfterCommand = new DelegateCommand(parameter => _parent.AddLevelAfter(_level));
+            MoveLeveCommand = new DelegateCommand(parameter => _parent.MoveLevel(_level, "Up".Equals(parameter)));
+
+            DeleteLevelCommand = new DelegateCommand(DeleteLevelAction);
             CreateThumbnail();
         }
 
-        private void CreateThumbnail()
-        {
-            Thumbnail = _level.CreateThumbnail(64, 64);
-        }
 
         public LevelDefinition Level
         {
             get { return _level; }
         }
+
 
         public WriteableBitmap Thumbnail { get; private set; }
 
@@ -76,6 +83,27 @@ namespace Locima.SlidingBlock.ViewModel
                 _level.License.Link = value;
                 OnNotifyPropertyChanged("LicenseLink");
             }
+        }
+
+        public ICommand AddLevelBeforeCommand { get; private set; }
+
+        public ICommand AddLevelAfterCommand { get; private set; }
+
+        public ICommand DeleteLevelCommand { get; private set; }
+
+        public ICommand MoveLeveCommand { get; private set; }
+    
+        private void DeleteLevelAction(object parameter)
+        {
+            Logger.Info("Deleting level {0}", this);
+            // TODO The image is orphaned, need to fix that!
+            _parent.LevelList.Remove(this);
+        }
+
+
+        private void CreateThumbnail()
+        {
+            Thumbnail = _level.CreateThumbnail(64, 64);
         }
     }
 }
