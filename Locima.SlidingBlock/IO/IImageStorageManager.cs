@@ -42,7 +42,7 @@ namespace Locima.SlidingBlock.IO
         /// <remarks>
         /// Temporary files are cleared out when the store is initialised on application load</remarks>
         /// <param name="imageStream">A stream containing the image, typically from <see cref="PhotoChooserTask"/> or a web client</param>
-        /// <returns>The ID of the image, to be used with <see cref="LoadImage"/></returns>
+        /// <returns>The ID of the image, to be used with <see cref="Load(string)"/></returns>
         string SaveTemporary(Stream imageStream);
 
         /// <summary>

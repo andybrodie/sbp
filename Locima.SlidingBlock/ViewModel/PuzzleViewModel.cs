@@ -178,6 +178,10 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+
+        /// <summary>
+        /// A thumbnail image for the puzzle, used to set <see cref="LevelState.Thumbnail"/>
+        /// </summary>
         public WriteableBitmap Thumbnail { get; set; }
 
 

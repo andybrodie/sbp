@@ -143,16 +143,16 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         }
 
 
-
         /// <summary>
         /// When the user wants to start a new game they need to select which game template to use, IFF there is more than one defined, otherwise just use the default
         /// </summary>
         /// <param name="tilesAcross">Each puzzle will have this many tiles across in the puzzle</param>
         /// <param name="tilesHigh">Each puzzle will have this many tiles high in the puzzle</param>
+        /// <param name="pagesOnBackStackToSuppress">The number of pages that have been navigated through the menus, which must be suppressed (<see cref="CalculatePagesToRemoveInBackstack"/>)</param>
         /// <returns>Either a Uri to navigate to the GameTemplateSelector</returns>
         private static Uri CreateNewGame(int tilesAcross, int tilesHigh, int pagesOnBackStackToSuppress)
         {           
-            SaveGame sg = SaveGameFactory.CreateSaveGame(GameTemplateStorageManager.Instance.GetGameTemplates()[0],
+            SaveGame sg = SaveGameFactory.CreateSaveGame(GameTemplateStorageManager.Instance.GetGameTemplates(false, false)[0],
                                                          tilesAcross, tilesHigh);
 
             /* We want to suppress navigating back to this page because otherwise clicking "Back" from a game would put you back to this menu item
@@ -263,12 +263,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
             {
                 Title = LocalizationHelper.GetString(gameLabel),
                 Text = LocalizationHelper.GetString("GameDescription", tilesAcross, tilesHigh),
-                Parameter = new Tuple<int, int>(tilesAcross, tilesHigh),
-                SelectedAction = delegate(object tupleObject)
-                {
-                    Tuple<int, int> tuple = (Tuple<int, int>)tupleObject;
-                    return CreateNewGame(tuple.First, tuple.Second, pagesOnBackStackToSuppress);
-                }
+                SelectedAction = () => CreateNewGame(tilesAcross, tilesHigh, pagesOnBackStackToSuppress)
             };
         }
 
@@ -284,16 +279,16 @@ namespace Locima.SlidingBlock.ViewModel.Menus
                                              MenuItems = new ObservableCollection<MenuItemViewModel>()
                                          };
 
-            foreach (GameTemplate template in GameTemplateStorageManager.Instance.GetGameTemplates())
+            foreach (GameTemplate template in GameTemplateStorageManager.Instance.GetGameTemplates(false, false))
             {
+                GameTemplate gameTemplate = template;   // Have to do this because we access the template ID inside the closure below
                 mpvm.MenuItems.Add(new MenuItemViewModel
                                        {
                                            Title = template.Title,
                                            Text = template.Author,
-                                           Parameter = template.Id,
-                                           SelectedAction = delegate(object selectedTemplateIdObject)
+                                           SelectedAction = delegate
                                                                 {
-                                                                    SelectedTemplateId = (string) selectedTemplateIdObject;
+                                                                    SelectedTemplateId = gameTemplate.Id;
                                                                     return MainPage.CreateNavigationUri("SelectDifficulty");
                                                                 }
                                        });

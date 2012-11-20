@@ -71,8 +71,7 @@ namespace Locima.SlidingBlock
                                                   LocalizationHelper.GetString("Cancel"));
 
             icon.Click += CancelClick;
-/*
-            icon = ApplicationBarHelper.AddButton(ApplicationBar,
+/*            icon = ApplicationBarHelper.AddButton(ApplicationBar,
                                                     ApplicationBarHelper.ButtonIcons["Edit"],
                                                     LocalizationHelper.GetString("SelectLicense"));
   */          // TODO License selector logic, we could do with a picker

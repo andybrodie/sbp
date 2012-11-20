@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Locima.SlidingBlock.GameTemplates;
 using Locima.SlidingBlock.Persistence;
 
 namespace Locima.SlidingBlock.IO
@@ -57,5 +58,5 @@ namespace Locima.SlidingBlock.IO
         /// </summary>
         /// <returns>May return null if the <paramref name="playerId"/> has no save games yet (e.g. is a new player)</returns>
         SaveGame GetContinuableGame(string playerId);
-    }
+   }
 }

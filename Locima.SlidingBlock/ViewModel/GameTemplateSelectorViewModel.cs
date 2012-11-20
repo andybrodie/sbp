@@ -55,15 +55,25 @@ namespace Locima.SlidingBlock.ViewModel
             SendViewMessage(new NavigationMessageArgs(GameEditor.CreateNavigationUri()));
         }
 
+
+        /// <summary>
+        /// Calls <see cref="Refresh"/>
+        /// </summary>
         public void Initialise()
         {
             Refresh();
         }
 
+
+        /// <summary>
+        /// Refreshes <see cref="GameTemplateList"/> from the <see cref="IGameTemplateManager"/>
+        /// </summary>
         public void Refresh()
         {
+            Logger.Info("Refreshing list of gample templates");
             GameTemplateList.Clear();
-            List<GameTemplate> gameTemplates = GameTemplateStorageManager.Instance.GetGameTemplates();
+            List<GameTemplate> gameTemplates = GameTemplateStorageManager.Instance.GetGameTemplates(true, true);            
+
             gameTemplates.Sort(
                 (definition, gameTemplate) =>
                 String.Compare(definition.Title, gameTemplate.Title, StringComparison.InvariantCultureIgnoreCase));

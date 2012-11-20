@@ -28,7 +28,7 @@ namespace Locima.SlidingBlock
         /// </summary>
         public GameTemplateEditorViewModel ViewModel
         {
-            get { return ((GameTemplateEditorViewModel) Resources["viewModel"]); }
+            get { return ((GameTemplateEditorViewModel) Resources["ViewModel"]); }
         }
 
 
@@ -50,12 +50,30 @@ namespace Locima.SlidingBlock
             Logger.Info("Creating application bar");
 
             ApplicationBar = new ApplicationBar();
+
+            // Add a new level to the end of the set of levels
             IApplicationBarIconButton icon = ApplicationBarHelper.AddButton(ApplicationBar,
                                                                             ApplicationBarHelper.ButtonIcons["New"],
                                                                             LocalizationHelper.GetString(
                                                                                 "AppendLevelButton"));
 
             icon.Click += (o, args) => ViewModel.AddEditLevel(true, LevelsListBox.Items.Count);
+
+            // Save changes made to the game template
+            icon = ApplicationBarHelper.AddButton(ApplicationBar,
+                                                  ApplicationBarHelper.ButtonIcons["Save"],
+                                                  LocalizationHelper.GetString(
+                                                      "SaveGameTemplateButton"));
+
+            icon.Click += (o, args) => ViewModel.SaveTemplate();
+
+            // Cancel changes made to the game template
+            icon = ApplicationBarHelper.AddButton(ApplicationBar,
+                                                  ApplicationBarHelper.ButtonIcons["Cancel"],
+                                                  LocalizationHelper.GetString(
+                                                      "Cancel"));
+
+            icon.Click += (sender, args) => NavigationService.Navigate(GameTemplateSelector.CreateNavigationUri());
         }
 
 

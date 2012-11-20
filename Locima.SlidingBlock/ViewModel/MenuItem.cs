@@ -124,7 +124,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// <para>See <see cref="Invoke"/> to understand the precedence of <see cref="SelectedAction"/>, 
         /// <see cref="TargetPage"/> and <see cref="TargetUri"/></para>
         /// </remarks>
-        public Func<object, Uri> SelectedAction { get; set; }
+        public Func<Uri> SelectedAction { get; set; }
 
         /// <summary>
         ///   Returns true if the menu item should be enabled, false otherwise
@@ -151,8 +151,6 @@ namespace Locima.SlidingBlock.ViewModel
                 OnNotifyPropertyChanged("Icon");
             }
         }
-
-        public object Parameter { get; set; }
 
         /// <summary>
         /// Re-usable defined function for <see cref="IsEnabled"/> that always returns <c>false</c>
@@ -184,8 +182,8 @@ namespace Locima.SlidingBlock.ViewModel
 
             if (SelectedAction != null)
             {
-                Logger.Debug("Invoking SelectedAction({0}) on menu item {1}", Parameter, this);
-                navUri = SelectedAction(Parameter);
+                Logger.Debug("Invoking SelectedAction on menu item {0}", this);
+                navUri = SelectedAction();
                 Logger.Debug("Invoked SelectedAction on menu item which returned Uri {0}", navUri);
             }
             // No SelectedAction has been set, so look at TargetUri

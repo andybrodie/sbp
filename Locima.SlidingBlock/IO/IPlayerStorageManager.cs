@@ -40,14 +40,5 @@ namespace Locima.SlidingBlock.IO
         /// <param name="playerId"></param>
         void DeletePlayer(string playerId);
 
-        /// <summary>
-        /// Ensure that there is a valid player to be returned by <see cref="CurrentPlayer"/>
-        /// </summary>
-        /// <remarks>
-        /// <para>If code assumes that <see cref="CurrentPlayer"/> is never null, then this method should be used to ensure that there is at least one player defined and they are referenced
-        /// in <see cref="CurrentPlayer"/></para>
-        /// <para>This method must be called after <see cref="IStorageManager.Initialise"/> as this method will set the initial current player</para>
-        /// </remarks>
- //       void EnsureCurrentPlayer();
     }
 }

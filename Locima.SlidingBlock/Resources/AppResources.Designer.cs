@@ -79,6 +79,24 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to insert level after.
+        /// </summary>
+        public static string AddLevelAfter {
+            get {
+                return ResourceManager.GetString("AddLevelAfter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to insert level before.
+        /// </summary>
+        public static string AddLevelBefore {
+            get {
+                return ResourceManager.GetString("AddLevelBefore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to add player.
         /// </summary>
         public static string AddNewPlayerTitle {
@@ -304,6 +322,15 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to delete level.
+        /// </summary>
+        public static string DeleteLevel {
+            get {
+                return ResourceManager.GetString("DeleteLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to easy.
         /// </summary>
         public static string Easy {
@@ -354,6 +381,15 @@ namespace Locima.SlidingBlock.Resources {
         public static string GameDescription {
             get {
                 return ResourceManager.GetString("GameDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to edit game template.
+        /// </summary>
+        public static string GameEditorPageTitle {
+            get {
+                return ResourceManager.GetString("GameEditorPageTitle", resourceCulture);
             }
         }
         
@@ -574,6 +610,24 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to move down.
+        /// </summary>
+        public static string MoveLevelDown {
+            get {
+                return ResourceManager.GetString("MoveLevelDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to move up.
+        /// </summary>
+        public static string MoveLevelUp {
+            get {
+                return ResourceManager.GetString("MoveLevelUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to moves in.
         /// </summary>
         public static string MovesInLabel {
@@ -696,6 +750,15 @@ namespace Locima.SlidingBlock.Resources {
         public static string SaveGameSelectorPageTitle {
             get {
                 return ResourceManager.GetString("SaveGameSelectorPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to save.
+        /// </summary>
+        public static string SaveGameTemplateButton {
+            get {
+                return ResourceManager.GetString("SaveGameTemplateButton", resourceCulture);
             }
         }
         
