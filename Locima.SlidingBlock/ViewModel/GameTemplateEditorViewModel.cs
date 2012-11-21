@@ -98,18 +98,9 @@ namespace Locima.SlidingBlock.ViewModel
         public void AddEditLevel(bool createNew, int levelIndex)
         {
             SaveShadow();
-            SendViewMessage(
-                new NavigationMessageArgs(LevelEditor.CreateNavigationUri(_gameTemplate.Id, levelIndex, createNew)));
+            SendViewMessage(new NavigationMessageArgs(LevelEditor.CreateNavigationUri(_gameTemplate.Id, levelIndex, createNew)));
         }
 
-
-        public void EditLevel(int levelIndex)
-        {
-            SaveShadow();
-            SendViewMessage(
-                new NavigationMessageArgs(LevelEditor.CreateNavigationUri(_gameTemplate.Id, levelIndex,
-                                                                          false)));
-        }
 
 
         public void Initialise()
@@ -145,6 +136,7 @@ namespace Locima.SlidingBlock.ViewModel
             {
                 Logger.Info("Ignoring call to Save because this game template isn't a shadow, so we've not changed anything: {0}", _gameTemplate);
             }
+            SendViewMessage(NavigationMessageArgs.Back);
         }
 
 
@@ -160,6 +152,7 @@ namespace Locima.SlidingBlock.ViewModel
                                                    new Uri("/GameTemplates/DefaultImage.jpg", UriKind.Relative)
                                            };
             _gameTemplate.Levels.Insert(insertPoint, newLevel);
+            SaveShadow();
             RefreshLevelList();
         }
 
@@ -217,6 +210,7 @@ namespace Locima.SlidingBlock.ViewModel
                 LevelDefinition temp = _gameTemplate.Levels[index];
                 _gameTemplate.Levels[index] = _gameTemplate.Levels[index + offset];
                 _gameTemplate.Levels[index + offset] = temp;
+                SaveShadow();
                 RefreshLevelList();
             }
         }

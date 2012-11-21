@@ -24,7 +24,7 @@ namespace Locima.SlidingBlock
         /// </summary>
         public LevelEditorViewModel ViewModel
         {
-            get { return ((LevelEditorViewModel)Resources["viewModel"]); }
+            get { return ((LevelEditorViewModel)Resources["ViewModel"]); }
         }
 
 

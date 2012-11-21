@@ -25,17 +25,17 @@ namespace Locima.SlidingBlock
         private const string LevelIndexQueryParameterName = "levelIndex";
         private const string GameTemplateIdQueryParameterName = "gameTemplateId";
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private static string _gameTemplateId;
-        private static int _levelIndex;
 
         private Point _imagePosition = new Point(0, 0);
         private Point _oldFinger1;
         private Point _oldFinger2;
         private double _oldScaleFactor;
         private double _totalImageScale = 1d;
+        private string _gameTemplateId;
+        private int _levelIndex;
 
         /// <summary>
-        /// Call <see cref="InitializeComponent"/> and build the application bar
+        /// Call <see cref="InitializeComponent"/> and <see cref="BuildApplicationBar"/>
         /// </summary>
         public ImageAreaChooser()
         {
@@ -79,18 +79,71 @@ namespace Locima.SlidingBlock
         {
             IApplicationBar appBar = new ApplicationBar();
 
-            IApplicationBarIconButton ok = ApplicationBarHelper.AddButton(appBar,
-                                                                          ApplicationBarHelper.ButtonIcons["Tick"],
-                                                                          LocalizationHelper.GetString("OK"));
-            ok.Click += AcceptImage;
+            IApplicationBarIconButton button = ApplicationBarHelper.AddButton(appBar,
+                                                                              ApplicationBarHelper.ButtonIcons["Tick"],
+                                                                              LocalizationHelper.GetString("OK"));
+            button.Click += AcceptImage;
 
-            ApplicationBarHelper.AddButton(appBar, ApplicationBarHelper.ButtonIcons["Cancel"],
-                                           LocalizationHelper.GetString("Cancel"));
-            ok.Click += (sender, args) => Dispatcher.BeginInvoke(() => NavigationService.GoBack());
+            button = ApplicationBarHelper.AddButton(appBar, ApplicationBarHelper.ButtonIcons["Cancel"],
+                                                    LocalizationHelper.GetString("Cancel"));
+            button.Click += (sender, args) => Dispatcher.BeginInvoke(() => NavigationService.GoBack());
 
             ApplicationBar = appBar;
         }
+        
 
+        private void AcceptImage(object sender, EventArgs e)
+        {
+            // Grab the contents of the window, scale to the required amount and save the image in isolated storage as this is our "master image" for the puzzle
+            int offsetX = (int) (_imagePosition.X - ViewModel.CropLeft);
+            int offsetY = (int) (_imagePosition.Y - ViewModel.CropTop);
+            int imageSizeX = (int) (_totalImageScale*ViewModel.CropWidth);
+            int imageSizeY = (int) (_totalImageScale*ViewModel.CropHeight);
+
+            Logger.Info("Creating cropped image from {0},{1} of width {2} and height {3} pixels.", offsetX, offsetY,
+                        imageSizeX, imageSizeY);
+
+            WriteableBitmap sourceBitmap = new WriteableBitmap(ViewModel.Image);
+            WriteableBitmap puzzleBitmap = sourceBitmap.Crop(offsetX, offsetY, imageSizeX, imageSizeY);
+
+            // Reduce the size of the image to the largest size it will ever be displayed at
+            if (imageSizeX > LevelDefinition.ImageSizeX || imageSizeY > LevelDefinition.ImageSizeY)
+            {
+                Logger.Debug("Resizing to {0} x {1}", LevelDefinition.ImageSizeX, LevelDefinition.ImageSizeY);
+                puzzleBitmap.Resize(LevelDefinition.ImageSizeX, LevelDefinition.ImageSizeY,
+                                    WriteableBitmapExtensions.Interpolation.Bilinear);
+            }
+
+            // Save the image
+            ImageStorageManager.Instance.Save(ViewModel.ImageId, puzzleBitmap);
+
+            // Update the GameTemplate's Level image to the new image
+            GameTemplate template = GameTemplateStorageManager.Instance.Load(_gameTemplateId);
+            template.Levels[_levelIndex].XapImageUri = null;
+            template.Levels[_levelIndex].ImageId = ViewModel.ImageId;
+            GameTemplateStorageManager.Instance.Save(template);
+
+            // Go back to the Level Editor, suppressing the ImageChooser page
+            NavigationService.RemoveBackEntry();
+            Dispatcher.BeginInvoke(() => NavigationService.GoBack());
+//                NavigationService.Navigate(LevelEditor.CreateNavigationUri(_gameTemplateId, _levelIndex, false,
+//                                                                           ViewModel.ImageId)));
+        }
+
+
+        /// <summary>
+        /// Create a Uri to navigate to this page
+        /// </summary>
+        /// <returns></returns>
+        public static Uri CreateNavigationUri(string gameTemplateId, int levelIndex, string imageId)
+        {
+            return new Uri(
+                string.Format("/ImageAreaChooser.xaml?&{0}={1}&{2}={3}&{4}={5}", GameTemplateIdQueryParameterName,
+                              HttpUtility.UrlEncode(gameTemplateId), LevelIndexQueryParameterName, levelIndex, ImageIdQueryParameterName,
+                              HttpUtility.UrlEncode(imageId)), UriKind.Relative);
+        }
+
+        #region Image Pan and Zoom
 
         private void OnPinchStarted(object s, PinchStartedGestureEventArgs e)
         {
@@ -102,7 +155,7 @@ namespace Locima.SlidingBlock
 
         private void OnPinchDelta(object s, PinchGestureEventArgs e)
         {
-            double scaleFactor = e.DistanceRatio/_oldScaleFactor;
+            double scaleFactor = e.DistanceRatio / _oldScaleFactor;
 
             Point currentFinger1 = e.GetPosition(ImgZoom, 0);
             Point currentFinger2 = e.GetPosition(ImgZoom, 1);
@@ -126,7 +179,7 @@ namespace Locima.SlidingBlock
         private void UpdateImage(double scaleFactor, Point delta)
         {
             Logger.Debug("Updating scale factor {0} by {1} to {2}", _totalImageScale, scaleFactor,
-                         (_totalImageScale*scaleFactor));
+                         (_totalImageScale * scaleFactor));
             _totalImageScale *= scaleFactor;
 
             Point newPosition = new Point(_imagePosition.X + delta.X, _imagePosition.Y + delta.Y);
@@ -135,14 +188,14 @@ namespace Locima.SlidingBlock
             _imagePosition = newPosition;
 
             // Calculate minimum scale factor and don't allow scale factor to mean picture can't fill square
-            double minScaleFactor = ViewModel.CropWidth/ViewModel.Image.PixelWidth;
+            double minScaleFactor = ViewModel.CropWidth / ViewModel.Image.PixelWidth;
             _totalImageScale = WithinBounds(_totalImageScale, minScaleFactor, 100.00);
             Logger.Debug("WIDTH: " + ViewModel.Image.PixelWidth);
 
             _imagePosition = WithinBounds(_imagePosition, new Point(-480, -480), new Point(30, 30));
             // TODO Change first point to calculated image size
 
-            CompositeTransform transform = (CompositeTransform) ImgZoom.RenderTransform;
+            CompositeTransform transform = (CompositeTransform)ImgZoom.RenderTransform;
             transform.ScaleX = _totalImageScale;
             transform.ScaleY = _totalImageScale;
             transform.TranslateX = _imagePosition.X;
@@ -156,16 +209,16 @@ namespace Locima.SlidingBlock
             Point currentPosition, double scaleFactor)
         {
             Point newPos1 = new Point(
-                currentFinger1.X + (currentPosition.X - oldFinger1.X)*scaleFactor,
-                currentFinger1.Y + (currentPosition.Y - oldFinger1.Y)*scaleFactor);
+                currentFinger1.X + (currentPosition.X - oldFinger1.X) * scaleFactor,
+                currentFinger1.Y + (currentPosition.Y - oldFinger1.Y) * scaleFactor);
 
             Point newPos2 = new Point(
-                currentFinger2.X + (currentPosition.X - oldFinger2.X)*scaleFactor,
-                currentFinger2.Y + (currentPosition.Y - oldFinger2.Y)*scaleFactor);
+                currentFinger2.X + (currentPosition.X - oldFinger2.X) * scaleFactor,
+                currentFinger2.Y + (currentPosition.Y - oldFinger2.Y) * scaleFactor);
 
             Point newPos = new Point(
-                (newPos1.X + newPos2.X)/2,
-                (newPos1.Y + newPos2.Y)/2);
+                (newPos1.X + newPos2.X) / 2,
+                (newPos1.Y + newPos2.Y) / 2);
 
             return new Point(
                 newPos.X - currentPosition.X,
@@ -202,48 +255,8 @@ namespace Locima.SlidingBlock
             return point;
         }
 
-
-        private void AcceptImage(object sender, EventArgs e)
-        {
-            // Grab the contents of the window, scale to the required amount and save the image in isolated storage as this is our "master image" for the puzzle
-            int offsetX = (int) (_imagePosition.X - ViewModel.CropLeft);
-            int offsetY = (int) (_imagePosition.Y - ViewModel.CropTop);
-            int imageSizeX = (int) (_totalImageScale*ViewModel.CropWidth);
-            int imageSizeY = (int) (_totalImageScale*ViewModel.CropHeight);
-
-            Logger.Info("Creating cropped image from {0},{1} of width {2} and height {3} pixels.", offsetX, offsetY,
-                        imageSizeX, imageSizeY);
-
-            WriteableBitmap sourceBitmap = new WriteableBitmap(ViewModel.Image);
-            WriteableBitmap puzzleBitmap = sourceBitmap.Crop(offsetX, offsetY, imageSizeX, imageSizeY);
-
-            // Reduce the size of the image to the largest size it will ever be displayed at
-            if (imageSizeX > LevelDefinition.ImageSizeX || imageSizeY > LevelDefinition.ImageSizeY)
-            {
-                Logger.Debug("Resizing to {0} x {1}", LevelDefinition.ImageSizeX, LevelDefinition.ImageSizeY);
-                puzzleBitmap.Resize(LevelDefinition.ImageSizeX, LevelDefinition.ImageSizeY,
-                                    WriteableBitmapExtensions.Interpolation.Bilinear);
-            }
-
-            ImageStorageManager.Instance.Save(ViewModel.ImageId, ViewModel.Image);
-
-            Dispatcher.BeginInvoke(
-                () =>
-                NavigationService.Navigate(LevelEditor.CreateNavigationUri(_gameTemplateId, _levelIndex, false,
-                                                                           ViewModel.ImageId)));
-        }
+        #endregion 
 
 
-        /// <summary>
-        /// Create a Uri to navigate to this page
-        /// </summary>
-        /// <returns></returns>
-        public static Uri CreateNavigationUri(string gameTemplateId, int levelIndex, string imageId)
-        {
-            return new Uri(
-                string.Format("/ImageAreaChooser.xaml?&{0}={1}&{2}={3}&{4}={5}", GameTemplateIdQueryParameterName,
-                              HttpUtility.UrlEncode(gameTemplateId), LevelIndexQueryParameterName, levelIndex, ImageIdQueryParameterName,
-                              HttpUtility.UrlEncode(imageId)), UriKind.Relative);
-        }
     }
 }

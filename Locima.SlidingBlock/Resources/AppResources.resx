@@ -133,6 +133,10 @@
     <value>insert level before</value>
     <comment>Context menu option in GameEditor to insert a new level before this one</comment>
   </data>
+  <data name="AddLevelDefinitionPageTitle" xml:space="preserve">
+    <value>create level</value>
+    <comment>Page title for LevelEditor when creating a new level</comment>
+  </data>
   <data name="AddNewPlayerTitle" xml:space="preserve">
     <value>add player</value>
     <comment>Page title for the screen allowing a new player to be created</comment>
@@ -244,6 +248,10 @@
   <data name="EditLevel" xml:space="preserve">
     <value>edit level</value>
     <comment>Page title for editing an existing level page</comment>
+  </data>
+  <data name="EditLevelDefinitionPageTitle" xml:space="preserve">
+    <value>edit level</value>
+    <comment>Page title for LevelEditor when editing an existing level</comment>
   </data>
   <data name="EditPlayerTitle" xml:space="preserve">
     <value>edit player</value>

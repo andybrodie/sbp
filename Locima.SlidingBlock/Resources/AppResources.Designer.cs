@@ -97,6 +97,15 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to create level.
+        /// </summary>
+        public static string AddLevelDefinitionPageTitle {
+            get {
+                return ResourceManager.GetString("AddLevelDefinitionPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to add player.
         /// </summary>
         public static string AddNewPlayerTitle {
@@ -345,6 +354,15 @@ namespace Locima.SlidingBlock.Resources {
         public static string EditLevel {
             get {
                 return ResourceManager.GetString("EditLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to edit level.
+        /// </summary>
+        public static string EditLevelDefinitionPageTitle {
+            get {
+                return ResourceManager.GetString("EditLevelDefinitionPageTitle", resourceCulture);
             }
         }
         

@@ -6,8 +6,8 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ViewModel="clr-namespace:Locima.SlidingBlock.ViewModel"
-    xmlns:Controls="clr-namespace:Locima.SlidingBlock.Controls" FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    xmlns:viewModel="clr-namespace:Locima.SlidingBlock.ViewModel"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
@@ -15,7 +15,7 @@
     shell:SystemTray.IsVisible="True">
 
     <phone:PhoneApplicationPage.Resources>
-        <ViewModel:LevelEditorViewModel x:Key="viewModel"/>
+        <viewModel:LevelEditorViewModel x:Key="ViewModel"/>
         <Style TargetType="Border" x:Key="AreaBorder">
             <Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>
             <Setter Property="BorderThickness" Value="3"/>
@@ -23,7 +23,7 @@
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{Binding Source={StaticResource viewModel}}">
+    <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{Binding Source={StaticResource ViewModel}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
