@@ -153,7 +153,7 @@ namespace Locima.SlidingBlock.ViewModel
         private void SaveAction(object obj)
         {
             GameTemplateStorageManager.Instance.Save(_gameTemplate);
-            SendViewMessage(new NavigationMessageArgs(GameTemplateSelector.CreateNavigationUri()));
+            SendViewMessage(NavigationMessageArgs.Back);
         }
 
 
@@ -170,12 +170,10 @@ namespace Locima.SlidingBlock.ViewModel
             {
                 Logger.Info("Inserting new level at index {0} within {1}", LevelIndex, _gameTemplate.Levels.Count);
                 _gameTemplate.Levels.Insert(LevelIndex, new LevelDefinition());
-                PageTitle = LocalizationHelper.GetString("CreateLevel");
             }
             else
             {
                 Logger.Info("Editing existing level {0} of {1}", LevelIndex, _gameTemplate.Levels.Count);
-                PageTitle = LocalizationHelper.GetString("CreateLevel");
             }
             _currentLevel = _gameTemplate.Levels[LevelIndex];
 
