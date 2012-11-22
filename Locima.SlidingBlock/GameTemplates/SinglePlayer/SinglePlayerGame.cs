@@ -17,7 +17,7 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
     /// </remarks>
     public class SinglePlayerGame
     {
-        private const string TemplatePath = "/GameTemplates/SinglePlayer/";
+        private const string TemplatePath = "GameTemplates/SinglePlayer/";
 
         /// <summary>
         /// A fixed ID for this game as it only needs to get created once, so we need a reliable way of checking it when the application first starts

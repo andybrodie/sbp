@@ -33,8 +33,16 @@ namespace Locima.SlidingBlock.Controls
         /// The pause screen is overlaid on top of the puzzle when <see cref="PausedProperty"/> is set to true
         /// </summary>
         public static readonly DependencyProperty PauseScreenProperty = DependencyProperty.Register("PauseScreen",
-                                                                                                    typeof (FrameworkElement),
-                                                                                                    typeof (Puzzle),
+                                                                                                    typeof(FrameworkElement),
+                                                                                                    typeof(Puzzle),
+                                                                                                    null);
+
+        /// <summary>
+        /// The complete screen is overlaid on top of the puzzle when the level is completed
+        /// </summary>
+        public static readonly DependencyProperty CompleteScreenProperty = DependencyProperty.Register("CompleteScreen",
+                                                                                                    typeof(FrameworkElement),
+                                                                                                    typeof(Puzzle),
                                                                                                     null);
 
         /// <summary>
@@ -60,6 +68,11 @@ namespace Locima.SlidingBlock.Controls
         /// </summary>
         /// <see cref="PauseScreen"/>
         public FrameworkElement PauseScreen { get; set; }
+
+        /// <summary>
+        /// The set of controls overlaid on the puzzle when the level is complete
+        /// </summary>
+        public FrameworkElement CompleteScreen { get; set; }
 
         /// <summary>
         ///   Whether the puzzle is paused or not
@@ -113,6 +126,9 @@ namespace Locima.SlidingBlock.Controls
 
             PauseScreen.Visibility = Visibility.Collapsed;
             Children.Add(PauseScreen);
+
+            CompleteScreen.Visibility = Visibility.Collapsed;
+            Children.Add(CompleteScreen);
 
             // Create the tile instances dynamically, binding all their properties to their viewmodel and add them to the puzzle canvas
             CreateTileControls();
@@ -210,7 +226,7 @@ namespace Locima.SlidingBlock.Controls
             Tap -= PuzzleTap;
             Tap += PuzzleTap;
 
-            ViewModel.PuzzleModelPuzzleResized();
+            ViewModel.PuzzleModelPuzzleResized(true);
             Logger.Info("Puzzle control initialise exit");
         }
 

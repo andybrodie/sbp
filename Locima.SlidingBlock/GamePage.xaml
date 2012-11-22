@@ -76,6 +76,14 @@
                              >
                 <Controls:Puzzle.PauseScreen>
                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Rectangle Fill="{StaticResource PhoneAccentBrush}"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" 
+                           Text="{Binding Path=Strings.PausedMessage, Source={StaticResource Localization}}" 
+                           Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                    </Grid>
+                </Controls:Puzzle.PauseScreen>
+                <Controls:Puzzle.CompleteScreen>
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="auto"/>
@@ -86,10 +94,18 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Rectangle Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="3" Fill="{StaticResource PhoneAccentBrush}"/>
-                        <TextBlock Text="{Binding Path=Strings.PausedMessage, Source={StaticResource Localization}}" Grid.Row="1" Grid.Column="1" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+
+                        <Rectangle Fill="Black" Grid.Row="1" Grid.Column="1" Opacity="0.6"/>
+                        <StackPanel Grid.Row="1" Grid.Column="1">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" 
+                           Text="complete"
+                           Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" 
+                           Text="tap to continue"
+                           Style="{StaticResource PhoneTextSmallStyle}"/>
+                        </StackPanel>
                     </Grid>
-                </Controls:Puzzle.PauseScreen>
+                </Controls:Puzzle.CompleteScreen>
             </Controls:Puzzle>
         </Border>
 
@@ -109,3 +125,5 @@
     </Grid>
 
 </phone:PhoneApplicationPage>
+
+    

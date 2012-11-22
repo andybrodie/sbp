@@ -1,7 +1,9 @@
 using System;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 using Locima.SlidingBlock.Common;
 using NLog;
 
@@ -73,14 +75,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         /// <returns>A bitmap</returns>
         public WriteableBitmap Load(Uri xapImageUri)
         {
-            // TODO Check performance to make sure that sync loading is ok.  Should be quick as the image is small and it's local
-            Logger.Info("Loading image from XAP content {0}", xapImageUri);
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.CreateOptions = BitmapCreateOptions.None;
-            bitmap.UriSource = xapImageUri;
-            WriteableBitmap wbitmap = new WriteableBitmap(bitmap);
-            Logger.Debug("Loaded image from XAP content {0} successfully", xapImageUri);
-            return wbitmap;
+            return ImageHelper.LoadBitmapFromXapContent(xapImageUri);
         }
 
         public string Save(Stream imageStream)

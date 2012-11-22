@@ -1,5 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 using NLog;
 
 namespace Locima.SlidingBlock.IO
@@ -71,11 +74,23 @@ namespace Locima.SlidingBlock.IO
                 {
                     bitmap.SaveJpeg(ms, bitmap.PixelWidth, bitmap.PixelHeight, 0, JpegQuality);
                     jpegData = ms.ToArray();
-                    Logger.Info("Saved thumbnail for {0} using JPEG of {1} bytes", jpegData.Length);
+                    Logger.Info("Saved {0} by {1} JPEG of {2} bytes", width, height, jpegData.Length);
                 }
             }
             return jpegData;
         }
 
+        public static WriteableBitmap LoadBitmapFromXapContent(Uri xapImageUri)
+        {
+            Logger.Info("Loading image from XAP content {0}", xapImageUri);
+            BitmapImage bitmap = new BitmapImage();
+            // We have to use SetSource so that it loads sychronously, otherwise the creation of the WriteableBitmap may throw a NullReferenceException
+            bitmap.CreateOptions = BitmapCreateOptions.None;
+            StreamResourceInfo resourceInfo = Application.GetResourceStream(xapImageUri);
+            bitmap.SetSource(resourceInfo.Stream);
+            WriteableBitmap wbitmap = new WriteableBitmap(bitmap);
+            Logger.Debug("Loaded image from XAP content {0} successfully", xapImageUri);
+            return wbitmap;
+        }
     }
 }
