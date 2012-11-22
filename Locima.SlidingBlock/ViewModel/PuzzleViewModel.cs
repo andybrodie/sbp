@@ -129,7 +129,7 @@ namespace Locima.SlidingBlock.ViewModel
                 {
                     Logger.Info("Updating Puzzle Area size from {0} to {1}", _puzzleArea, value);
                     _puzzleArea = value;
-                    PuzzleModelPuzzleResized();
+                    PuzzleModelPuzzleResized(false);
                 }
                 else
                 {
@@ -227,22 +227,24 @@ namespace Locima.SlidingBlock.ViewModel
         /// <summary>
         ///   Resets the visuals of the puzzle as a result of the puzzle area changing shape.
         /// </summary>
+        /// <param name="b"></param>
+        /// <param name="force">If <c>true</c> the we force a refresh of the puzzle, regardless of whether the old size is the same as the new size</param>
         /// <remarks>
         ///   This is invoked as part of the Setter on <see cref="PuzzleArea" /> . The size of each tile is calculated by dividing up the number of tiles in to equal amounts then set on each <see
         ///    cref="TileViewModel" /> instance within <see cref="Tiles" /> .
         /// </remarks>
-        public void PuzzleModelPuzzleResized()
+        public void PuzzleModelPuzzleResized(bool force)
         {
             Size newTileSize = new Size(PuzzleArea.Width/_puzzleModel.TilesAcross,
                                         PuzzleArea.Height/_puzzleModel.TilesHigh);
 
-            if (newTileSize.Equals(TileSize))
+            if (newTileSize.Equals(TileSize) && !force)
             {
                 Logger.Debug("Ignoring PuzzleModel resize request as it's not changing: {0}", TileSize);
             }
             else
             {
-                Logger.Debug("Updating TileSize from {0} to {1}", TileSize, newTileSize);
+                Logger.Debug("Updating TileSize from {0} to {1} (forced={2})", TileSize, newTileSize, force);
                 TileSize = newTileSize;
                 if (Tiles != null)
                 {
