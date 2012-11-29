@@ -39,6 +39,12 @@ namespace Locima.SlidingBlock.Messaging
         /// </summary>
         public NavigationMode NavigationMode { get; set; }
 
+
+        /// <summary>
+        /// Request to delete backstack entries before navigating (<see cref="NavigationService.RemoveBackEntry"/>)
+        /// </summary>
+        public int DeleteBackstackEntries{ get; set; }
+
         /// <summary>
         /// The page to navigate to
         /// </summary>

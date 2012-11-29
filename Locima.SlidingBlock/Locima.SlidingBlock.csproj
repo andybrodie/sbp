@@ -74,6 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\BrushOpacityModifier.cs" />
     <Compile Include="Converters\ScrambleTextConverter.cs" />
     <Compile Include="GameEditor.xaml.cs">
       <DependentUpon>GameEditor.xaml</DependentUpon>
@@ -192,9 +193,6 @@
     <Compile Include="GameTemplateSelector.xaml.cs">
       <DependentUpon>GameTemplateSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TestPage.xaml.cs">
-      <DependentUpon>TestPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Test\EndGameTestSetup.cs" />
     <Compile Include="ViewModel\GameTemplateEditorViewModel.cs" />
     <Compile Include="ViewModel\LevelEditorViewModel.cs" />
@@ -304,10 +302,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GameTemplateSelector.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

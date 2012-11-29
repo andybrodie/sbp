@@ -484,6 +484,15 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to crop image.
+        /// </summary>
+        public static string ImageAreaChooserTitle {
+            get {
+                return ResourceManager.GetString("ImageAreaChooserTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Image Description.
         /// </summary>
         public static string ImageTextLabel {
