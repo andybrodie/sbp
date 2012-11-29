@@ -305,6 +305,10 @@
     <value>{0} moves in {1}</value>
     <comment>Used on the high score table, this is the string shown beneath each player name containing the stats of their game (number of moves and elapsed time)</comment>
   </data>
+  <data name="ImageAreaChooserTitle" xml:space="preserve">
+    <value>crop image</value>
+    <comment>Page title for the image area chooser</comment>
+  </data>
   <data name="ImageTextLabel" xml:space="preserve">
     <value>Image Description</value>
     <comment>Label on the level editor to edit the image text</comment>

@@ -11,15 +11,18 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    xmlns:ViewModel="clr-namespace:Locima.SlidingBlock.ViewModel" 
+    xmlns:viewModel="clr-namespace:Locima.SlidingBlock.ViewModel"
+    xmlns:converters="clr-namespace:Locima.SlidingBlock.Converters"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-  <phone:PhoneApplicationPage.Resources>
-    <ViewModel:ImageAreaChooserViewModel x:Key="imageChooserViewModel" />
-  </phone:PhoneApplicationPage.Resources>
-    <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{StaticResource imageChooserViewModel}">
+    <phone:PhoneApplicationPage.Resources>
+        <viewModel:ImageAreaChooserViewModel x:Key="ImageChooserViewModel"/>
+        <converters:BrushOpacityModifier x:Key="BrushOpacityConverter" />
+    </phone:PhoneApplicationPage.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{StaticResource ImageChooserViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -28,12 +31,19 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="ApplicationTitle" 
+                       Text="{Binding Path=Strings.ApplicationName, Source={StaticResource Localization}}"
+                       Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding Path=Strings.ImageAreaChooserTitle, Source={StaticResource Localization}}"
+                       Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Canvas x:Name="ContentCanvas" Grid.Row="1">
-            <Image x:Name="ImgZoom" Source="{Binding Image}" Stretch="UniformToFill" RenderTransformOrigin="0.5,0.5" CacheMode="BitmapCache">
+        <Canvas x:Name="ContentCanvas" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Canvas.Clip>
+                <RectangleGeometry Rect="0,0,480,480"/>
+            </Canvas.Clip>
+            <Image x:Name="ImgZoom" Source="{Binding Image}" RenderTransformOrigin="0.5,0.5" CacheMode="BitmapCache" Canvas.ZIndex="-10">
                 <toolkit:GestureService.GestureListener>
                     <toolkit:GestureListener
                         PinchStarted="OnPinchStarted"
@@ -43,22 +53,19 @@
                         />
                 </toolkit:GestureService.GestureListener>
                 <Image.RenderTransform>
-                    <CompositeTransform ScaleX="1" ScaleY="1" TranslateX="0" TranslateY="0"/>
+                    <CompositeTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" TranslateX="{Binding ImagePosition.X}" TranslateY="{Binding ImagePosition.Y}"/>
                 </Image.RenderTransform>
             </Image>
             <!-- These rectangles create the effect of a "window" through part of the image to see what's going to be used -->
-            <Rectangle x:Name="DarkRectLeft" Fill="#80000000" Canvas.Top="{Binding CropTop}" Canvas.Left="0" Width="{Binding CropLeft}" Height="{Binding CropHeight}"/>
-            <Rectangle x:Name="DarkRectTop" Fill="#80000000" Canvas.Top="0" Canvas.Left="0" Width="{Binding ActualWidth,ElementName=ContentCanvas}" Height="{Binding CropTop}"/>
-            <Rectangle x:Name="DarkRectRight" Fill="#80000000" Canvas.Top="{Binding CropTop}" Canvas.Left="{Binding CropRight}" Width="{Binding CropRightToRightEdge}" Height="{Binding CropHeight}"/>
-            <Rectangle x:Name="DarkRectBottom" Fill="#80000000" Canvas.Top="{Binding CropBottom}" Canvas.Left="0" Width="{Binding ActualWidth,ElementName=ContentCanvas}" Height="{Binding CropBottomToBottomEdge}"/>
-            <Border x:Name="CropArea" BorderBrush="White" BorderThickness="5" Canvas.Top="{Binding CropTop}" Canvas.Left="{Binding CropLeft}" Width="{Binding CropWidth}" Height="{Binding CropHeight}"/>
+            <Rectangle x:Name="DarkRectLeft" Canvas.ZIndex="10" Fill="{Binding Source={StaticResource PhoneBackgroundBrush},Converter={StaticResource BrushOpacityConverter},ConverterParameter=0.5}" Canvas.Top="{Binding CropTop}" Canvas.Left="0" Width="{Binding CropLeft}" Height="{Binding CropHeight}"/>
+            <Rectangle x:Name="DarkRectTop" Canvas.ZIndex="10" Fill="{Binding Source={StaticResource PhoneBackgroundBrush},Converter={StaticResource BrushOpacityConverter},ConverterParameter=0.5}" Canvas.Top="0" Canvas.Left="0" Width="{Binding TotalWidth}" Height="{Binding CropTop}"/>
+            <Rectangle x:Name="DarkRectRight" Canvas.ZIndex="10" Fill="{Binding Source={StaticResource PhoneBackgroundBrush},Converter={StaticResource BrushOpacityConverter},ConverterParameter=0.5}" Canvas.Top="{Binding CropTop}" Canvas.Left="{Binding CropRight}" Width="{Binding CropRightToRightEdge}" Height="{Binding CropHeight}"/>
+            <Rectangle x:Name="DarkRectBottom" Canvas.ZIndex="10" Fill="{Binding Source={StaticResource PhoneBackgroundBrush},Converter={StaticResource BrushOpacityConverter},ConverterParameter=0.5}" Canvas.Top="{Binding CropBottom}" Canvas.Left="0" Width="{Binding TotalWidth}" Height="{Binding CropBottomToBottomEdge}"/>
+            <Border x:Name="CropArea" BorderBrush="{StaticResource PhoneForegroundBrush}" BorderThickness="5" Canvas.Top="{Binding CropTop}" Canvas.Left="{Binding CropLeft}" Width="{Binding CropWidth}" Height="{Binding CropHeight}"/>
         </Canvas>
-      
         <StackPanel x:Name="ToolsPanel" Grid.Row="2">
-            <Slider x:Name="ZoomSlider" Minimum="1" Maximum="100" Value="{Binding ZoomAmount,Mode=TwoWay}"/>
+            <TextBlock x:Name="DebugText" Text="{Binding DebugString}" TextWrapping="Wrap"/>
         </StackPanel>
     </Grid>
- 
-</phone:PhoneApplicationPage>
 
-   
+</phone:PhoneApplicationPage>
