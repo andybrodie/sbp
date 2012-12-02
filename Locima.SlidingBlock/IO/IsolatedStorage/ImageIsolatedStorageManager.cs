@@ -1,9 +1,7 @@
 using System;
 using System.IO;
 using System.IO.IsolatedStorage;
-using System.Windows;
 using System.Windows.Media.Imaging;
-using System.Windows.Resources;
 using Locima.SlidingBlock.Common;
 using NLog;
 
@@ -58,8 +56,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
                     throw new InvalidStateException("File {0} does not exist", imageId);
                 }
                 using (
-                    IsolatedStorageFileStream fileStream = store.OpenFile(imageId, FileMode.Open, FileAccess.Read,
-                                                                          FileShare.Read))
+                    IsolatedStorageFileStream fileStream = store.OpenFile(imageId, FileMode.Open, FileAccess.Read))
                 {
                     bitmap.SetSource(fileStream);
                 }

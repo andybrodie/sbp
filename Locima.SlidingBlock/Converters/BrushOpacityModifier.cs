@@ -27,7 +27,6 @@ namespace Locima.SlidingBlock.Converters
             double opacity;
             if (double.TryParse((string) parameter, out opacity))
             {
-                Logger.Info("Changing opacity of {0} to {1}", brush, opacity);
                 brush.Opacity = opacity;
             }
             else

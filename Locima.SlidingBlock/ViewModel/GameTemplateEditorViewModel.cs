@@ -125,6 +125,9 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
 
+        /// <summary>
+        /// Called when the save button is pressed, this will overwrite the original game template with our modified version
+        /// </summary>
         public void SaveTemplate()
         {
             if (_gameTemplate.IsShadow)

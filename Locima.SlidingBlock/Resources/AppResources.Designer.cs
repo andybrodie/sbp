@@ -493,6 +493,15 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to image source.
+        /// </summary>
+        public static string ImageChooserTitle {
+            get {
+                return ResourceManager.GetString("ImageChooserTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Image Description.
         /// </summary>
         public static string ImageTextLabel {

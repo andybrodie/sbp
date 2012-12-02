@@ -141,10 +141,6 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
             IOHelper.SaveObject(gameTemplate);
         }
 
-        public List<string> GetGameTemplateIds()
-        {
-            return IOHelper.GetFileNames(GameTemplateDirectory);
-        }
 
         /// <summary>
         /// Deletes a game template

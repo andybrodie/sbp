@@ -120,16 +120,18 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
             int totalBytesWritten = 0;
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                IsolatedStorageFileStream s = store.CreateFile(filename);
-
-                int count;
-                byte[] buffer = new byte[512000];
-                do
+                using (IsolatedStorageFileStream s = store.CreateFile(filename))
                 {
-                    count = stream.Read(buffer, 0, buffer.Length);
-                    s.Write(buffer, 0, count);
-                    totalBytesWritten += count;
-                } while (count > 0);
+
+                    int count;
+                    byte[] buffer = new byte[512000];
+                    do
+                    {
+                        count = stream.Read(buffer, 0, buffer.Length);
+                        s.Write(buffer, 0, count);
+                        totalBytesWritten += count;
+                    } while (count > 0);
+                }
             }
             Logger.Info("Written {0} bytes to {1}", totalBytesWritten, filename);
         }

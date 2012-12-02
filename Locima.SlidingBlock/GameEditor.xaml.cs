@@ -68,12 +68,12 @@ namespace Locima.SlidingBlock
             icon.Click += (o, args) => ViewModel.SaveTemplate();
 
             // Cancel changes made to the game template
+            // TODO Include an "are you sure?" dialog if the game template has been modified and we'll lose changes
             icon = ApplicationBarHelper.AddButton(ApplicationBar,
                                                   ApplicationBarHelper.ButtonIcons["Cancel"],
-                                                  LocalizationHelper.GetString(
-                                                      "Cancel"));
+                                                  LocalizationHelper.GetString("Cancel"));
 
-            icon.Click += (sender, args) => NavigationService.Navigate(GameTemplateSelector.CreateNavigationUri());
+            icon.Click += (sender, args) => NavigationService.GoBack();
         }
 
 

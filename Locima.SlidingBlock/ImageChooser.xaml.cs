@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO.IsolatedStorage;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +10,7 @@ using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.ViewModel;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using NLog;
 
@@ -53,7 +55,9 @@ namespace Locima.SlidingBlock
         {
             _gameTemplateId = this.GetQueryParameter(GameTemplateIdQueryParameterName, s => s);
             _levelIndex = this.GetQueryParameterAsInt(LevelIndexQueryParameterName);
-            DataContext = GetImageProviders();
+            this.SetState(GameTemplateIdQueryParameterName, _gameTemplateId); // Stash these for PhotoChooserTaskCompleted
+            this.SetState(LevelIndexQueryParameterName, _levelIndex);
+            DataContext = GetImageProviders(); // TODO Fix this to use proper MVVM-style initalisation
         }
 
 
@@ -84,7 +88,23 @@ namespace Locima.SlidingBlock
             if (e.TaskResult == TaskResult.OK)
             {
                 string photoId = ImageStorageManager.Instance.SaveTemporary(e.ChosenPhoto);
-                Uri areaChooserUri = ImageAreaChooser.CreateNavigationUri(_gameTemplateId, _levelIndex, photoId);
+                /* We're coming back from deactivation here (and possibly tombstone, so we can't rely on any fields being initialised
+                 * More good news, we can't get query parameters again because at this point pagethis.NavigationContext is null!
+                 * Good job we stashed the parameters in PhoneApplicationSettings!
+                 */
+                string gameTemplateId;
+                if (!this.TryGetState(GameTemplateIdQueryParameterName, out gameTemplateId))
+                {
+                    throw new InvalidStateException(string.Format("Property {0} not found in state!", GameTemplateIdQueryParameterName));
+                }
+                int levelIndex;
+                if (!this.TryGetState(LevelIndexQueryParameterName, out levelIndex))
+                {
+                    throw new InvalidStateException(string.Format("Property {0} not found in state!", LevelIndexQueryParameterName));
+                }
+                this.ClearState(GameTemplateIdQueryParameterName);
+                this.ClearState(LevelIndexQueryParameterName);
+                Uri areaChooserUri = ImageAreaChooser.CreateNavigationUri(gameTemplateId, levelIndex, photoId);
                 Dispatcher.BeginInvoke(() => NavigationService.Navigate(areaChooserUri));
             }
         }
@@ -95,11 +115,11 @@ namespace Locima.SlidingBlock
             ListBox listBox = (ListBox) sender;
             if (listBox.SelectedIndex > -1)
             {
-                MenuItemViewModel item = mainMenuListbox.SelectedItem as MenuItemViewModel;
+                MenuItemViewModel item = MainMenuListbox.SelectedItem as MenuItemViewModel;
                 Debug.Assert(item != null,
                              string.Format(
                                  "Selected item {0} was null or not an instance of MenuItemViewModel.  This is a bug.",
-                                 mainMenuListbox.SelectedItem));
+                                 MainMenuListbox.SelectedItem));
                 if (item.SelectedAction == null)
                 {
                     Uri navUri = item.TargetUri ??
@@ -113,7 +133,7 @@ namespace Locima.SlidingBlock
                 }
 
                 // Reset selected index back to -1 so if we navigate back to this page it won't instantly fire this
-                mainMenuListbox.SelectedIndex = -1;
+                MainMenuListbox.SelectedIndex = -1;
             }
             else
             {

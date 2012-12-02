@@ -342,14 +342,14 @@ namespace Locima.SlidingBlock.ViewModel
         /// <summary>
         /// Retrieve the cropped image as a factor of the translation amounts and scale factor
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A bitmap, scaled to <see cref="LevelDefinition.ImageSizeX"/> by <see cref="LevelDefinition.ImageSizeY"/> that is in the crop window</returns>
         private WriteableBitmap GetCroppedImage()
         {
             // Work out the amount of image that's within the bounding box, take in to account translation and scale factors
-            int offsetX = (int)(ImagePosition.X - CropLeft);
-            int offsetY = (int)(ImagePosition.Y - CropTop);
-            int imageSizeX = (int)(Scale * CropWidth);
-            int imageSizeY = (int)(Scale * CropHeight);
+            int offsetX = (int)(Math.Abs((ImagePosition.X-CropLeft)/Scale));
+            int offsetY = (int)(Math.Abs((ImagePosition.Y-CropTop)/Scale));
+            int imageSizeX = (int) Math.Round(CropWidth/Scale);
+            int imageSizeY = (int) Math.Round(CropHeight/Scale);
 
             Logger.Info("Creating cropped image from {0},{1} of width {2} and height {3} pixels.", offsetX, offsetY,
                         imageSizeX, imageSizeY);

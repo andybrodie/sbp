@@ -309,6 +309,10 @@
     <value>crop image</value>
     <comment>Page title for the image area chooser</comment>
   </data>
+  <data name="ImageChooserTitle" xml:space="preserve">
+    <value>image source</value>
+    <comment>Page title for Image Chooser</comment>
+  </data>
   <data name="ImageTextLabel" xml:space="preserve">
     <value>Image Description</value>
     <comment>Label on the level editor to edit the image text</comment>
