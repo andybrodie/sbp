@@ -20,7 +20,8 @@
     </Capabilities>
     <Tasks>
             <DefaultTask  Name ="_default" NavigationPage="/MainPage.xaml"/>
-<!--      <DefaultTask Name="_default" NavigationPage="/CreateCustomGame.xaml" />-->
+<!--      <DefaultTask Name="_default" NavigationPage="/LevelEditor.xaml?gameTemplateId=GameTemplates%5c102593fc-af9f-4cec-8a13-ac9ea7150ffb.shadow&amp;levelIndex=0&amp;createNew=False&amp;imageId=" />-->
+<!--      <DefaultTask Name="_default" NavigationPage="/ImageAreaChooser.xaml?gameTemplateId=&amp;levelIndex=0&amp;ImageId=TempImages%5ce4c5039d-7a24-4e82-ad11-abf5cb080c94" />-->
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="SlidingBlockToken" TaskName="_default">

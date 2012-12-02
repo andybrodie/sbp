@@ -165,21 +165,22 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// <summary>
         /// The new game menu is a virtual menu that either shows the <see cref="CreateGameTemplateSelector"/> menu or the <see cref="CreateGameDifficultySelector"/>
         /// </summary>
+        /// <param name="backStack">The current app back stack, used by <see cref="CreateGameDifficultySelector"/></param>
         /// <returns></returns>
         private static MenuPageViewModel CreateNewGameMenu(IEnumerable<JournalEntry> backStack)
         {
             MenuPageViewModel mpvm;
 
-            List<string> templates = GameTemplateStorageManager.Instance.GetGameTemplateIds();
+            List<GameTemplate> templates = GameTemplateStorageManager.Instance.GetGameTemplates(false, false);
             if (templates.Count > 1)
             {
                 // The user needs to select a game template because there's more than one
-                mpvm = CreateGameTemplateSelector(backStack);
+                mpvm = CreateGameTemplateSelector(templates);
             }
             else
             {
                 // Auto-select the only game template and move on to the difficulty selector
-                SelectedTemplateId = templates[0];
+                SelectedTemplateId = templates[0].Id;
                 mpvm = CreateGameDifficultySelector(backStack);
             }
             return mpvm;
@@ -188,9 +189,12 @@ namespace Locima.SlidingBlock.ViewModel.Menus
 
         private static MenuPageViewModel CreateGameDifficultySelector(IEnumerable<JournalEntry> backStack)
         {
+            /* Find how many pages to remove from the back stack to ensure that pressing "Back" from the game page returns to the top menu
+             * We need this because we can't tell how many menu pages we've traversed to get here, because menus are dynamic
+             * based on the number of game templates in the system
+             */
             int pagesOnBackStackToSuppress = CalculatePagesToRemoveInBackstack(backStack);
-            // Need to add one to include this page
-            pagesOnBackStackToSuppress++;
+            pagesOnBackStackToSuppress++; // Need to suppress this page too!
 
             return new MenuPageViewModel
                        {
@@ -269,31 +273,45 @@ namespace Locima.SlidingBlock.ViewModel.Menus
 
 
         /// <summary>
-        /// Create the game template selector page view model
+        /// Creates the game template selector page view model using the default template list (i.e. no shadows)
         /// </summary>
-        public static MenuPageViewModel CreateGameTemplateSelector(IEnumerable<JournalEntry> backStack)
+        /// <param name="unused">Unused</param>
+        /// <returns>A menu page view model that offers a selection of templates</returns>
+        public static MenuPageViewModel CreateGameTemplateSelector(IEnumerable<JournalEntry> unused)
+        {
+            return CreateGameTemplateSelector(GameTemplateStorageManager.Instance.GetGameTemplates(false, false));
+        }
+
+        /// <summary>
+        /// Creates the game template selector page view model using the template list passed by <paramref name="templates"/>
+        /// </summary>
+        /// <param name="templates">A set of templates to select from</param>
+        /// <returns>A menu page view model that offers a selection of templates</returns>
+        private static MenuPageViewModel CreateGameTemplateSelector(IEnumerable<GameTemplate> templates)
         {
             MenuPageViewModel mpvm = new MenuPageViewModel
-                                         {
-                                             PageTitle = LocalizationHelper.GetString("GameTemplateSelectorTitle"),
-                                             MenuItems = new ObservableCollection<MenuItemViewModel>()
-                                         };
+            {
+                PageTitle = LocalizationHelper.GetString("GameTemplateSelectorTitle"),
+                MenuItems = new ObservableCollection<MenuItemViewModel>()
+            };
 
-            foreach (GameTemplate template in GameTemplateStorageManager.Instance.GetGameTemplates(false, false))
+            foreach (GameTemplate template in templates)
             {
                 GameTemplate gameTemplate = template;   // Have to do this because we access the template ID inside the closure below
                 mpvm.MenuItems.Add(new MenuItemViewModel
-                                       {
-                                           Title = template.Title,
-                                           Text = template.Author,
-                                           SelectedAction = delegate
-                                                                {
-                                                                    SelectedTemplateId = gameTemplate.Id;
-                                                                    return MainPage.CreateNavigationUri("SelectDifficulty");
-                                                                }
-                                       });
+                {
+                    Title = template.Title,
+                    Text = template.Author,
+                    SelectedAction = delegate
+                    {
+                        SelectedTemplateId = gameTemplate.Id;
+                        return MainPage.CreateNavigationUri("SelectDifficulty");
+                    }
+                });
             }
             return mpvm;
         }
+
+
     }
 }

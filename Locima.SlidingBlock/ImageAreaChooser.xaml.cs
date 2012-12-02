@@ -77,7 +77,7 @@ namespace Locima.SlidingBlock
             vm.TotalWidth = ContentCanvas.ActualWidth;
             vm.TotalHeight = ContentCanvas.ActualHeight;
             vm.ImageId = imageId;
-            vm.Scale = 2;
+            vm.Scale = 1;
             vm.Initialise();
         }
 
