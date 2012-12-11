@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Net;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
 using Locima.SlidingBlock.Messaging;
@@ -128,6 +132,31 @@ namespace Locima.SlidingBlock
         private void PreviewImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             ViewModel.SelectImageCommand.Execute(null);
+        }
+
+        /// <summary>
+        /// Forces a binding update whenever a control is updated
+        /// </summary>
+        /// <remarks>Used for ensure that changes to <see cref="TextBox"/> controls are reflected when clicking application bar buttons</remarks>
+        /// <param name="sender">The control that was changed</param>
+        /// <param name="unused">unused</param>
+        private void ControlChanged(object sender, TextChangedEventArgs unused)
+        {
+            DependencyProperty property = null;
+            Control control = (Control)sender;
+
+            if (control is TextBox) property = TextBox.TextProperty;
+            if (control is PasswordBox) property = PasswordBox.PasswordProperty;
+            if (control is CheckBox) property = ToggleButton.IsCheckedProperty;
+
+            if (property != null)
+            {
+                BindingExpression be = control.GetBindingExpression(property);
+                if (be != null)
+                {
+                    be.UpdateSource();
+                }
+            }
         }
 
     }

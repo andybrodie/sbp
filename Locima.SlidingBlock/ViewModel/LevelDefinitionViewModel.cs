@@ -12,11 +12,11 @@ namespace Locima.SlidingBlock.ViewModel
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private LevelDefinition _level;
-        private GameTemplateEditorViewModel _parent;
+        private GameEditorViewModel _parent;
 
-        public LevelDefinitionViewModel(GameTemplateEditorViewModel gameTemplateEditorViewModel, LevelDefinition level)
+        public LevelDefinitionViewModel(GameEditorViewModel gameEditorViewModel, LevelDefinition level)
         {
-            _parent = gameTemplateEditorViewModel;
+            _parent = gameEditorViewModel;
             _level = level;
             AddLevelBeforeCommand = new DelegateCommand(parameter => _parent.AddLevelBefore(_level));
             AddLevelAfterCommand = new DelegateCommand(parameter => _parent.AddLevelAfter(_level));

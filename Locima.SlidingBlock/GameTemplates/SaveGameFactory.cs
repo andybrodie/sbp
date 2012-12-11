@@ -60,7 +60,7 @@ namespace Locima.SlidingBlock.GameTemplates
                                        SolvedTilePositions =
                                            Scrambler.Instance.Scramble(levelDefinition.ScrambleType, tilesAcross,
                                                                        tilesHigh),
-                                       Title = levelDefinition.ImageText,
+                                       Title = levelDefinition.ImageTitle,
                                        Text = levelDefinition.ImageText,
                                        License = levelDefinition.License
                                    };

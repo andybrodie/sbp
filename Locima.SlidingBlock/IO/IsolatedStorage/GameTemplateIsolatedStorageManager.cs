@@ -10,9 +10,21 @@ using NLog;
 
 namespace Locima.SlidingBlock.IO.IsolatedStorage
 {
+
+    /// <summary>
+    /// Manages the storage of game templates in isolated storage
+    /// </summary>
     public class GameTemplateIsolatedStorageManager : IGameTemplateManager
     {
+
+        /// <summary>
+        /// The directory that game templates will be stored in
+        /// </summary>
         public const string GameTemplateDirectory = "GameTemplates";
+
+        /// <summary>
+        /// The suffix to all shadow files
+        /// </summary>
         protected const string ShadowSuffix = ".shadow";
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -101,12 +113,12 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
 
         private string CreateId(bool isShadow)
         {
-            string Id = IOHelper.CreatePath(GameTemplateDirectory, Guid.NewGuid().ToString());
+            string id = IOHelper.CreatePath(GameTemplateDirectory, Guid.NewGuid().ToString());
             if (isShadow)
             {
-                Id += ShadowSuffix;
+                id += ShadowSuffix;
             }
-            return Id;
+            return id;
         }
 
 

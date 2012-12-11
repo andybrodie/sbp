@@ -49,6 +49,10 @@
                                           Author="Scott's parents"
                                           Description="I was inspired to write this having read Scott's post on &quot;Shipping my first Windows App&quot;.  He's a truly motivational speaker and writer!"
                                           Link="http://www.hanselman.com/blog/FromConceptToCodeIn6HoursShippingMyFirstWindowsPhoneApp.aspx"/>
+                <Controls:Acknowledgement Title="WP7 Binding - Lost Focus Workaround"
+                                          Author="Frederick Chapleau"
+                                          Description="A pattern for updating bindings when application bar buttons are clicked"
+                                          Link="http://www.chapleau.info/blog/2012/01/15/WP7BindingLostFocusWorkaround.html"/>
             </Controls:AcknowledgementList>
             <Style TargetType="HyperlinkButton" x:Name="hyperlink">
                 <Setter Property="Foreground" Value="{StaticResource PhoneSubtleBrush}"/>

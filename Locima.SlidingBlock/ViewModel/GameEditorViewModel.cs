@@ -10,7 +10,11 @@ using NLog;
 
 namespace Locima.SlidingBlock.ViewModel
 {
-    public class GameTemplateEditorViewModel : ViewModelBase
+
+    /// <summary>
+    /// The MVVM view model for the game editor
+    /// </summary>
+    public class GameEditorViewModel : ViewModelBase
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private string _author;
@@ -18,17 +22,17 @@ namespace Locima.SlidingBlock.ViewModel
         private ObservableCollection<LevelDefinitionViewModel> _levelList;
         private string _title;
 
-        public GameTemplateEditorViewModel()
+        public GameEditorViewModel()
         {
-            ConfirmSaveAndContinue = new DelegateCommand(ConfirmSaveAndContinueAction);
             ConfirmCancel = new DelegateCommand(ConfirmCancelAction);
             LevelList = new ObservableCollection<LevelDefinitionViewModel>();
         }
 
-        protected ICommand ConfirmSaveAndContinue { get; private set; }
-
         protected ICommand ConfirmCancel { get; private set; }
 
+        /// <summary>
+        /// The ID of the template to edit
+        /// </summary>
         public string GameTemplateId { get; set; }
 
         public string Title
@@ -66,12 +70,6 @@ namespace Locima.SlidingBlock.ViewModel
             // If the user hit cancel, then take no action as they're rejected the action offered
         }
 
-
-        private void ConfirmSaveAndContinueAction(object obj)
-        {
-            RefreshGameTemplate();
-            GameTemplateStorageManager.Instance.Save(_gameTemplate);
-        }
 
         private void RefreshGameTemplate()
         {
@@ -137,12 +135,18 @@ namespace Locima.SlidingBlock.ViewModel
             }
             else
             {
-                Logger.Info("Ignoring call to Save because this game template isn't a shadow, so we've not changed anything: {0}", _gameTemplate);
+                // Save any changes to title and author
+                RefreshGameTemplate();
+                GameTemplateStorageManager.Instance.Save(_gameTemplate);
             }
             SendViewMessage(NavigationMessageArgs.Back);
         }
 
 
+        /// <summary>
+        /// Inserts a level at the index specified by <paramref name="insertPoint"/>
+        /// </summary>
+        /// <param name="insertPoint">The index of the new level</param>
         private void InsertLevelAt(int insertPoint)
         {
             Logger.Info("Creating new level at index {0}", insertPoint);
@@ -159,6 +163,10 @@ namespace Locima.SlidingBlock.ViewModel
             RefreshLevelList();
         }
 
+
+        /// <summary>
+        /// Refreshes the list of levels in the view model
+        /// </summary>
         private void RefreshLevelList()
         {
             LevelList.Clear();
@@ -168,6 +176,11 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+
+        /// <summary>
+        /// Adds a level before <paramref name="level"/>
+        /// </summary>
+        /// <param name="level"></param>
         public void AddLevelAfter(LevelDefinition level)
         {
             int insertPoint = _gameTemplate.Levels.IndexOf(level);
@@ -175,12 +188,22 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
 
+        /// <summary>
+        /// Adds a level after <paramref name="level"/>
+        /// </summary>
+        /// <param name="level"></param>
         public void AddLevelBefore(LevelDefinition level)
         {
             int insertPoint = _gameTemplate.Levels.IndexOf(level);
             InsertLevelAt(insertPoint);
         }
 
+
+        /// <summary>
+        /// Moves the level passed up or down depending on <paramref name="moveUp"/>
+        /// </summary>
+        /// <param name="level">The level to move</param>
+        /// <param name="moveUp">If true, the level modes up a position in the level order, if false it moves down</param>
         public void MoveLevel(LevelDefinition level, bool moveUp)
         {
             int index = _gameTemplate.Levels.IndexOf(level);

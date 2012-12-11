@@ -6,6 +6,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
+using Locima.SlidingBlock.GameTemplates;
 using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Messaging;
 using Locima.SlidingBlock.Model;
@@ -41,14 +42,10 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         private int _currentLevelNumber;
 
-        private bool _isPaused;
-
         /// <summary>
         ///   Backing field for <see cref="PageTitle" />
         /// </summary>
         private string _pageTitle;
-
-        private ICommand _pauseGameCommand;
 
         /// <summary>
         ///   Backing field for <see cref="PuzzleArea" />
@@ -60,16 +57,62 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         private bool _puzzleCompleted;
 
+        /// <summary>
+        /// The underlying model for this puzzle control
+        /// </summary>
         private PuzzleModel _puzzleModel;
+
+        /// <summary>
+        /// Used to indicate whether the game should be saved during <see cref="OnNavigatingFrom"/>
+        /// </summary>
+        /// <remarks>
+        /// Used in <see cref="ProceedToNextLevel"/> to stop <see cref="OnNavigatingFrom"/> from updating
+        /// and saving the game when the user navigates away, because when proceeding to the next level
+        /// we don't want <see cref="OnNavigatingFrom"/> to update and save <see cref="_currentGame"/>.
+        /// In all other cases of navigating away from the page, it's because the user has quit
+        /// or an event is deactivating the application, so we want the game to be saved.
+        /// </remarks>
         private bool _dontSaveGameOnNavigatingFrom;
+
+        /// <summary>
+        /// Backing field for <see cref="ImageText"/>
+        /// </summary>
+        private string _imageText;
+
+        /// <summary>
+        /// Backing field for <see cref="LicenseLink"/>
+        /// </summary>
+        private Uri _licenseLink;
+
+        /// <summary>
+        /// Backing field for <see cref="LicenseTitle"/>
+        /// </summary>
+        private string _licenseTitle;
+
+        /// <summary>
+        /// Backing field for <see cref="GameState"/>
+        /// </summary>
+        private GameStates _gameState;
+
+        /// <summary>
+        /// Backing field for <see cref="ImageTitle"/>
+        /// </summary>
+        private string _imageTitle;
 
         /// <summary>
         /// Invoked by the view when the user wishes to pause the game
         /// </summary>
-        public ICommand PauseGameCommand
-        {
-            get { return _pauseGameCommand; }
-        }
+        public ICommand PauseGameCommand { get; private set; }
+
+        /// <summary>
+        /// Invoked by the view when the user wishes to resume a paused game
+        /// </summary>
+        public ICommand ResumeGameCommand { get; private set; }
+
+        /// <summary>
+        /// Invoked by the view when the user wishes to resume a paused game
+        /// </summary>
+        public ICommand StartGameCommand { get; private set; }
 
         /// <summary>
         ///   The amount of time the player has been playing this particular level.  This is bound to the UI.
@@ -166,15 +209,16 @@ namespace Locima.SlidingBlock.ViewModel
 
 
         /// <summary>
-        ///   Is true when the stopwatch is paused, false if the stopwatch is runnning
+        /// The state of the game at any moment in time.  Changes in state may will cause the UI to update
         /// </summary>
-        public bool IsPaused
+        public GameStates GameState
         {
-            get { return _isPaused; }
+            get { return _gameState; }
             set
             {
-                _isPaused = value;
-                OnNotifyPropertyChanged("IsPaused");
+                _gameState = value;
+                OnNotifyPropertyChanged("GameState");
+                SendViewMessage(new GameStateChangeMessageArgs {GameState = value});
             }
         }
 
@@ -184,16 +228,72 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         public WriteableBitmap Thumbnail { get; set; }
 
+        /// <summary>
+        /// The title of the current level, a short description of the image the user is trying to assemble
+        /// </summary>
+        /// <see cref="LevelDefinition.ImageTitle"/>
+        public string ImageTitle
+        {
+            get { return _imageTitle; }
+            set
+            {
+                _imageTitle = value;
+                OnNotifyPropertyChanged("ImageTitle");
+            }
+        }
+
+        /// <summary>
+        /// The text of the current level, describing the image the user is trying to assemble
+        /// </summary>
+        /// <see cref="LevelDefinition.ImageText"/>
+        public string ImageText
+        {
+            get { return _imageText; }
+            set
+            {
+                _imageText = value;
+                OnNotifyPropertyChanged("ImageText");
+            }
+        }
+
+        /// <summary>
+        /// The URL for the full text of the license attributed to the current picture of the current level
+        /// </summary>
+        /// <see cref="LicenseDefinition.Link"/>
+        public Uri LicenseLink
+        {
+            get { return _licenseLink; }
+            set
+            {
+                _licenseLink = value;
+                OnNotifyPropertyChanged("LicenseLink");
+            }
+        }
+
+        /// <summary>
+        /// The name of the license attributed to the current picture of the current level
+        /// </summary>
+        /// <see cref="LicenseDefinition.Title"/>
+        public string LicenseTitle
+        {
+            get { return _licenseTitle; }
+            set { _licenseTitle = value;
+            OnNotifyPropertyChanged("LicenseTitle");}
+        }
+
+
 
         /// <summary>
         /// Initialises the view model, creating a new <see cref="PuzzleModel"/>.
         /// </summary>
         /// <remarks>
-        /// This doens't do much until the <see cref="Configure"/> is called.</remarks>
+        /// This doens't do much until the <see cref="Initialise(Locima.SlidingBlock.Persistence.SaveGame)"/> is called.</remarks>
         public void Initialise()
         {
             Logger.Debug("PuzzleViewModel Initialise entry");
-            _pauseGameCommand = new DelegateCommand(PauseGameAction);
+            StartGameCommand = new DelegateCommand(StartGameAction);
+            PauseGameCommand = new DelegateCommand(PauseGameAction);
+            ResumeGameCommand = new DelegateCommand(ResumeGameAction);
 
             // Create the puzzle model and hook up event handlers that we are interested in
             _puzzleModel = new PuzzleModel();
@@ -213,21 +313,34 @@ namespace Locima.SlidingBlock.ViewModel
         /// <param name="ignoredParam">Ignored</param>
         public void PauseGameAction(object ignoredParam)
         {
-            if (_puzzleModel.Stopwatch.IsRunning)
-            {
-                _puzzleModel.Stopwatch.Stop();
-            }
-            else
-            {
-                _puzzleModel.Stopwatch.Start();
-            }
+            _puzzleModel.Stopwatch.Stop();
+            GameState = GameStates.Paused;
+        }
+
+        /// <summary>
+        /// The implementation of the <see cref="ResumeGameCommand"/> action
+        /// </summary>
+        /// <param name="ignoredParam">Ignored</param>
+        public void ResumeGameAction(object ignoredParam)
+        {
+            _puzzleModel.Stopwatch.Start();
+            GameState = GameStates.Running;
+        }
+
+        /// <summary>
+        /// The implementation of the <see cref="ResumeGameCommand"/> action
+        /// </summary>
+        /// <param name="ignoredParam">Ignored</param>
+        public void StartGameAction(object ignoredParam)
+        {
+            _puzzleModel.Stopwatch.Start();
+            GameState = GameStates.Running;
         }
 
 
         /// <summary>
         ///   Resets the visuals of the puzzle as a result of the puzzle area changing shape.
         /// </summary>
-        /// <param name="b"></param>
         /// <param name="force">If <c>true</c> the we force a refresh of the puzzle, regardless of whether the old size is the same as the new size</param>
         /// <remarks>
         ///   This is invoked as part of the Setter on <see cref="PuzzleArea" /> . The size of each tile is calculated by dividing up the number of tiles in to equal amounts then set on each <see
@@ -264,10 +377,11 @@ namespace Locima.SlidingBlock.ViewModel
         /// <remarks>
         /// We need the whole <see cref="SaveGame"/> object as we'll be updating the top level data within this object (e.g. <see cref="SaveGame.TotalMoves"/>)</remarks>
         /// <param name="game"></param>
-        public void Configure(SaveGame game)
+        public void Initialise(SaveGame game)
         {
-            Logger.Debug("Configure with SaveGame entry");
+            Logger.Debug("Initialising PuzzleViewModel using level {0} of {1}", game.CurrentLevelIndex, game);
 
+            // Set up the model based on the current level
             _puzzleModel.Initialise(game.CurrentLevel);
 
             _puzzleModel.AddPlayer(game.LocalPlayerDetails.Name, PlayerType.Local,
@@ -286,19 +400,36 @@ namespace Locima.SlidingBlock.ViewModel
                 Tiles.Add(tmv);
             }
 
-            // Register event handler for stopwatch to update the UI
+            // Register event handler for stopwatch to update the UI on each tick
             _puzzleModel.Stopwatch.Tick += (sender, args) => OnNotifyPropertyChanged("ElapsedTime");
-            _puzzleModel.Stopwatch.Pause += (sender, args) => IsPaused = true;
-            _puzzleModel.Stopwatch.Resume += (sender, args) => IsPaused = false;
-            _puzzleModel.Stopwatch.Start();
 
             _currentLevelNumber = game.CurrentLevelIndex;
             PageTitle = LocalizationHelper.GetString("GamePageTitle", _currentLevelNumber + 1);
                 // Have to add 1 as the first level should be "level 1", not "level 0"
 
+
+            // Set up the fields used in the display of the start screen
+            ImageTitle = game.CurrentLevel.Title;
+            ImageText = game.CurrentLevel.Text;
+            LicenseLink = game.CurrentLevel.License.Link;
+            LicenseTitle = game.CurrentLevel.License.Title;
+            
             _currentGame = game;
 
-            Logger.Debug("Configure exit");
+            // If resuming a previously started level just straight in else this is a new level so show the start screen first
+            if (_puzzleModel.Stopwatch.ElapsedTime.Equals(new TimeSpan(0)))
+            {
+                Logger.Info("Level has not been started yet, so setting GameState to NotStarted");
+                GameState = GameStates.NotStarted;
+            }
+            else
+            {
+                Logger.Info("Level is being continued, so setting GameState to Running");
+                GameState = GameStates.Running;
+                _puzzleModel.Stopwatch.Start();
+            }
+
+            Logger.Debug("Initialise exit");
         }
 
 
@@ -380,7 +511,7 @@ namespace Locima.SlidingBlock.ViewModel
                 nextPageUri = GamePage.CreateNavigationUri(_currentGame.Id, 1);
             }
             Logger.Info("Navigating on to {0}", nextPageUri);
-            _dontSaveGameOnNavigatingFrom = true;
+            _dontSaveGameOnNavigatingFrom = true; // Prevent the game being saved again when we navigate away (otherwise desirable when deactivating!)
             SendViewMessage(new NavigationMessageArgs(nextPageUri));
         }
 
@@ -510,10 +641,5 @@ namespace Locima.SlidingBlock.ViewModel
             return Thumbnail;
         }
 
-    }
-
-    internal class PuzzleImageCaptureMessageArgs : MessageArgs
-    {
-        public WriteableBitmap Image { get; set; }       
     }
 }

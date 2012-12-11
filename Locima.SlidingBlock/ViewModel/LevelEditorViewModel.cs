@@ -153,9 +153,7 @@ namespace Locima.SlidingBlock.ViewModel
         private void SaveAction(object obj)
         {
             // Copy any updates from the view in to the _gameTemplate
-            
-            CurrentLevel.ImageTitle = ImageTitle;
-
+            PopulateCurrentLevelWithViewModel();
 
             // And save
             GameTemplateStorageManager.Instance.Save(_gameTemplate);
@@ -229,9 +227,13 @@ namespace Locima.SlidingBlock.ViewModel
                 LicenseUri = _currentLevel.License.Link;
             }
         }
-        private PopulateCurrentLevelWithViewModel()
+
+
+        private void PopulateCurrentLevelWithViewModel()
         {
-            
+            _currentLevel.ImageTitle = ImageTitle;
+            _currentLevel.ImageText = ImageText;
+            _currentLevel.License = new LicenseDefinition {Title = LicenseTitle, Link = LicenseUri};
         }
     }
 }

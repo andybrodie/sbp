@@ -31,7 +31,7 @@ namespace Locima.SlidingBlock
         /// </summary>
         private PuzzleViewModel ViewModel
         {
-            get { return ((PuzzleViewModel) Resources["viewModel"]); }
+            get { return ((PuzzleViewModel) Resources["ViewModel"]); }
         }
 
 
@@ -50,7 +50,7 @@ namespace Locima.SlidingBlock
         /// <remarks>
         /// <list type="number">
         /// <item><description>Builds the application bar</description></item>
-        /// <item><description>The <see cref="ViewModel"/> is set up in the XAML, so we only need to call <see cref="PuzzleViewModel.Initialise"/></description></item>
+        /// <item><description>The <see cref="ViewModel"/> is set up in the XAML, so we only need to call <see cref="PuzzleViewModel.Initialise()"/></description></item>
         /// <item><description>Loads the configured game using <see cref="LoadSaveGame"/></description></item>
         /// <item><description>If the user has managed to load a completed game (<see cref="SaveGame.IsCompletedGame"/> (this can happen if Back is used), then
         /// bounce the user immediately to the <see cref="GameEnd"/> page</description></item>
@@ -61,7 +61,7 @@ namespace Locima.SlidingBlock
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            BuildApplicationBar();
+            ViewModel.RegisterMessageHandler<GameStateChangeMessageArgs>(HandleGameStateChanges);
             ViewModel.Initialise();
             this.RegisterDefaultMessageHandlers(ViewModel);
             SaveGame gameState = LoadSaveGame();
@@ -75,6 +75,17 @@ namespace Locima.SlidingBlock
                 Puzzle.Game = gameState;
                 Puzzle.Initialise();
             }
+        }
+
+
+        /// <summary>
+        /// When the game changes state this handler is invoked to allow us to reconfigure the Application Bar using <see cref="ConfigureApplicationBar"/>
+        /// </summary>
+        /// <param name="sender"><see cref="PuzzleViewModel"/></param>
+        /// <param name="eventargs">The new <see cref="GameStates"/></param>
+        private void HandleGameStateChanges(object sender, GameStateChangeMessageArgs eventargs)
+        {
+            ConfigureApplicationBar(eventargs.GameState);
         }
 
 
@@ -166,21 +177,6 @@ namespace Locima.SlidingBlock
 
 
         /// <summary>
-        /// Invoked from <see cref="OnNavigatedTo"/> this builds the application bar with its single pause button
-        /// </summary>
-        private void BuildApplicationBar()
-        {
-            Logger.Info("Creating application bar");
-            ApplicationBar = new ApplicationBar();
-
-            IApplicationBarIconButton pauseButton = ApplicationBarHelper.AddButton(ApplicationBar,
-                                                                                   ApplicationBarHelper.ButtonIcons["Pause"],
-                                                                                   LocalizationHelper.GetString("Pause"));
-            pauseButton.Click += PauseButtonOnClick;
-        }
-
-
-        /// <summary>
         ///   Pauses the game using the <see cref="PuzzleViewModel.PauseGameCommand" /> which toggles the pause state, then updates the <see
         ///    cref="ApplicationBar" /> so that a pause or resume button is displayed appropriately
         /// </summary>
@@ -194,20 +190,48 @@ namespace Locima.SlidingBlock
             {
                 ViewModel.PauseGameCommand.Execute(null);
             }
-          
-            // First, set the pause and resume icons
-            IApplicationBarIconButton pauseButton = (IApplicationBarIconButton) sender;
-            if (ViewModel.IsPaused)
+        }
+
+        /// <summary>
+        ///   Pauses the game using the <see cref="PuzzleViewModel.PauseGameCommand" /> which toggles the pause state, then updates the <see
+        ///    cref="ApplicationBar" /> so that a pause or resume button is displayed appropriately
+        /// </summary>
+        /// <remarks>
+        /// We have to do this via a <see cref="Button.OnClick"/> handler because <see cref="IApplicationBarIconButton"/>s don't support <see cref="ICommand"/>s</remarks>
+        /// <param name="sender"> The pause <see cref="IApplicationBarIconButton" /> </param>
+        /// <param name="unused">unused</param>
+        private void ResumeButtonOnClick(object sender, EventArgs unused)
+        {
+            if (ViewModel.ResumeGameCommand.CanExecute(null))
             {
-                Logger.Debug("Replacing text and icon for pause button with resume icon and text");
-                pauseButton.IconUri = ApplicationBarHelper.ButtonIcons["Resume"];
-                pauseButton.Text = LocalizationHelper.GetString("Resume");
+                ViewModel.ResumeGameCommand.Execute(null);
             }
-            else
+        }
+
+
+        private void ConfigureApplicationBar(GameStates gameState)
+        {
+            Logger.Info("Configuring application bar for game state {0}", gameState);
+            switch (gameState)
             {
-                Logger.Debug("Replacing text and icon for resume button with pause icon and text");
-                pauseButton.IconUri = ApplicationBarHelper.ButtonIcons["Pause"];
-                pauseButton.Text = LocalizationHelper.GetString("Pause");
+                case GameStates.Running:
+                    ApplicationBar = new ApplicationBar();
+                    ApplicationBarHelper.AddButton(ApplicationBar, ApplicationBarHelper.ButtonIcons["Pause"],
+                                                   LocalizationHelper.GetString("Pause")).Click += PauseButtonOnClick;
+                    break;
+                case GameStates.Paused:
+                    ApplicationBar = new ApplicationBar();
+                    ApplicationBarHelper.AddButton(ApplicationBar, ApplicationBarHelper.ButtonIcons["Resume"],
+                                                   LocalizationHelper.GetString("Resume")).Click += ResumeButtonOnClick;
+                    break;
+                case GameStates.NotStarted:
+                    ApplicationBar = new ApplicationBar();
+                    break;
+                case GameStates.Completed:
+                    ApplicationBar = new ApplicationBar();
+                    break;
+                default:
+                    throw new InvalidStateException("Unhandled GameState passed (I've added an enum value and forgotten to handle it in ConfigurationApplicationBar");
             }
         }
 
@@ -234,4 +258,12 @@ namespace Locima.SlidingBlock
 
         #endregion
     }
+
+
+    internal class GameStateChangeMessageArgs : MessageArgs
+    {
+        public GameStates GameState;
+    }
+
+
 }
