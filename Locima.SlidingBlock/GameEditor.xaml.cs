@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
@@ -11,12 +14,25 @@ using NLog;
 
 namespace Locima.SlidingBlock
 {
+
+    /// <summary>
+    /// Edits the title and author of a game template and allows the user to add more levels or edit existing ones using <see cref="LevelEditor"/>
+    /// </summary>
     public partial class GameEditor : PhoneApplicationPage
     {
+
+
+        /// <summary>
+        /// The Uri query parameter for the game template ID
+        /// </summary>
         public const string GameTemplateQueryParameterName = "gameTemplateId";
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+
+        /// <summary>
+        /// Invokes <see cref="InitializeComponent"/>
+        /// </summary>
         public GameEditor()
         {
             InitializeComponent();
@@ -26,9 +42,9 @@ namespace Locima.SlidingBlock
         /// <summary>
         /// Convenience access for the view model that is initialise in the XAML
         /// </summary>
-        public GameTemplateEditorViewModel ViewModel
+        public GameEditorViewModel ViewModel
         {
-            get { return ((GameTemplateEditorViewModel) Resources["ViewModel"]); }
+            get { return ((GameEditorViewModel) Resources["ViewModel"]); }
         }
 
 
@@ -65,7 +81,7 @@ namespace Locima.SlidingBlock
                                                   LocalizationHelper.GetString(
                                                       "SaveGameTemplateButton"));
 
-            icon.Click += (o, args) => ViewModel.SaveTemplate();
+            icon.Click += (sender, args) => ViewModel.SaveTemplate();
 
             // Cancel changes made to the game template
             // TODO Include an "are you sure?" dialog if the game template has been modified and we'll lose changes
@@ -77,12 +93,21 @@ namespace Locima.SlidingBlock
         }
 
 
+        /// <summary>
+        /// Creates a Uri that navigates to this page with no game template ID (i.e. create new game template)
+        /// </summary>
+        /// <returns></returns>
         public static Uri CreateNavigationUri()
         {
             return CreateNavigationUri(null);
         }
 
 
+        /// <summary>
+        /// Creates a Uri that navigates to this page with a game template ID passed for editing
+        /// </summary>
+        /// <param name="gameTemplateId">The ID of the game template to edit</param>
+        /// <returns>A Uri</returns>
         public static Uri CreateNavigationUri(string gameTemplateId)
         {
             string baseUri = "/GameEditor.xaml";
@@ -94,7 +119,12 @@ namespace Locima.SlidingBlock
         }
 
 
-        private void LevelsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>
+        /// Invoked when the user selects a level
+        /// </summary>
+        /// <param name="sender">The <see cref="ListBox"/> that sent this event</param>
+        /// <param name="e">Unused</param>
+        private void LevelsListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBox lb = (ListBox) sender;
             if (lb.SelectedIndex != -1)
@@ -102,5 +132,31 @@ namespace Locima.SlidingBlock
                 ViewModel.AddEditLevel(false, lb.SelectedIndex);
             }
         }
+
+        /// <summary>
+        /// Forces a binding update whenever a control is updated
+        /// </summary>
+        /// <remarks>Used for ensure that changes to <see cref="TextBox"/> controls are reflected when clicking application bar buttons</remarks>
+        /// <param name="sender">The control that was changed</param>
+        /// <param name="unused">unused</param>
+        private void ControlChanged(object sender, TextChangedEventArgs unused)
+        {
+            DependencyProperty property = null;
+            Control control = (Control) sender;
+
+            if (control is TextBox) property = TextBox.TextProperty;
+            if (control is PasswordBox) property = PasswordBox.PasswordProperty;
+            if (control is CheckBox) property = ToggleButton.IsCheckedProperty;
+
+            if (property != null)
+            {
+                BindingExpression be = control.GetBindingExpression(property);
+                if (be != null)
+                {
+                    be.UpdateSource();
+                }
+            }
+        }
     }
+
 }

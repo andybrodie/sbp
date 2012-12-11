@@ -501,6 +501,10 @@
     <value>single player game</value>
     <comment>ImageTitle of the page for single players</comment>
   </data>
+  <data name="StartLevelPrompt" xml:space="preserve">
+    <value>TAP TO START</value>
+    <comment>The prompt to the user on GamePage to start the level</comment>
+  </data>
   <data name="TimeLabel" xml:space="preserve">
     <value>time:</value>
     <comment>Label on the main game screen indicating the amount of time the player has been on this level</comment>

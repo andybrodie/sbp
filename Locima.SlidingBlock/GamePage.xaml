@@ -6,9 +6,9 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ViewModel="clr-namespace:Locima.SlidingBlock.ViewModel"
-    xmlns:Controls="clr-namespace:Locima.SlidingBlock.Controls"
-    xmlns:Converters="clr-namespace:Locima.SlidingBlock.Converters"
+    xmlns:viewModel="clr-namespace:Locima.SlidingBlock.ViewModel"
+    xmlns:controls="clr-namespace:Locima.SlidingBlock.Controls"
+    xmlns:converters="clr-namespace:Locima.SlidingBlock.Converters"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -18,8 +18,8 @@
     >
 
     <phone:PhoneApplicationPage.Resources>
-        <Converters:ElapsedTimeConverter x:Key="ElapsedTimeConverter" />
-        <ViewModel:PuzzleViewModel x:Key="viewModel"/>
+        <converters:ElapsedTimeConverter x:Key="ElapsedTimeConverter" />
+        <viewModel:PuzzleViewModel x:Key="ViewModel"/>
         <Style TargetType="Border" x:Key="AreaBorder">
             <Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>
             <Setter Property="BorderThickness" Value="3"/>
@@ -29,7 +29,7 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent" ShowGridLines="False" SizeChanged="LayoutRootSizeChanged"
-          DataContext="{Binding Source={StaticResource viewModel}}">
+          DataContext="{Binding Source={StaticResource ViewModel}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -71,42 +71,43 @@
         </Grid>
 
         <Border Grid.Column="0" Grid.Row="2" Style="{StaticResource AreaBorder}" x:Name="PuzzleBorder" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Controls:Puzzle x:Name="Puzzle" Margin="12,12,12,12" 
-                             Paused="{Binding Path=IsPaused,Source={StaticResource viewModel},Mode=OneWay}" 
-                             >
-                <Controls:Puzzle.PauseScreen>
+            <controls:Puzzle x:Name="Puzzle" Margin="12,12,12,12" 
+                             GameState="{Binding Path=GameState,Source={StaticResource ViewModel},Mode=OneWay}">
+                <controls:Puzzle.PauseScreen>
                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <Rectangle Fill="{StaticResource PhoneAccentBrush}"/>
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" 
                            Text="{Binding Path=Strings.PausedMessage, Source={StaticResource Localization}}" 
                            Style="{StaticResource PhoneTextExtraLargeStyle}"/>
                     </Grid>
-                </Controls:Puzzle.PauseScreen>
-                <Controls:Puzzle.CompleteScreen>
+                </controls:Puzzle.PauseScreen>
+                <controls:Puzzle.StartScreen>
                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Rectangle Fill="Black" Grid.Row="1" Grid.Column="1" Opacity="0.6"/>
-                        <StackPanel Grid.Row="1" Grid.Column="1">
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" 
-                           Text="complete"
-                           Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" 
-                           Text="tap to continue"
-                           Style="{StaticResource PhoneTextSmallStyle}"/>
+                        <Rectangle Fill="{StaticResource PhoneBackgroundBrush}" Opacity="0.5"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <StackPanel.Resources>
+                                <Style TargetType="HyperlinkButton" x:Name="Hyperlink">
+                                    <Setter Property="Foreground" Value="{StaticResource PhoneSubtleBrush}"/>
+                                    <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeSmall}"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ImageTitle}" TextAlignment="Center"
+                                   Margin="0,0,0,0" Style="{StaticResource PhoneTextLargeStyle}" TextWrapping="Wrap"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ImageText}" TextAlignment="Center"
+                                   Margin="0,12,0,0" Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap"/>
+                            <HyperlinkButton TargetName="_blank"
+                                         NavigateUri="{Binding LicenseLink}"
+                                         Content="{Binding LicenseTitle}"
+                                         Style="{StaticResource Hyperlink}"
+                                         Margin="0,12,0,0"
+                                         >
+                            </HyperlinkButton>
+                            <TextBlock Text="{Binding Path=Strings.StartLevelPrompt, Source={StaticResource Localization}}" HorizontalAlignment="Center" Style="{StaticResource PhoneTextExtraLargeStyle}"
+                                   Margin="0,24,0,0" />
                         </StackPanel>
                     </Grid>
-                </Controls:Puzzle.CompleteScreen>
-            </Controls:Puzzle>
+                </controls:Puzzle.StartScreen>
+            </controls:Puzzle>
         </Border>
 
 <!--

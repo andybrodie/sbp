@@ -925,6 +925,15 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TAP TO START.
+        /// </summary>
+        public static string StartLevelPrompt {
+            get {
+                return ResourceManager.GetString("StartLevelPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to time:.
         /// </summary>
         public static string TimeLabel {

@@ -161,7 +161,7 @@ namespace Locima.SlidingBlock.ViewModel
             get { return _height; }
             set
             {
-                Logger.Debug("Tile {0} height updated from {0} to {1}", Position, _height, value);
+                Logger.Debug("Tile {0} height updated from {1} to {2}", Position, _height, value);
                 _height = value;
                 OnNotifyPropertyChanged("Height");
                 OnNotifyPropertyChanged("ModelTop");
@@ -358,14 +358,14 @@ namespace Locima.SlidingBlock.ViewModel
         /// Invoked when an animation on this tile starts.
         /// </summary>
         /// <remarks>
-        /// This allows the <see cref="PuzzleViewModel"/> (see <see cref="PuzzleViewModel.Configure"/>) to keep track of all tile animations</remarks>
+        /// This allows the <see cref="PuzzleViewModel"/> (see <see cref="PuzzleViewModel.Initialise(Locima.SlidingBlock.Persistence.SaveGame)"/>) to keep track of all tile animations</remarks>
         public event EventHandler<EventArgs> TileAnimationStarted;
 
         /// <summary>
         /// Invoked when an animation on this tile completes.
         /// </summary>
         /// <remarks>
-        /// This allows the <see cref="PuzzleViewModel"/> (see <see cref="PuzzleViewModel.Configure"/>) to keep track of all tile animations.  We don't want to
+        /// This allows the <see cref="PuzzleViewModel"/> (see <see cref="PuzzleViewModel.Initialise(Locima.SlidingBlock.Persistence.SaveGame)"/>) to keep track of all tile animations.  We don't want to
         /// declare a level finished until all the animations on tiles have been completed</remarks>
         public event EventHandler<EventArgs> TileAnimationCompleted;
 
