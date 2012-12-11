@@ -120,12 +120,9 @@ namespace Locima.SlidingBlock.Persistence
                     {
                         if (_image == null)
                         {
-                            if (string.IsNullOrEmpty(ImageId))
-                            {
-                                _image = !string.IsNullOrEmpty(ImageId)
-                                             ? ImageStorageManager.Instance.Load(ImageId)
-                                             : ImageStorageManager.Instance.Load(XapImageUri);
-                            }
+                            _image = !string.IsNullOrEmpty(ImageId)
+                                         ? ImageStorageManager.Instance.Load(ImageId)
+                                         : ImageStorageManager.Instance.Load(XapImageUri);
                         }
                     }
                 }
