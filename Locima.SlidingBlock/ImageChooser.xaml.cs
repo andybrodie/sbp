@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO.IsolatedStorage;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,7 +9,6 @@ using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.ViewModel;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using NLog;
 
