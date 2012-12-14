@@ -43,7 +43,7 @@
         <ScrollViewer Grid.Row="1">
             <StackPanel x:Name="ContentPanel" Margin="12,0,12,0">
                 <Border Style="{StaticResource AreaBorder}" x:Name="ImageBorder" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Image x:Name="PreviewImage" Width="256" Height="256" Tap="PreviewImage_Tap" Source="{Binding Image}" />
+                    <Image x:Name="PreviewImage" Width="256" Height="256" Tap="PreviewImageTap" Source="{Binding Image}" />
                 </Border>
                 <Button x:Name="SelectImageButton" Content="{Binding Path=Strings.SelectImageButton,Source={StaticResource Localization}}"
                     Command="{Binding SelectImageCommand}" />

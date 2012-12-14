@@ -21,7 +21,6 @@ namespace Locima.SlidingBlock
     public partial class GameEditor : PhoneApplicationPage
     {
 
-
         /// <summary>
         /// The Uri query parameter for the game template ID
         /// </summary>
@@ -51,12 +50,13 @@ namespace Locima.SlidingBlock
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
             BuildApplicationBar();
             DefaultMessageHandlers.Register(this, ViewModel);
 
-            string gameTemplateId = this.GetQueryParameter(GameTemplateQueryParameterName, s => s);
+            string gameTemplateId = this.GetQueryParameter(GameTemplateQueryParameterName);
             ViewModel.GameTemplateId = gameTemplateId;
-
+            
             ViewModel.Initialise();
         }
 
@@ -81,7 +81,7 @@ namespace Locima.SlidingBlock
                                                   LocalizationHelper.GetString(
                                                       "SaveGameTemplateButton"));
 
-            icon.Click += (sender, args) => ViewModel.SaveTemplate();
+            icon.Click += (sender, args) => ViewModel.SaveFinalTemplateChanges();
 
             // Cancel changes made to the game template
             // TODO Include an "are you sure?" dialog if the game template has been modified and we'll lose changes
@@ -89,7 +89,13 @@ namespace Locima.SlidingBlock
                                                   ApplicationBarHelper.ButtonIcons["Cancel"],
                                                   LocalizationHelper.GetString("Cancel"));
 
-            icon.Click += (sender, args) => NavigationService.GoBack();
+            icon.Click += DiscardChanges;
+        }
+
+
+        private void DiscardChanges(object sender, EventArgs e)
+        {
+            ViewModel.ConfirmCancelCommand.Execute(null);
         }
 
 
@@ -99,7 +105,7 @@ namespace Locima.SlidingBlock
         /// <returns></returns>
         public static Uri CreateNavigationUri()
         {
-            return CreateNavigationUri(null);
+            return CreateNavigationUri(null, 0);
         }
 
 
@@ -108,14 +114,19 @@ namespace Locima.SlidingBlock
         /// </summary>
         /// <param name="gameTemplateId">The ID of the game template to edit</param>
         /// <returns>A Uri</returns>
-        public static Uri CreateNavigationUri(string gameTemplateId)
+        public static Uri CreateNavigationUri(string gameTemplateId, int suppressPreviousPageCount)
         {
             string baseUri = "/GameEditor.xaml";
+            UriConstructor uriCons = new UriConstructor("/GameEditor.xaml", UriKind.Relative);
             if (!string.IsNullOrEmpty(gameTemplateId))
             {
-                baseUri = string.Format("{0}?{1}={2}", baseUri, GameTemplateQueryParameterName, gameTemplateId);
+                uriCons.AddParameter(GameTemplateQueryParameterName, gameTemplateId);
             }
-            return new Uri(baseUri, UriKind.Relative);
+            if (suppressPreviousPageCount>0)
+            {
+                uriCons.AddParameter(App.SuppressBackQueryParameterName, suppressPreviousPageCount);
+            }
+            return uriCons.ToUri();
         }
 
 
@@ -158,5 +169,4 @@ namespace Locima.SlidingBlock
             }
         }
     }
-
 }

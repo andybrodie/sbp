@@ -7,6 +7,7 @@ using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.GameTemplates;
 using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Persistence;
+using Microsoft.Phone.Shell;
 using NLog;
 
 namespace Locima.SlidingBlock.ViewModel.Menus
@@ -55,10 +56,15 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         }
 
 
+        /// <summary>
+        /// Stores the game template selected by the user within the persistent storage area for the app
+        /// </summary>
+        /// <remarks>
+        /// We need this here in case the user quits as part of the menu navigaton</remarks>
         protected static string SelectedTemplateId
         {
-            get { return IsolatedStorageSettings.ApplicationSettings["Menu_SelectedTemplateId"] as string; }
-            set { IsolatedStorageSettings.ApplicationSettings["Menu_SelectedTemplateId"] = value; }
+            get { return PhoneApplicationService.Current.State["Menu_SelectedTemplateId"] as string; }
+            set { PhoneApplicationService.Current.State["Menu_SelectedTemplateId"] = value; }
         }
 
 
@@ -146,14 +152,14 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// <summary>
         /// When the user wants to start a new game they need to select which game template to use, IFF there is more than one defined, otherwise just use the default
         /// </summary>
+        /// <param name="gameTemplateId">The ID of the game template to create this game with</param>
         /// <param name="tilesAcross">Each puzzle will have this many tiles across in the puzzle</param>
         /// <param name="tilesHigh">Each puzzle will have this many tiles high in the puzzle</param>
         /// <param name="pagesOnBackStackToSuppress">The number of pages that have been navigated through the menus, which must be suppressed (<see cref="CalculatePagesToRemoveInBackstack"/>)</param>
         /// <returns>Either a Uri to navigate to the GameTemplateSelector</returns>
-        private static Uri CreateNewGame(int tilesAcross, int tilesHigh, int pagesOnBackStackToSuppress)
+        private static Uri CreateNewGame(string gameTemplateId, int tilesAcross, int tilesHigh, int pagesOnBackStackToSuppress)
         {           
-            SaveGame sg = SaveGameFactory.CreateSaveGame(GameTemplateStorageManager.Instance.GetGameTemplates(false, false)[0],
-                                                         tilesAcross, tilesHigh);
+            SaveGame sg = SaveGameFactory.CreateSaveGame(gameTemplateId, tilesAcross, tilesHigh);
 
             /* We want to suppress navigating back to this page because otherwise clicking "Back" from a game would put you back to this menu item
              * which isn't useful for the user (i.e. in the middle of a game, clicking back would give you the "Easy", "Medium", "Hard" choice again
@@ -201,9 +207,9 @@ namespace Locima.SlidingBlock.ViewModel.Menus
                            PageTitle = LocalizationHelper.GetString("NewGame"),
                            MenuItems = new ObservableCollection<MenuItemViewModel>
                                            {
-                                               CreateDifficultyMenuItem("Easy", 3, 3, pagesOnBackStackToSuppress),
-                                               CreateDifficultyMenuItem("Medium", 4, 4, pagesOnBackStackToSuppress),
-                                               CreateDifficultyMenuItem("Hard", 5, 5, pagesOnBackStackToSuppress)
+                                               CreateDifficultyMenuItem("Easy", SelectedTemplateId, 3, 3, pagesOnBackStackToSuppress),
+                                               CreateDifficultyMenuItem("Medium", SelectedTemplateId, 4, 4, pagesOnBackStackToSuppress),
+                                               CreateDifficultyMenuItem("Hard", SelectedTemplateId, 5, 5, pagesOnBackStackToSuppress)
                                            }
                        };
         }
@@ -257,17 +263,18 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// <remarks>
         /// Difficulty is determined by <paramref name="tilesAcross"/> and <paramref name="tilesHigh"/></remarks>
         /// <param name="gameLabel">The label to use (will be localised by this method)</param>
+        /// <param name="gameTemplateId">The ID of the game template to create the game with</param>
         /// <param name="tilesAcross">The number of tiles across the puzzle should be</param>
         /// <param name="tilesHigh">The number of tiles high the puzzle should be</param>
         /// <param name="pagesOnBackStackToSuppress">The number of pages on the back stack to request that <see cref="GamePage"/> suppresses, see <see cref="CalculatePagesToRemoveInBackstack"/></param>
         /// <returns>A menu item that, when selected, will create a new game</returns>
-        private static MenuItemViewModel CreateDifficultyMenuItem(string gameLabel, int tilesAcross, int tilesHigh, int pagesOnBackStackToSuppress)
+        private static MenuItemViewModel CreateDifficultyMenuItem(string gameLabel, string gameTemplateId, int tilesAcross, int tilesHigh, int pagesOnBackStackToSuppress)
         {
             return new MenuItemViewModel
             {
                 Title = LocalizationHelper.GetString(gameLabel),
                 Text = LocalizationHelper.GetString("GameDescription", tilesAcross, tilesHigh),
-                SelectedAction = () => CreateNewGame(tilesAcross, tilesHigh, pagesOnBackStackToSuppress)
+                SelectedAction = () => CreateNewGame(gameTemplateId, tilesAcross, tilesHigh, pagesOnBackStackToSuppress)
             };
         }
 

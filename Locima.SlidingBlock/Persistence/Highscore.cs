@@ -45,5 +45,12 @@ namespace Locima.SlidingBlock.Persistence
         /// </remarks>
         [DataMember]
         public string GameId { get; set; }
+
+
+        /// <summary>
+        /// The total number of moves used to finish the game
+        /// </summary>
+        [DataMember]
+        public int TotalMoves { get; set; }
     }
 }

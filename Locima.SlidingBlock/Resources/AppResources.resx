@@ -185,6 +185,14 @@
     <value>confirm delete</value>
     <comment>Title for message asking user to confirm that a game template should be deleted</comment>
   </data>
+  <data name="ConfirmDiscardGameChangesText" xml:space="preserve">
+    <value>are you sure you want to discard your changes to this level?</value>
+    <comment>GameEditor message box text when the user might discard changes</comment>
+  </data>
+  <data name="ConfirmDiscardGameChangesTitle" xml:space="preserve">
+    <value>discard changes?</value>
+    <comment>GameEditor message box title when the user might discard changes</comment>
+  </data>
   <data name="Continue" xml:space="preserve">
     <value>continue</value>
     <comment>The word "continue", to indicate that an interaction will continue to the next logical part of the application</comment>
@@ -210,7 +218,7 @@
     <comment>Indicates a custom game</comment>
   </data>
   <data name="CustomDescription" xml:space="preserve">
-    <value>Start a new custom game</value>
+    <value>edit or create your own game templates</value>
     <comment>Describes a custom game</comment>
   </data>
   <data name="CustomGameContextMenuCopy" xml:space="preserve">
@@ -224,6 +232,14 @@
   <data name="DefaultGameTemplateTitle" xml:space="preserve">
     <value>Untitled Game</value>
     <comment>The name given to a game template that isn't assigned a title by the user</comment>
+  </data>
+  <data name="DefaultLevelText" xml:space="preserve">
+    <value>level description</value>
+    <comment>Default level text for a newly created level</comment>
+  </data>
+  <data name="DefaultLevelTitle" xml:space="preserve">
+    <value>new level</value>
+    <comment>The default new level title</comment>
   </data>
   <data name="DefaultPlayerName" xml:space="preserve">
     <value>Player</value>
@@ -266,7 +282,7 @@
     <comment>Title of the GameEnd page</comment>
   </data>
   <data name="GameDescription" xml:space="preserve">
-    <value>Start a game using a {0} x {1} grid</value>
+    <value>start a game using a {0} x {1} grid</value>
     <comment>Describes an easy, medium or hard game</comment>
   </data>
   <data name="GameEditorPageTitle" xml:space="preserve">
@@ -358,15 +374,15 @@
     <comment>Menu item title for loading a saved game</comment>
   </data>
   <data name="LoadGameDescription" xml:space="preserve">
-    <value>Load a saved game</value>
+    <value>load a game in progress</value>
     <comment>Menu item description for loading a saved game</comment>
   </data>
   <data name="LocalPictures" xml:space="preserve">
-    <value>Local Pictures</value>
+    <value>picture library</value>
     <comment>Prompt for using pictures on the local device (your phone)</comment>
   </data>
   <data name="LocalPicturesDescription" xml:space="preserve">
-    <value>Use a picture from your phone</value>
+    <value>use a picture on your phone</value>
     <comment>Description for prompt for using pictures on the local device (your phone)</comment>
   </data>
   <data name="MainMenu" xml:space="preserve">
@@ -444,6 +460,10 @@
   <data name="SaveGameTemplateButton" xml:space="preserve">
     <value>save</value>
     <comment>Application button to save the game template on the GameEditor</comment>
+  </data>
+  <data name="SaveLevel" xml:space="preserve">
+    <value>save</value>
+    <comment>LevelEditor application bar button label to save the level</comment>
   </data>
   <data name="SavePlayer" xml:space="preserve">
     <value>save</value>

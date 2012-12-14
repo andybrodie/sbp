@@ -455,8 +455,8 @@ namespace Locima.SlidingBlock.ViewModel
         ///   can respond to the user finishing the level
         /// </summary>
         /// <param name="sender"> The object representing the animation </param>
-        /// <param name="e"> Ignored </param>
-        private void CheckPuzzleCompleted(object sender, EventArgs e)
+        /// <param name="unused"> Ignored </param>
+        private void CheckPuzzleCompleted(object sender, EventArgs unused)
         {
             _animationsPending.Remove(sender);
             Logger.Debug("Removed animation {0} from the list of pending animations, now {1} animations active", sender,
@@ -474,6 +474,8 @@ namespace Locima.SlidingBlock.ViewModel
         private void CompleteLevel()
         {
             _puzzleModel.Stopwatch.Stop();
+
+            GameState = GameStates.Completed;
 
             // Congratulate the user, when they've finished celebrating, the ok button will invoke ProceedToNextLevel
             SendViewMessage(new ConfirmationMessageArgs

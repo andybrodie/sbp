@@ -38,7 +38,6 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
 
-
         /// <summary>
         /// Loads the image specified by <paramref name="imageId"/> from Isolated Storage and return it as a <see cref="WriteableBitmap"/>
         /// </summary>
@@ -131,6 +130,33 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
                 }
                 Logger.Info("Saved image {0} successfully", imageId);
             }
+        }
+
+        /// <summary>
+        /// Determines whether an image is temporary or not by examining the ID
+        /// </summary>
+        /// <param name="imageId">The of the image</param>
+        /// <returns></returns>
+        public bool IsTemporary(string imageId)
+        {
+            if (string.IsNullOrEmpty(imageId)) throw new ArgumentNullException("imageId");
+            return imageId.StartsWith(ImageTempDirectory);
+        }
+
+
+
+        /// <summary>
+        /// Promote the image moving the file from <see cref="ImageTempDirectory"/> to <see cref="ImageDirectory"/>
+        /// </summary>
+        /// <param name="temporaryImageId">The temporary image ID</param>
+        /// <returns>The new ID for the image as a permanent image</returns>
+        public string Promote(string temporaryImageId)
+        {
+            if (!IsTemporary(temporaryImageId)) throw new InvalidStateException(string.Format("Attempt to promote non-temporary image {0}", temporaryImageId));
+            string promotedImageId = Path.Combine(ImageDirectory, temporaryImageId.Substring(ImageTempDirectory.Length + 1));
+            Logger.Info("Promoting temporary image {0} to {1}", temporaryImageId, promotedImageId);
+            IOHelper.MoveFile(temporaryImageId, promotedImageId);
+            return promotedImageId;
         }
     }
 }

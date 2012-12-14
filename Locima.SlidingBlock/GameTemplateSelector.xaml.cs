@@ -67,6 +67,7 @@ namespace Locima.SlidingBlock
             return new Uri("/GameTemplateSelector.xaml", UriKind.Relative);
         }
 
+
         private void CustomGameListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBox gameListListBox = (ListBox) sender;

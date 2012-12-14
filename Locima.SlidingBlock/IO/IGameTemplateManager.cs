@@ -24,9 +24,9 @@ namespace Locima.SlidingBlock.IO
         List<GameTemplate> GetGameTemplates(bool includeShadows, bool collapseShadows);
 
         /// <summary>
-        /// Loads the game template specified by its it in <paramref name="id"/>
+        /// Loads the game template specified by <paramref name="id"/>
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">The identity of the game template to load</param>
         /// <returns></returns>
         GameTemplate Load(string id);
 
@@ -37,10 +37,16 @@ namespace Locima.SlidingBlock.IO
         void Save(GameTemplate gameTemplate);
 
         /// <summary>
-        /// Deletes the game template specified by its ID in <paramref name="id"/>
+        /// Deletes the game template (and all associated images) specified by its ID in <paramref name="id"/>
         /// </summary>
         /// <param name="id">The ID of the <see cref="GameTemplate"/> to remove</param>
         void Delete(string id);
+
+        /// <summary>
+        /// Deletes the game template (and all associated images) specified by its ID in <paramref name="id"/>
+        /// </summary>
+        /// <param name="gameTemplate">The game template to remove</param>
+        void Delete(GameTemplate gameTemplate);
 
         /// <summary>
         /// Overwrites the object that this object is shadowing with this shadow

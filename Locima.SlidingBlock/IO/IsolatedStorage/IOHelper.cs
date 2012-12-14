@@ -454,7 +454,9 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         /// <returns>The object of type <typeparamref name="T"/> that has an <see cref="IPersistedObject.AppId"/> matching <paramref name="appId"/></returns>
         public static T LoadFileByAppId<T>(string directory, string appId) where T : class, IPersistedObject
         {
+// ReSharper disable LocalizableElement
             if (string.IsNullOrEmpty(appId)) throw new ArgumentException("appId must not be null", "appId");
+// ReSharper restore LocalizableElement
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 List<string> filenames = GetFileNames(directory, store);
@@ -541,10 +543,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
                 }
                 string[] dirNames = store.GetDirectoryNames(Path.Combine(directoryName,"*"));
                 Logger.Info("Deleting {0} sub-directories of {1}", dirNames.Length, directoryName);
-                foreach (string dirName in dirNames)
-                {
-                    total += DeleteFiles(dirName);
-                }
+                total += dirNames.Sum(dirName => DeleteFiles(dirName));
             }
             else
             {
@@ -553,5 +552,21 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
             return total;
         }
 
+        /// <summary>
+        /// Moves a file by delegating to <see cref="IsolatedStorageFile.MoveFile"/>
+        /// </summary>
+        /// <param name="sourceFileName">The file name of the file to move</param>
+        /// <param name="destinationFileName">The place to move the file to</param>
+        public static void MoveFile(string sourceFileName, string destinationFileName)
+        {
+            if (string.IsNullOrEmpty(sourceFileName)) throw new ArgumentNullException("sourceFileName");
+            if (string.IsNullOrEmpty(destinationFileName)) throw new ArgumentNullException("destinationFileName");
+            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                Logger.Debug("Moving {0} to {1}", sourceFileName, destinationFileName);
+                store.MoveFile(sourceFileName, destinationFileName);
+                Logger.Info("Successfully {0} to {1}", sourceFileName, destinationFileName);
+            }
+        }
     }
 }

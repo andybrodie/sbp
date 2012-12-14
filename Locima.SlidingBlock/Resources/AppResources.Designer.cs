@@ -214,6 +214,24 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to are you sure you want to discard your changes to this level?.
+        /// </summary>
+        public static string ConfirmDiscardGameChangesText {
+            get {
+                return ResourceManager.GetString("ConfirmDiscardGameChangesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to discard changes?.
+        /// </summary>
+        public static string ConfirmDiscardGameChangesTitle {
+            get {
+                return ResourceManager.GetString("ConfirmDiscardGameChangesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to continue.
         /// </summary>
         public static string Continue {
@@ -268,7 +286,7 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start a new custom game.
+        ///   Looks up a localized string similar to edit or create your own game templates.
         /// </summary>
         public static string CustomDescription {
             get {
@@ -300,6 +318,24 @@ namespace Locima.SlidingBlock.Resources {
         public static string DefaultGameTemplateTitle {
             get {
                 return ResourceManager.GetString("DefaultGameTemplateTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to level description.
+        /// </summary>
+        public static string DefaultLevelText {
+            get {
+                return ResourceManager.GetString("DefaultLevelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to new level.
+        /// </summary>
+        public static string DefaultLevelTitle {
+            get {
+                return ResourceManager.GetString("DefaultLevelTitle", resourceCulture);
             }
         }
         
@@ -394,7 +430,7 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start a game using a {0} x {1} grid.
+        ///   Looks up a localized string similar to start a game using a {0} x {1} grid.
         /// </summary>
         public static string GameDescription {
             get {
@@ -601,7 +637,7 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load a saved game.
+        ///   Looks up a localized string similar to load a game in progress.
         /// </summary>
         public static string LoadGameDescription {
             get {
@@ -610,7 +646,7 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Local Pictures.
+        ///   Looks up a localized string similar to picture library.
         /// </summary>
         public static string LocalPictures {
             get {
@@ -619,7 +655,7 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use a picture from your phone.
+        ///   Looks up a localized string similar to use a picture on your phone.
         /// </summary>
         public static string LocalPicturesDescription {
             get {
@@ -795,6 +831,15 @@ namespace Locima.SlidingBlock.Resources {
         public static string SaveGameTemplateButton {
             get {
                 return ResourceManager.GetString("SaveGameTemplateButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to save.
+        /// </summary>
+        public static string SaveLevel {
+            get {
+                return ResourceManager.GetString("SaveLevel", resourceCulture);
             }
         }
         

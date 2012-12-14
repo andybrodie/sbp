@@ -46,7 +46,7 @@ namespace Locima.SlidingBlock.ViewModel
         {
             GameTemplateViewModel selectedItem = (GameTemplateViewModel) obj;
 
-            SendViewMessage(new NavigationMessageArgs(GameEditor.CreateNavigationUri(selectedItem.Id)));
+            SendViewMessage(new NavigationMessageArgs(GameEditor.CreateNavigationUri(selectedItem.Id,0)));
         }
 
 

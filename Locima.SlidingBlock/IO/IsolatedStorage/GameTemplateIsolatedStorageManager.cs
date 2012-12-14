@@ -128,13 +128,21 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
             if (string.IsNullOrEmpty(gameTemplate.Id))
             {
                 gameTemplate.Id = CreateId(gameTemplate.IsShadow);
-                Logger.Info("Saving new game template {0} by {1}", gameTemplate.Title, gameTemplate.Author);
+                if (gameTemplate.IsShadow)
+                {
+                    Logger.Info("Saving new game template {0} by {1}", gameTemplate.Title, gameTemplate.Author);
+                }
+                else
+                {
+                    Logger.Info("Saving new game template {0} by {1} as a shadow of {2}", gameTemplate.Title, gameTemplate.Author, gameTemplate.ShadowOf);
+                }
             }
             else
             {
                 Logger.Info("Saving existing game template {0} by {1}", gameTemplate.Title, gameTemplate.Author);
             }
 
+            // Fill in some sensible defaults if the user hasn't
             if (string.IsNullOrEmpty(gameTemplate.Title))
             {
                 gameTemplate.Title = GameTemplate.DefaultTitle;
@@ -159,8 +167,37 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         /// </summary>
         /// <param name="id">The identity of the game template</param>
         public void Delete(string id)
+        {           
+            if (IOHelper.FileExists(id))
+            {
+                Delete(Load(id));
+            }
+            else
+            {
+                Logger.Warn("Call to delete game template that doesn't exist ignored {0}", id);
+            }
+        }
+
+
+        /// <summary>
+        /// Deletes a game template and all associated images
+        /// </summary>
+        /// <param name="gameTemplate">The game template to delete</param>
+        public void Delete(GameTemplate gameTemplate)
         {
-            IOHelper.DeleteFile(id);
+            Logger.Info("Deleting all non-XAP images associated with game {0}", gameTemplate);
+            if (gameTemplate.Levels != null)
+            {
+                foreach (LevelDefinition level in gameTemplate.Levels)
+                {
+                    if (level.ImageId != null)
+                    {
+                        ImageStorageManager.Instance.Delete(level.ImageId);
+                    }
+                }
+            }
+            Logger.Info("Deleting game template file {0}", gameTemplate.Id);
+            IOHelper.DeleteFile(gameTemplate.Id);
         }
 
 

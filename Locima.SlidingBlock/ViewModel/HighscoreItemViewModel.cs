@@ -31,6 +31,7 @@ namespace Locima.SlidingBlock.ViewModel
             _score = score;
             PlayerName = score.Name;
             Time = score.TotalTime;
+            TotalMoves = score.TotalMoves;
             DateEntered = score.When;
         }
 
@@ -130,9 +131,11 @@ namespace Locima.SlidingBlock.ViewModel
             get
             {
                 if (!IsDesignTime)
+                {
                     return (Brush) (IsHighlighted
                                         ? Application.Current.Resources["PhoneAccentBrush"]
                                         : Application.Current.Resources["PhoneForegroundBrush"]);
+                }
                 return IsHighlighted
                            ? new SolidColorBrush(Color.FromArgb(255, 255, 255, 0))
                            : new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
@@ -149,7 +152,7 @@ namespace Locima.SlidingBlock.ViewModel
             {
                 return !IsDesignTime
                            ? LocalizationHelper.GetString("HighscoreStats", TotalMoves, Time.ToString("c"))
-                           : TotalMoves + " moves in " + Time.ToString("c");
+                           : string.Format("{0} moves in {1}", TotalMoves, Time.ToString("c"));
             }
         }
     }

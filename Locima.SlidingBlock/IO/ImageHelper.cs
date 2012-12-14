@@ -82,14 +82,24 @@ namespace Locima.SlidingBlock.IO
 
         public static WriteableBitmap LoadBitmapFromXapContent(Uri xapImageUri)
         {
-            Logger.Info("Loading image from XAP content {0}", xapImageUri);
-            BitmapImage bitmap = new BitmapImage();
-            // We have to use SetSource so that it loads sychronously, otherwise the creation of the WriteableBitmap may throw a NullReferenceException
-            bitmap.CreateOptions = BitmapCreateOptions.None;
-            StreamResourceInfo resourceInfo = Application.GetResourceStream(xapImageUri);
-            bitmap.SetSource(resourceInfo.Stream);
-            WriteableBitmap wbitmap = new WriteableBitmap(bitmap);
-            Logger.Debug("Loaded image from XAP content {0} successfully", xapImageUri);
+            WriteableBitmap wbitmap;
+            if (xapImageUri == null)
+            {
+                Logger.Info("No image specified in xapImageUri, returning empty bitmap");
+                wbitmap = new WriteableBitmap(1, 1);
+            }
+            else
+            {
+                BitmapImage bitmap = new BitmapImage();
+                Logger.Info("Loading image from XAP content {0}", xapImageUri);
+                // We have to use SetSource so that it loads sychronously, otherwise the creation of the WriteableBitmap may throw a NullReferenceException
+                bitmap.CreateOptions = BitmapCreateOptions.None;
+
+                StreamResourceInfo resourceInfo = Application.GetResourceStream(xapImageUri);
+                bitmap.SetSource(resourceInfo.Stream);
+                wbitmap = new WriteableBitmap(bitmap);
+                Logger.Debug("Loaded image from XAP content {0} successfully", xapImageUri);
+            }
             return wbitmap;
         }
     }

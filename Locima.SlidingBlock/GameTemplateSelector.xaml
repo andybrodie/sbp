@@ -42,8 +42,9 @@
                     ItemsSource="{Binding Path=GameTemplateList}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
                             <TextBlock Style="{StaticResource PhoneTextExtraLargeStyle}" Text="{Binding Path=Title}"/>
+                            <TextBlock ></TextBlock>
                             <toolkit:ContextMenuService.ContextMenu>
                                 <toolkit:ContextMenu Name="MyContextMenu">
                                     <toolkit:MenuItem Header="{Binding Path=Strings.CustomGameContextMenuDelete, Source={StaticResource Localization}}" Command="{Binding DeleteGameTemplateCommand}" />

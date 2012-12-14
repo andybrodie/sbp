@@ -201,7 +201,7 @@ namespace Locima.SlidingBlock.ViewModel
             double minScaleFactorX = CropWidth / Image.PixelWidth;
             double minScaleFactorY = CropHeight / Image.PixelHeight;
             MinScaleFactor = Math.Max(minScaleFactorX, minScaleFactorY);
-
+            Scale = MinScaleFactor;
             ImagePosition = new Point(CropLeft, CropTop);
             
         }
@@ -330,11 +330,14 @@ namespace Locima.SlidingBlock.ViewModel
 
             // Update the GameTemplate's Level image to the new image
             GameTemplate template = GameTemplateStorageManager.Instance.Load(GameTemplateId);
-            template.Levels[LevelIndex].XapImageUri = null;
-            template.Levels[LevelIndex].ImageId = ImageId;
+            LevelDefinition currentLevel = template.Levels[LevelIndex];
+            Logger.Info("Saving level {0} of {1} XapImageUri from {2} to null and ImageId from {3} to {4}", LevelIndex, template, currentLevel.XapImageUri, currentLevel.ImageId ?? "null", ImageId);
+            currentLevel.XapImageUri = null;
+            currentLevel.ImageId = ImageId;
             GameTemplateStorageManager.Instance.Save(template);
 
-            // Go back to the Level Editor, suppressing the ImageChooser page
+            // Go back to the Level Editor, skipping over the ImageChooser page    
+            Logger.Info("Navingating back to the LevelEditor page, suppressing the ImageChooser page on the top of the backstack");
             SendViewMessage(new NavigationMessageArgs { NavigationMode = NavigationMode.Back, DeleteBackstackEntries = 1 });
         }
 
