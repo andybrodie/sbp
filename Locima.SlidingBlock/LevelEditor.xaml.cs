@@ -4,33 +4,30 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
+using Locima.SlidingBlock.GameTemplates;
 using Locima.SlidingBlock.Messaging;
 using Locima.SlidingBlock.ViewModel;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using NLog;
+using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Locima.SlidingBlock
 {
+
+    /// <summary>
+    /// The MVVM view for the basic level editor
+    /// </summary>
+    /// <remarks>
+    /// This page allows the user to change the details of a <see cref="LevelDefinition"/> via a <see cref="LevelDefinitionViewModel"/> instance held in <see cref="ViewModel"/>.</remarks>
     public partial class LevelEditor : PhoneApplicationPage
     {
         private const string LevelIndexQueryParameterName = "levelIndex";
         private const string GameTemplateIdParameterName = "gameTemplateId";
         private const string CreateNewQueryParameterName = "createNew";
         private const string ImageIdQueryParameterName = "imageId";
-
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        /// <summary>
-        /// Convenience access for the view model that is initialise in the XAML
-        /// </summary>
-        public LevelEditorViewModel ViewModel
-        {
-            get { return ((LevelEditorViewModel)Resources["ViewModel"]); }
-        }
-
 
         /// <summary>
         /// Invokes <see cref="InitializeComponent"/>
@@ -40,14 +37,25 @@ namespace Locima.SlidingBlock
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Convenience access for the view model that is initialise in the XAML
+        /// </summary>
+        public LevelEditorViewModel ViewModel
+        {
+            get { return ((LevelEditorViewModel) Resources["ViewModel"]); }
+        }
 
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             Initialise();
         }
 
 
+        /// <summary>
+        /// Set up the <see cref="ViewModel"/> and register default view message event handlers
+        /// </summary>
         public void Initialise()
         {
             BuildApplicationBar();
@@ -68,8 +76,8 @@ namespace Locima.SlidingBlock
         {
             ApplicationBar = new ApplicationBar();
             IApplicationBarIconButton icon = ApplicationBarHelper.AddButton(ApplicationBar,
-                                                                ApplicationBarHelper.ButtonIcons["Save"],
-                                                                LocalizationHelper.GetString("SavePlayer"));
+                                                                            ApplicationBarHelper.ButtonIcons["Save"],
+                                                                            LocalizationHelper.GetString("SaveLevel"));
             icon.Click += SaveLevelClick;
             icon = ApplicationBarHelper.AddButton(ApplicationBar, ApplicationBarHelper.ButtonIcons["Cancel"],
                                                   LocalizationHelper.GetString("Cancel"));
@@ -78,7 +86,7 @@ namespace Locima.SlidingBlock
 /*            icon = ApplicationBarHelper.AddButton(ApplicationBar,
                                                     ApplicationBarHelper.ButtonIcons["Edit"],
                                                     LocalizationHelper.GetString("SelectLicense"));
-  */          // TODO License selector logic, we could do with a picker
+  */ // TODO License selector logic, we could do with a picker
         }
 
         private void CancelClick(object sender, EventArgs e)
@@ -129,7 +137,7 @@ namespace Locima.SlidingBlock
         }
 
 
-        private void PreviewImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void PreviewImageTap(object sender, GestureEventArgs e)
         {
             ViewModel.SelectImageCommand.Execute(null);
         }
@@ -143,7 +151,7 @@ namespace Locima.SlidingBlock
         private void ControlChanged(object sender, TextChangedEventArgs unused)
         {
             DependencyProperty property = null;
-            Control control = (Control)sender;
+            Control control = (Control) sender;
 
             if (control is TextBox) property = TextBox.TextProperty;
             if (control is PasswordBox) property = PasswordBox.PasswordProperty;
@@ -158,6 +166,5 @@ namespace Locima.SlidingBlock
                 }
             }
         }
-
     }
 }

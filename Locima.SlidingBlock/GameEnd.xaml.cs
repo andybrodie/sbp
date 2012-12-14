@@ -58,8 +58,8 @@ namespace Locima.SlidingBlock
 
                 string endGameMessageText = string.Format(LocalizationHelper.GetString("EndGameMessage"),
                                                           LocalizationHelper.GetTimeSpanString(sg.TotalTime),
-                                                          sg.TotalMoves, highscoreTablePosition,
-                                                          LocalizationHelper.GetOrdinal(highscoreTablePosition));
+                                                          sg.TotalMoves,
+                                                          LocalizationHelper.GetOrdinal(highscoreTablePosition + 1));
 
                 EndGameMessage.Text = endGameMessageText;
             }
@@ -100,7 +100,8 @@ namespace Locima.SlidingBlock
                     Name = saveGame.LocalPlayerDetails.Name,
                     PlayerId = saveGame.LocalPlayerDetails.Id,
                     TotalTime = saveGame.TotalTime,
-                    When = DateTime.Now
+                    When = DateTime.Now,
+                    TotalMoves = saveGame.TotalMoves
                 };
             Highscore existingHighscore = table.Scores.FirstOrDefault(highscore => highscore.GameId == saveGame.Id);
             int hsIndex;

@@ -67,5 +67,19 @@ namespace Locima.SlidingBlock.IO
         /// <param name="imageId">The ID of the image to update</param>
         /// <param name="image">The new data to replace the existing image with</param>
         void Save(string imageId, WriteableBitmap image);
+
+        /// <summary>
+        /// Determines whether an image is temporary or not
+        /// </summary>
+        /// <param name="imageId">The image ID to check</param>
+        /// <returns><c>true</c> if the image is a temporary image, <c>false</c> otherwise</returns>
+        bool IsTemporary(string imageId);
+
+        /// <summary>
+        /// Promotes a temporary image to a permanent one (which changes the ID)
+        /// </summary>
+        /// <param name="imageId">The ID of the image to update</param>
+        /// <returns>Temporary and permanent images have different IDs.  This is the new ID for the image.</returns>
+        string Promote(string imageId);
     }
 }

@@ -53,7 +53,7 @@ namespace Locima.SlidingBlock
         {
             _gameTemplateId = this.GetQueryParameter(GameTemplateIdQueryParameterName, s => s);
             _levelIndex = this.GetQueryParameterAsInt(LevelIndexQueryParameterName);
-            this.SetState(GameTemplateIdQueryParameterName, _gameTemplateId); // Stash these for PhotoChooserTaskCompleted
+            this.SetState(GameTemplateIdQueryParameterName, _gameTemplateId); // Stash these for PhotoChooserTaskCompleted as we might get tombstoned by Photo Chooser
             this.SetState(LevelIndexQueryParameterName, _levelIndex);
             DataContext = GetImageProviders(); // TODO Fix this to use proper MVVM-style initalisation
         }
@@ -73,9 +73,10 @@ namespace Locima.SlidingBlock
                                              Text = LocalizationHelper.GetString("LocalPicturesDescription")
                                          };
             mpvm.MenuItems.Add(item);
-
-            item = new MenuItemViewModel {Title = "Enter URL", Text = "Enter or paste a URL to an image on line"};
-            mpvm.MenuItems.Add(item);
+   
+            // TODO allow URLs to be set for image download
+//            item = new MenuItemViewModel {Title = "Enter URL", Text = "Enter or paste a URL to an image on line"};
+//            mpvm.MenuItems.Add(item);
 
             return mpvm;
         }
@@ -85,7 +86,7 @@ namespace Locima.SlidingBlock
         {
             if (e.TaskResult == TaskResult.OK)
             {
-                string photoId = ImageStorageManager.Instance.SaveTemporary(e.ChosenPhoto);
+                string temporaryPhotoId = ImageStorageManager.Instance.SaveTemporary(e.ChosenPhoto);
                 /* We're coming back from deactivation here (and possibly tombstone, so we can't rely on any fields being initialised
                  * More good news, we can't get query parameters again because at this point pagethis.NavigationContext is null!
                  * Good job we stashed the parameters in PhoneApplicationSettings!
@@ -100,9 +101,10 @@ namespace Locima.SlidingBlock
                 {
                     throw new InvalidStateException(string.Format("Property {0} not found in state!", LevelIndexQueryParameterName));
                 }
+                // Tidy up after ourselves so we don't leave data hanging around
                 this.ClearState(GameTemplateIdQueryParameterName);
                 this.ClearState(LevelIndexQueryParameterName);
-                Uri areaChooserUri = ImageAreaChooser.CreateNavigationUri(gameTemplateId, levelIndex, photoId);
+                Uri areaChooserUri = ImageAreaChooser.CreateNavigationUri(gameTemplateId, levelIndex, temporaryPhotoId);
                 Dispatcher.BeginInvoke(() => NavigationService.Navigate(areaChooserUri));
             }
         }

@@ -74,6 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\UriConstructor.cs" />
     <Compile Include="Converters\BrushOpacityModifier.cs" />
     <Compile Include="Converters\ScrambleTextConverter.cs" />
     <Compile Include="DesignPage.xaml.cs">

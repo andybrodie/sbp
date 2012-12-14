@@ -41,7 +41,7 @@ namespace Locima.SlidingBlock.Messaging
         {
             if (args.DeleteBackstackEntries != 0)
             {
-                Logger.Info("NavigationMessageArgs requests deleting {0} backstack entries");
+                Logger.Info("NavigationMessageArgs requests deleting {0} backstack entries", args.DeleteBackstackEntries);
                 for (int i = 0; i < args.DeleteBackstackEntries; i++)
                 {
                     JournalEntry entry = _page.NavigationService.RemoveBackEntry();

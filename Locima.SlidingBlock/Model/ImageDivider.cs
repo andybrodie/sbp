@@ -85,18 +85,20 @@ namespace Locima.SlidingBlock.Model
         /// </summary>
         private void Recalculate()
         {
-            Logger.Info("Recalculating tile images for {0} by {1} pixel tiles using an image {2} by {3} pixels",
-                        TilesAcross, TilesHigh, ImageBitmap.PixelWidth, ImageBitmap.PixelHeight);
             if (ImageBitmap == null)
             {
                 Logger.Warn("Unable to recalculate as bitmap not loaded");
                 return;
             }
+            Logger.Info("Recalculating tile images for {0} by {1} pixel tiles using an image {2} by {3} pixels",
+                        TilesAcross, TilesHigh, ImageBitmap.PixelWidth, ImageBitmap.PixelHeight);
             // Wipe _tileBrushes and reset so there's on array cell per tile
             _tileBrushes = new Brush[TilesHigh][];
+
+            // Calculate the size of each tile as a straight proportion of the total image
             int tileWidth = ImageBitmap.PixelWidth/TilesAcross;
             int tileHeight = ImageBitmap.PixelHeight/TilesHigh;
-            Logger.Debug("Each tile image divide the full image {0} by {1} in to {0} by {1} size tiles",
+            Logger.Debug("Each tile image divides the full image of {0} by {1} pixels in to {0} by {1} pixel tiles",
                          ImageBitmap.PixelWidth, ImageBitmap.PixelHeight, tileWidth, tileHeight);
             for (int v = 0; v < TilesHigh; v++)
             {

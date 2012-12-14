@@ -117,13 +117,13 @@ namespace Locima.SlidingBlock.ViewModel
                                                                                       Id);
                                                                                   GameTemplateStorageManager.Instance
                                                                                                             .Delete(Id);
+                                                                                  Parent.GameTemplateList.Remove(this);
+
                                                                               }),
                                         OnCancelCommand =
                                             new DelegateCommand(
                                             o => Logger.Info("User decided not to delete game template"))
                                     });
-                GameTemplateStorageManager.Instance.Delete(Id);
-                Parent.GameTemplateList.Remove(this);
             }
         }
     }

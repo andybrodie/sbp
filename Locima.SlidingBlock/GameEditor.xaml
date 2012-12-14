@@ -57,7 +57,9 @@
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Image Source="{Binding Path=Thumbnail}" Grid.Column="0" Width="64" Height="64" />
+                            <Border Grid.Column="0" BorderBrush="{StaticResource PhoneForegroundBrush}" BorderThickness="1">
+                                <Image Source="{Binding Path=Thumbnail}" Width="64" Height="64" />
+                            </Border>
                             <StackPanel Grid.Column="1" Margin="10,0,0,0">
                                 <TextBlock Text="{Binding Path=ImageTitle}" />
                                 <TextBlock Text="{Binding Path=ImageText}" />
@@ -65,10 +67,10 @@
                             </StackPanel>
                             <toolkit:ContextMenuService.ContextMenu>
                                 <toolkit:ContextMenu Name="MyContextMenu">
-                                    <toolkit:MenuItem Header="{Binding Path=Strings.MoveLevelUp, Source={StaticResource Localization}}" Command="{Binding MoveLeveCommand}" CommandParameter="Up" />
-                                    <toolkit:MenuItem Header="{Binding Path=Strings.MoveLevelDown, Source={StaticResource Localization}}" Command="{Binding MoveLeveCommand}" CommandParameter="Down" />
-                                    <toolkit:MenuItem Header="{Binding Path=Strings.AddLevelBefore, Source={StaticResource Localization}}" Command="{Binding AddLevelBeforeCommand}" CommandParameter="Before" />
-                                    <toolkit:MenuItem Header="{Binding Path=Strings.AddLevelAfter, Source={StaticResource Localization}}" Command="{Binding AddLevelAfterCommand}" CommandParameter="After" />
+                                    <toolkit:MenuItem Header="{Binding Path=Strings.MoveLevelUp, Source={StaticResource Localization}}" Command="{Binding MoveLeveCommand}" CommandParameter="-1" />
+                                    <toolkit:MenuItem Header="{Binding Path=Strings.MoveLevelDown, Source={StaticResource Localization}}" Command="{Binding MoveLeveCommand}" CommandParameter="1" />
+                                    <toolkit:MenuItem Header="{Binding Path=Strings.AddLevelBefore, Source={StaticResource Localization}}" Command="{Binding AddLevelBeforeCommand}" />
+                                    <toolkit:MenuItem Header="{Binding Path=Strings.AddLevelAfter, Source={StaticResource Localization}}" Command="{Binding AddLevelAfterCommand}" />
                                     <toolkit:MenuItem Header="{Binding Path=Strings.DeleteLevel, Source={StaticResource Localization}}" Command="{Binding DeleteLevelCommand}" />                                    
                                 </toolkit:ContextMenu>
                             </toolkit:ContextMenuService.ContextMenu>
