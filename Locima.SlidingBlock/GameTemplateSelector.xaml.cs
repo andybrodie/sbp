@@ -37,6 +37,10 @@ namespace Locima.SlidingBlock
         }
 
 
+        /// <summary>
+        /// Loads available templates, configures the view model (<see cref="GameTemplateSelectorViewModel"/>) and builds the application bar (<see cref="BuildApplicationBar"/>
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);

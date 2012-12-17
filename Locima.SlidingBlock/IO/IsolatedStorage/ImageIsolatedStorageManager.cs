@@ -74,6 +74,12 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
             return ImageHelper.LoadBitmapFromXapContent(xapImageUri);
         }
 
+
+        /// <summary>
+        /// Saves a new image, creating an ID
+        /// </summary>
+        /// <param name="imageStream">The stream of bytes that makes up the image</param>
+        /// <returns>The ID of the newly saved image</returns>
         public string Save(Stream imageStream)
         {
             string filename = Path.Combine(ImageDirectory, Guid.NewGuid().ToString());
@@ -82,41 +88,24 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
         
+        /// <summary>
+        /// Saves a new image, creating an ID
+        /// </summary>
+        /// <param name="image">The image to save</param>
+        /// <returns>The ID of the newly saved image</returns>
         public string Save(WriteableBitmap image)
         {
             string filename = Path.Combine(ImageDirectory, Guid.NewGuid().ToString());
-            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                using (IsolatedStorageFileStream stream = store.OpenFile(filename, FileMode.OpenOrCreate, FileAccess.Write))
-                {
-                    image.SaveJpeg(stream, image.PixelWidth, image.PixelHeight, 0, ImageHelper.JpegQuality);
-                }
-
-            }
+            Save(filename, image);
             return filename;
         }
 
 
-        public string SaveTemporary(Stream imageStream)
-        {
-            string filename = Path.Combine(ImageTempDirectory, Guid.NewGuid().ToString());
-            Logger.Info("Saving temporary image {0}", filename);
-            IOHelper.Save(filename, imageStream);
-            return filename;
-        }
-
-
-        public bool Delete(string imageId)
-        {
-            return IOHelper.DeleteFile(imageId);
-        }
-
-        public int DeleteAllTemporary()
-        {
-            Logger.Info("Deleting all existing files within {0}", ImageTempDirectory);
-            return IOHelper.DeleteFiles(ImageTempDirectory);
-        }
-
+        /// <summary>
+        /// Saves the bitmap passed in <paramref name="image"/> uusing the ID specified by <paramref name="imageId"/>
+        /// </summary>
+        /// <param name="imageId">The ID of the image to replace, or create if it doesn't exist</param>
+        /// <param name="image">The image to save</param>
         public void Save(string imageId, WriteableBitmap image)
         {
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
@@ -131,6 +120,43 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
                 Logger.Info("Saved image {0} successfully", imageId);
             }
         }
+
+
+        /// <summary>
+        /// Saves a "temporary" image, created as part of level creation
+        /// </summary>
+        /// <param name="imageStream">The stream of bytes that makes up the image</param>
+        /// <returns>The ID of the new image</returns>
+        public string SaveTemporary(Stream imageStream)
+        {
+            string filename = Path.Combine(ImageTempDirectory, Guid.NewGuid().ToString());
+            Logger.Info("Saving temporary image {0}", filename);
+            IOHelper.Save(filename, imageStream);
+            return filename;
+        }
+
+
+        /// <summary>
+        /// Deletes an image or temporary image
+        /// </summary>
+        /// <param name="imageId">The ID of the image</param>
+        /// <returns><c>true</c> if the image was deleted, <c>false</c>if it didn't exist</returns>
+        public bool Delete(string imageId)
+        {
+            return IOHelper.DeleteFile(imageId);
+        }
+
+
+        /// <summary>
+        /// Delete all temporary images
+        /// </summary>
+        /// <returns></returns>
+        public int DeleteAllTemporary()
+        {
+            Logger.Info("Deleting all existing files within {0}", ImageTempDirectory);
+            return IOHelper.DeleteFiles(ImageTempDirectory);
+        }
+
 
         /// <summary>
         /// Determines whether an image is temporary or not by examining the ID

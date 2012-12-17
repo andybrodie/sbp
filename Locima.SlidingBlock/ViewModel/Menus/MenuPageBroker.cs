@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO.IsolatedStorage;
+using System.Windows;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.GameTemplates;
@@ -169,7 +170,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
 
 
         /// <summary>
-        /// The new game menu is a virtual menu that either shows the <see cref="CreateGameTemplateSelector"/> menu or the <see cref="CreateGameDifficultySelector"/>
+        /// The new game menu is a virtual menu that either shows the <see cref="CreateGameTemplateSelector(IEnumerable{GameTemplate})"/> menu or the <see cref="CreateGameDifficultySelector"/>
         /// </summary>
         /// <param name="backStack">The current app back stack, used by <see cref="CreateGameDifficultySelector"/></param>
         /// <returns></returns>

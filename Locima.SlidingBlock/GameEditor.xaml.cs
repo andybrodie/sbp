@@ -47,6 +47,10 @@ namespace Locima.SlidingBlock
         }
 
 
+        /// <summary>
+        /// Builds the application bar (<see cref="BuildApplicationBar"/> and initialises the view model (<see cref="GameEditorViewModel"/>)
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);

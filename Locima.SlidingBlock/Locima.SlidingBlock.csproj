@@ -77,9 +77,6 @@
     <Compile Include="Common\UriConstructor.cs" />
     <Compile Include="Converters\BrushOpacityModifier.cs" />
     <Compile Include="Converters\ScrambleTextConverter.cs" />
-    <Compile Include="DesignPage.xaml.cs">
-      <DependentUpon>DesignPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="GameEditor.xaml.cs">
       <DependentUpon>GameEditor.xaml</DependentUpon>
     </Compile>
@@ -246,10 +243,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="DesignPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="GameEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -140,7 +140,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// The UI element that contains the image
         /// </summary>
         /// <remarks>
-        /// We need this for calls to <see cref="GestureEventArgs.GetPosition"/> calls, which are reuqired to be relative to the image</remarks>
+        /// We need this for calls to <see cref="GestureEventArgs.GetPosition(UIElement)"/> calls, which are reuqired to be relative to the image</remarks>
         public UIElement ImageControl { get; set; }
 
         /// <summary>

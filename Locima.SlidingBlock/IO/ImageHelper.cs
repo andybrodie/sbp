@@ -80,6 +80,12 @@ namespace Locima.SlidingBlock.IO
             return jpegData;
         }
 
+
+        /// <summary>
+        /// Loads a bitmap from the XAP resources (built-in images that come with the app)
+        /// </summary>
+        /// <param name="xapImageUri">The URI for the iamge</param>
+        /// <returns>A bitmap</returns>
         public static WriteableBitmap LoadBitmapFromXapContent(Uri xapImageUri)
         {
             WriteableBitmap wbitmap;
