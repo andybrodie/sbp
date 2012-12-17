@@ -234,7 +234,7 @@ namespace Locima.SlidingBlock.ViewModel
                                            {
                                                ImageTitle = LocalizationHelper.GetString("DefaultLevelTitle"),
                                                ImageText = LocalizationHelper.GetString("DefaultLevelText"),
-                                               License = LicenseDefinition.CcBy30,
+                                               License = LicenseDefinition.CcByNcNd30,
                                                XapImageUri = new Uri("GameTemplates/DefaultImage.jpg", UriKind.Relative)
                                            };
             _gameTemplate.Levels.Insert(insertPoint, newLevel);

@@ -38,6 +38,7 @@
                    TextAlignment="Center"
                    TextWrapping="Wrap"
                    Text="{Binding SolvedPosition, Converter={StaticResource positionToStringConverter}}"
+                   Visibility="{Binding TileDebugVisibility}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"/>
         <Border x:Name="TileBorder" Width="{Binding Width}"
