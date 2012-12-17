@@ -58,6 +58,10 @@ namespace Locima.SlidingBlock
         }
 
 
+        /// <summary>
+        /// Configure the button to proceed, based on parameters passed using the query parameter
+        /// </summary>
+        /// <param name="hsvm"></param>
         private void ConfigureHsvmButton(HighScoresViewModel hsvm)
         {
             string buttonLabel;

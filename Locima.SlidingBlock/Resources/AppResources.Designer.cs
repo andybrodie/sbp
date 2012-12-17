@@ -295,6 +295,15 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to custom.
+        /// </summary>
+        public static string CustomDifficulty {
+            get {
+                return ResourceManager.GetString("CustomDifficulty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to clone.
         /// </summary>
         public static string CustomGameContextMenuCopy {
@@ -435,6 +444,15 @@ namespace Locima.SlidingBlock.Resources {
         public static string GameDescription {
             get {
                 return ResourceManager.GetString("GameDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} game on {1}.
+        /// </summary>
+        public static string GameDescriptionHighScoreItem {
+            get {
+                return ResourceManager.GetString("GameDescriptionHighScoreItem", resourceCulture);
             }
         }
         

@@ -15,12 +15,13 @@ namespace Locima.SlidingBlock.ViewModel
     {
         private readonly HighScore _score;
         private DateTime _dateEntered;
+        private string _difficulty;
         private bool _isHighlighted;
         private string _playerId;
         private string _playerName;
+        private string _templateName;
         private TimeSpan _time;
         private int _totalMoves;
-        private string _gameDescription;
 
 
         /// <summary>
@@ -34,6 +35,37 @@ namespace Locima.SlidingBlock.ViewModel
             Time = score.TotalTime;
             TotalMoves = score.TotalMoves;
             DateEntered = score.When;
+            TemplateName = score.TemplateName;
+            Difficulty = score.Difficulty;
+        }
+
+
+        /// <summary>
+        /// The difficulty of the game
+        /// </summary>
+        protected string Difficulty
+        {
+            get { return _difficulty; }
+            set
+            {
+                _difficulty = value;
+                OnNotifyPropertyChanged("Difficulty");
+            }
+        }
+
+
+        /// <summary>
+        /// The name of the game template that was used for this game
+        /// </summary>
+        /// <remarks>We use the name instead of the ID in case the template is deleted</remarks>
+        protected string TemplateName
+        {
+            get { return _templateName; }
+            set
+            {
+                _templateName = value;
+                OnNotifyPropertyChanged("TemplateName");
+            }
         }
 
         /// <summary>
@@ -143,26 +175,16 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         public string GameStats
         {
-            get
-            {
-                return !IsDesignTime
-                           ? LocalizationHelper.GetString("HighScoreStats", TotalMoves, Time.ToString("c"))
-                           : "Wibble";
-//                           : string.Format("{0} moves in {1}", TotalMoves, Time.ToString("c"));
-            }
+            get { return LocalizationHelper.GetString("HighScoreStats", TotalMoves, Time.ToString("c")); }
         }
+
 
         /// <summary>
         /// A description of the game that way played (template name and number of tiles)
         /// </summary>
         public string GameDescription
         {
-            get { return _gameDescription; }
-            set
-            {
-                _gameDescription = value;
-                OnNotifyPropertyChanged("GameDescription");
-            }
+            get { return LocalizationHelper.GetString("GameDescriptionHighScoreItem", Difficulty, TemplateName); }
         }
     }
 }
