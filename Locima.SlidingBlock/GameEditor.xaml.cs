@@ -89,14 +89,9 @@ namespace Locima.SlidingBlock
                                                   ApplicationBarHelper.ButtonIcons["Cancel"],
                                                   LocalizationHelper.GetString("Cancel"));
 
-            icon.Click += DiscardChanges;
+            icon.Click += (sender, args) => ViewModel.ConfirmCancelCommand.Execute(null);
         }
 
-
-        private void DiscardChanges(object sender, EventArgs e)
-        {
-            ViewModel.ConfirmCancelCommand.Execute(null);
-        }
 
 
         /// <summary>
@@ -113,11 +108,12 @@ namespace Locima.SlidingBlock
         /// Creates a Uri that navigates to this page with a game template ID passed for editing
         /// </summary>
         /// <param name="gameTemplateId">The ID of the game template to edit</param>
-        /// <returns>A Uri</returns>
+        /// <param name="suppressPreviousPageCount">The number of pages to suppress after the new page has been navigated to</param>
+        /// <returns>A Uri that navigates to this page</returns>
         public static Uri CreateNavigationUri(string gameTemplateId, int suppressPreviousPageCount)
         {
-            string baseUri = "/GameEditor.xaml";
-            UriConstructor uriCons = new UriConstructor("/GameEditor.xaml", UriKind.Relative);
+            const string baseUri = "/GameEditor.xaml";
+            UriConstructor uriCons = new UriConstructor(baseUri, UriKind.Relative);
             if (!string.IsNullOrEmpty(gameTemplateId))
             {
                 uriCons.AddParameter(GameTemplateQueryParameterName, gameTemplateId);

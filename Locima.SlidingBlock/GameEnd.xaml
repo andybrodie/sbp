@@ -76,7 +76,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Content="{Binding Path=Strings.HighscorePageTitle, Source={StaticResource Localization}}" Grid.Column="0" Click="HighscoreButtonClick" />
+                <Button Content="{Binding Path=Strings.HighScorePageTitle, Source={StaticResource Localization}}" Grid.Column="0" Click="HighScoreButtonClick" />
                 <Button Content="{Binding Path=Strings.MainMenu, Source={StaticResource Localization}}" Grid.Column="1" Click="MenuMenuButtonClick" />
             </Grid>
         </Grid>

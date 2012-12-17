@@ -11,7 +11,7 @@ namespace Locima.SlidingBlock.Controls
     /// <remarks>
     ///   There are two templates defined that allow for "normal" entries and "highlighted" entries.  There is usually just one highlighted entry, which is the entry just created by the player.
     /// </remarks>
-    public class HighscoreTemplateSelector : DataTemplateSelector
+    public class HighScoreTemplateSelector : DataTemplateSelector
     {
         /// <summary>
         ///   The template to use for highlighted entries

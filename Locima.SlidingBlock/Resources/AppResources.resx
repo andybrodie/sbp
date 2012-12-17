@@ -305,19 +305,19 @@
     <value>select game template</value>
     <comment>Title for the game template selector menu page</comment>
   </data>
-  <data name="GoToHighscores" xml:space="preserve">
+  <data name="GoToHighScores" xml:space="preserve">
     <value>high scores</value>
-    <comment>Shown on the application menu bar to navigate to the highscore table</comment>
+    <comment>Shown on the application menu bar to navigate to the high score table</comment>
   </data>
   <data name="Hard" xml:space="preserve">
     <value>hard</value>
     <comment>Indicates a hard difficulty game</comment>
   </data>
-  <data name="HighscorePageTitle" xml:space="preserve">
+  <data name="HighScorePageTitle" xml:space="preserve">
     <value>high scores</value>
     <comment>Page title for the high score table</comment>
   </data>
-  <data name="HighscoreStats" xml:space="preserve">
+  <data name="HighScoreStats" xml:space="preserve">
     <value>{0} moves in {1}</value>
     <comment>Used on the high score table, this is the string shown beneath each player name containing the stats of their game (number of moves and elapsed time)</comment>
   </data>
@@ -403,7 +403,7 @@
   </data>
   <data name="MovesInLabel" xml:space="preserve">
     <value>moves in</value>
-    <comment>Used on highscores.xaml to separate the number of moves and elapsed time</comment>
+    <comment>Used on HighScores.xaml to separate the number of moves and elapsed time</comment>
   </data>
   <data name="MovesLabel" xml:space="preserve">
     <value>moves:</value>
@@ -417,7 +417,7 @@
     <value>starts a brand new game</value>
     <comment>Menu item description for starting a new game</comment>
   </data>
-  <data name="NoHighscoresFound" xml:space="preserve">
+  <data name="NoHighScoresFound" xml:space="preserve">
     <value>no high scores yet!</value>
     <comment>text shown where there are no high scores</comment>
   </data>

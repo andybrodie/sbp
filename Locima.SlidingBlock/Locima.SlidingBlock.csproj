@@ -107,7 +107,7 @@
     <Compile Include="Controls\ApplicationBarHelper.cs" />
     <Compile Include="Controls\DataTemplateSelector.cs" />
     <Compile Include="Controls\DiscreteSlider.cs" />
-    <Compile Include="Controls\HighscoreTemplateSelector.cs" />
+    <Compile Include="Controls\HighScoreTemplateSelector.cs" />
     <Compile Include="Controls\MenuItemTemplateSelector.cs" />
     <Compile Include="Controls\MetroGridHelper.cs" />
     <Compile Include="Controls\Puzzle.cs" />
@@ -138,7 +138,7 @@
     </Compile>
     <Compile Include="IO\GameTemplateStorageManager.cs" />
     <Compile Include="IO\HighscoresStorageManager.cs" />
-    <Compile Include="IO\IHighscoresStorageManager.cs" />
+    <Compile Include="IO\IHighScoresStorageManager.cs" />
     <Compile Include="IO\IImageStorageManager.cs" />
     <Compile Include="IO\ImageStorageManager.cs" />
     <Compile Include="IO\IPersistedObject.cs" />
@@ -172,7 +172,7 @@
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\TileModel.cs" />
     <Compile Include="Model\TileMoveEventArgs.cs" />
-    <Compile Include="Persistence\Highscore.cs" />
+    <Compile Include="Persistence\HighScore.cs" />
     <Compile Include="Persistence\HighscoreTable.cs" />
     <Compile Include="Persistence\LevelState.cs" />
     <Compile Include="Persistence\PlayerDetails.cs" />
@@ -202,7 +202,7 @@
     <Compile Include="ViewModel\GameStates.cs" />
     <Compile Include="ViewModel\LevelEditorViewModel.cs" />
     <Compile Include="ViewModel\GameTemplateViewModel.cs" />
-    <Compile Include="ViewModel\HighscoreItemViewModel.cs" />
+    <Compile Include="ViewModel\HighScoreItemViewModel.cs" />
     <Compile Include="ViewModel\HighScoresViewModel.cs" />
     <Compile Include="ViewModel\IViewModelBase.cs" />
     <Compile Include="ViewModel\LevelDefinitionViewModel.cs" />

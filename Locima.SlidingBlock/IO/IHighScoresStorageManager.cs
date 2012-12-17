@@ -6,7 +6,7 @@ namespace Locima.SlidingBlock.IO
     /// <summary>
     /// Interface for managing the saving and loading of the high score table
     /// </summary>
-    public interface IHighscoresStorageManager : IStorageManager
+    public interface IHighScoresStorageManager : IStorageManager
     {
 
         /// <summary>

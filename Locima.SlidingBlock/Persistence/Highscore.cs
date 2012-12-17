@@ -8,7 +8,7 @@ namespace Locima.SlidingBlock.Persistence
     /// A single high score in the <see cref="HighScoreTable"/>.  A high score is achieved when the player has finished all the levels.
     /// </summary>
     [DataContract]
-    public class Highscore
+    public class HighScore
     {
 
         /// <summary>

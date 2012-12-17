@@ -5,7 +5,7 @@
     /// All storage managers (objects which manage the persistence of data) implement this interface.
     /// </summary>
     /// <remarks>
-    /// This is a base interface only used by other interfaces (e.g. <see cref="IHighscoresStorageManager"/>, <see cref="ISaveGameStorageManager"/>, etc.</remarks>
+    /// This is a base interface only used by other interfaces (e.g. <see cref="IHighScoresStorageManager"/>, <see cref="ISaveGameStorageManager"/>, etc.</remarks>
     public interface IStorageManager
     {
         /// <summary>
