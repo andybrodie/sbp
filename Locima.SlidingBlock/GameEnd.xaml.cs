@@ -52,14 +52,14 @@ namespace Locima.SlidingBlock
                 SaveGame sg = SaveGameStorageManager.Instance.Load(saveGameId);
                 PopulateLevelStats(sg);
 
-                int highscoreTablePosition = AddSaveGameToHighScores(sg);
+                int highScoreTablePosition = AddSaveGameToHighScores(sg);
 
                 // SaveGameStorageManager.Instance.DeleteGame(saveGameId);
 
                 string endGameMessageText = string.Format(LocalizationHelper.GetString("EndGameMessage"),
                                                           LocalizationHelper.GetTimeSpanString(sg.TotalTime),
                                                           sg.TotalMoves,
-                                                          LocalizationHelper.GetOrdinal(highscoreTablePosition + 1));
+                                                          LocalizationHelper.GetOrdinal(highScoreTablePosition + 1));
 
                 EndGameMessage.Text = endGameMessageText;
             }
@@ -94,7 +94,7 @@ namespace Locima.SlidingBlock
         private int AddSaveGameToHighScores(SaveGame saveGame)
         {
             HighScoreTable table = HighScoresStorageManager.Instance.Load();
-            Highscore newHs = new Highscore
+            HighScore newHs = new HighScore
                 {
                     GameId = saveGame.Id,
                     Name = saveGame.LocalPlayerDetails.Name,
@@ -103,9 +103,9 @@ namespace Locima.SlidingBlock
                     When = DateTime.Now,
                     TotalMoves = saveGame.TotalMoves
                 };
-            Highscore existingHighscore = table.Scores.FirstOrDefault(highscore => highscore.GameId == saveGame.Id);
+            HighScore existingHighScore = table.Scores.FirstOrDefault(highScore => highScore.GameId == saveGame.Id);
             int hsIndex;
-            if (existingHighscore == null)
+            if (existingHighScore == null)
             {
                 Logger.Info("Adding new high score");
                 table.Scores.Add(newHs);
@@ -116,15 +116,15 @@ namespace Locima.SlidingBlock
             else
             {
                 Logger.Info(
-                    "Ignoring repeat call to add existing highscore (may be caused by leave app and coming back to this page");
-                hsIndex = table.Scores.IndexOf(existingHighscore);
+                    "Ignoring repeat call to add existing high score (may be caused by leave app and coming back to this page");
+                hsIndex = table.Scores.IndexOf(existingHighScore);
             }
             return hsIndex;
         }
 
 
         /// <summary>
-        /// Creates a Uri that navigates to this page, showing statistics and adding to the highscore for the <paramref name="saveGameId"/> <see cref="SaveGame"/> specified
+        /// Creates a Uri that navigates to this page, showing statistics and adding to the high score for the <paramref name="saveGameId"/> <see cref="SaveGame"/> specified
         /// </summary>
         /// <param name="saveGameId">The save game that was completed</param>
         /// <returns>A Uri for use with <see cref="NavigationService.Navigate"/></returns>
@@ -136,7 +136,7 @@ namespace Locima.SlidingBlock
         }
 
 
-        private void HighscoreButtonClick(object sender, RoutedEventArgs e)
+        private void HighScoreButtonClick(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(HighScores.CreateNavigationUri("MainMenu", MainPage.CreateNavigationUri(null)));
         }

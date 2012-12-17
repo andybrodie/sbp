@@ -74,8 +74,8 @@ namespace Locima.SlidingBlock
             item.Click +=
                 (sender, args) => NavigationService.Navigate(new Uri("/PlayerSelector.xaml", UriKind.Relative));
 
-            // Highscore review
-            item = ApplicationBarHelper.AddMenuItem(ApplicationBar, LocalizationHelper.GetString("GoToHighscores"));
+            // HighScore review
+            item = ApplicationBarHelper.AddMenuItem(ApplicationBar, LocalizationHelper.GetString("GoToHighScores"));
             item.Click += (sender, args) => NavigationService.Navigate(HighScores.CreateNavigationUri());
         }
 

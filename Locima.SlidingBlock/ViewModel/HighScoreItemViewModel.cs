@@ -7,26 +7,27 @@ using Locima.SlidingBlock.Persistence;
 namespace Locima.SlidingBlock.ViewModel
 {
     /// <summary>
-    /// The view model for a single entry within the high score table using a model of <see cref="Highscore"/>
+    /// The view model for a single entry within the high score table using a model of <see cref="HighScore"/>
     /// </summary>
     /// <remarks>
     /// This is used by <see cref="HighScoresViewModel"/></remarks>
     public class HighScoreItemViewModel : ViewModelBase
     {
-        private readonly Highscore _score;
+        private readonly HighScore _score;
         private DateTime _dateEntered;
         private bool _isHighlighted;
         private string _playerId;
         private string _playerName;
         private TimeSpan _time;
         private int _totalMoves;
+        private string _gameDescription;
 
 
         /// <summary>
         /// Initialise this view model to present data for <paramref name="score"/>
         /// </summary>
         /// <param name="score">The model</param>
-        public HighScoreItemViewModel(Highscore score)
+        public HighScoreItemViewModel(HighScore score)
         {
             _score = score;
             PlayerName = score.Name;
@@ -130,15 +131,9 @@ namespace Locima.SlidingBlock.ViewModel
         {
             get
             {
-                if (!IsDesignTime)
-                {
-                    return (Brush) (IsHighlighted
-                                        ? Application.Current.Resources["PhoneAccentBrush"]
-                                        : Application.Current.Resources["PhoneForegroundBrush"]);
-                }
-                return IsHighlighted
-                           ? new SolidColorBrush(Color.FromArgb(255, 255, 255, 0))
-                           : new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                return (Brush) (IsHighlighted
+                                    ? Application.Current.Resources["PhoneAccentBrush"]
+                                    : Application.Current.Resources["PhoneForegroundBrush"]);
             }
         }
 
@@ -151,8 +146,22 @@ namespace Locima.SlidingBlock.ViewModel
             get
             {
                 return !IsDesignTime
-                           ? LocalizationHelper.GetString("HighscoreStats", TotalMoves, Time.ToString("c"))
-                           : string.Format("{0} moves in {1}", TotalMoves, Time.ToString("c"));
+                           ? LocalizationHelper.GetString("HighScoreStats", TotalMoves, Time.ToString("c"))
+                           : "Wibble";
+//                           : string.Format("{0} moves in {1}", TotalMoves, Time.ToString("c"));
+            }
+        }
+
+        /// <summary>
+        /// A description of the game that way played (template name and number of tiles)
+        /// </summary>
+        public string GameDescription
+        {
+            get { return _gameDescription; }
+            set
+            {
+                _gameDescription = value;
+                OnNotifyPropertyChanged("GameDescription");
             }
         }
     }

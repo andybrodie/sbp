@@ -20,7 +20,7 @@ namespace Locima.SlidingBlock.Persistence
         /// A list of all the scores in the table
         /// </summary>
         [DataMember]
-        public List<Highscore> Scores { get; set; }
+        public List<HighScore> Scores { get; set; }
 
         /// <summary>
         /// Unused
@@ -33,7 +33,7 @@ namespace Locima.SlidingBlock.Persistence
         public DateTimeOffset LastUpdate { get; set; }
 
         /// <summary>
-        /// Sorts the high score table according to the <see cref="Highscore.TotalTime"/>
+        /// Sorts the high score table according to the <see cref="HighScore.TotalTime"/>
         /// </summary>
         public void Sort()
         {

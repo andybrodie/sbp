@@ -9,30 +9,30 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
     /// <summary>
     /// Mnaages the persistence of a single high score table in isolated storage
     /// </summary>
-    public class HighscoreIsolatedStorageManager : IHighscoresStorageManager
+    public class HighScoreIsolatedStorageManager : IHighScoresStorageManager
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private const string HighscoreFilename = "Highscores";
+        private const string HighScoresFilename = "HighScores";
 
         /// <summary>
         /// Creates an empty high score table if one doesn't already exist
         /// </summary>
         public void Initialise()
         {
-            if (!IOHelper.FileExists(HighscoreFilename))
+            if (!IOHelper.FileExists(HighScoresFilename))
             {
-                Logger.Info("Initialising empty high scores table in isolated storage file {0}", HighscoreFilename);
-                // Set up an empty highscore file
+                Logger.Info("Initialising empty high scores table in isolated storage file {0}", HighScoresFilename);
+                // Set up an empty high scores file
                 HighScoreTable defaultTable = new HighScoreTable
                                                   {
-                                                      Id = HighscoreFilename,
-                                                      Scores = new List<Highscore>()
+                                                      Id = HighScoresFilename,
+                                                      Scores = new List<HighScore>()
                                                   };
                 Save(defaultTable);
             } else
             {
-                Logger.Info("Found existing high score table in isolated storage file {0}", HighscoreFilename);
+                Logger.Info("Found existing high score table in isolated storage file {0}", HighScoresFilename);
             }
         }
 
@@ -42,7 +42,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         {
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                return IOHelper.LoadObject<HighScoreTable>(store, HighscoreFilename);
+                return IOHelper.LoadObject<HighScoreTable>(store, HighScoresFilename);
             }
         }
 

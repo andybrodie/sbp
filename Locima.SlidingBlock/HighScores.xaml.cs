@@ -47,7 +47,7 @@ namespace Locima.SlidingBlock
             Logger.Info("OnNavigatedTo entry");
             base.OnNavigatedTo(e);
             Logger.Info("Registering view message handler and initialising view model");
-            HighScoresViewModel hsvm = (HighScoresViewModel)Resources["viewModel"];
+            HighScoresViewModel hsvm = (HighScoresViewModel)Resources["ViewModel"];
 
             DefaultMessageHandlers.Register(this, hsvm);
             hsvm.RegisterMessageHandler<ScrollToViewMessage>(OnScrollViewer);
@@ -109,7 +109,7 @@ namespace Locima.SlidingBlock
 
 
         /// <summary>
-        /// Default navigation creation URI will navigate to the Highscore page configuring it to show a "Back" button
+        /// Default navigation creation URI will navigate to the HighScore page configuring it to show a "Back" button
         /// </summary>
         /// <remarks>Delegates to <see cref="CreateNavigationUri(string)"/> passing <c>Back</c> as the single parameter</remarks>
         public static Uri CreateNavigationUri()
@@ -118,7 +118,7 @@ namespace Locima.SlidingBlock
         }
 
         /// <summary>
-        /// Navigation creation URI will navigate to the highscore page and configure the button with a custom label (<paramref name="label"/>) which, when clicked, will go Back.
+        /// Navigation creation URI will navigate to the high score page and configure the button with a custom label (<paramref name="label"/>) which, when clicked, will go Back.
         /// </summary>
         /// <remarks>
         /// Delegates to <see cref="CreateNavigationUri(string, Uri)"/> passing <paramref name="label"/> and <c>null</c> as the <see cref="Uri"/></remarks>
@@ -129,7 +129,7 @@ namespace Locima.SlidingBlock
 
 
         /// <summary>
-        /// Navigation creation URI will navigate to the highscore page, configure the button with a custom label (<paramref name="label"/>) which, when clicked, will navigate to
+        /// Navigation creation URI will navigate to the high score page, configure the button with a custom label (<paramref name="label"/>) which, when clicked, will navigate to
         /// <paramref name="rawUri"/>.
         /// </summary>
         public static Uri CreateNavigationUri(string label, Uri rawUri)

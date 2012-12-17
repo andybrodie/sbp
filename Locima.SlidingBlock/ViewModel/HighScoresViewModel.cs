@@ -105,7 +105,7 @@ namespace Locima.SlidingBlock.ViewModel
         {
             HighScores.Clear();
             HighScoreItemViewModel mostRecent = null;
-            foreach (Highscore score in _model.Scores)
+            foreach (HighScore score in _model.Scores)
             {
                 HighScoreItemViewModel scoreVm = new HighScoreItemViewModel(score);
                 if (mostRecent == null)
