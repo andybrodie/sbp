@@ -29,6 +29,10 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+
+        /// <summary>
+        /// Ensures that <see cref="GameTemplateDirectory"/> exists and that the default game exists (<see cref="EnsureSinglePlayerGame"/>
+        /// </summary>
         public void Initialise()
         {
             IOHelper.EnsureDirectory(GameTemplateDirectory);
@@ -36,17 +40,20 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
 
+        /// <summary>
+        /// Retrieve a list of all the game templates in isolated storage
+        /// </summary>
+        /// <param name="includeShadows">If <c>true</c> then shadow templates will be included in the list</param>
+        /// <param name="collapseShadows">Only used if <paramref name="includeShadows"/> is <c>true</c>, if this is <c>true</c> then any templates which
+        /// have shadows are ommitted from the list</param>
+        /// <returns></returns>
         public List<GameTemplate> GetGameTemplates(bool includeShadows, bool collapseShadows)
         {
             List<GameTemplate> games = new List<GameTemplate>();
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 List<string> filenames = IOHelper.GetFileNames(GameTemplateDirectory, store);
-                foreach (string filename in filenames)
-                {
-                    GameTemplate gameTemplate = IOHelper.LoadObject<GameTemplate>(store, filename);
-                    games.Add(gameTemplate);
-                }
+                games.AddRange(filenames.Select(filename => IOHelper.LoadObject<GameTemplate>(store, filename)));
             }
             if (!includeShadows)
             {
@@ -122,6 +129,10 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
 
+        /// <summary>
+        /// Saves the game template passed in <paramref name="gameTemplate"/>
+        /// </summary>
+        /// <param name="gameTemplate">The template to save, must not be null</param>
         public void Save(GameTemplate gameTemplate)
         {
             if (gameTemplate == null) throw new ArgumentException("puzzle");
@@ -201,6 +212,11 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         }
 
 
+        /// <summary>
+        /// Promotes the shadow template passed over the original template (if it exists), so any changes made in <see cref="GameEditor"/> or <see cref="LevelEditor"/> are "committed"
+        /// </summary>
+        /// <param name="shadowTemplate">The template to promote, must not be null</param>
+        /// <returns>The ID of the committed template</returns>
         public string PromoteShadow(GameTemplate shadowTemplate)
         {
             if (!shadowTemplate.IsShadow)

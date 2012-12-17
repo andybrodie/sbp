@@ -486,9 +486,9 @@ namespace Locima.SlidingBlock.Resources {
         /// <summary>
         ///   Looks up a localized string similar to high scores.
         /// </summary>
-        public static string GoToHighscores {
+        public static string GoToHighScores {
             get {
-                return ResourceManager.GetString("GoToHighscores", resourceCulture);
+                return ResourceManager.GetString("GoToHighScores", resourceCulture);
             }
         }
         
@@ -504,18 +504,18 @@ namespace Locima.SlidingBlock.Resources {
         /// <summary>
         ///   Looks up a localized string similar to high scores.
         /// </summary>
-        public static string HighscorePageTitle {
+        public static string HighScorePageTitle {
             get {
-                return ResourceManager.GetString("HighscorePageTitle", resourceCulture);
+                return ResourceManager.GetString("HighScorePageTitle", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {0} moves in {1}.
         /// </summary>
-        public static string HighscoreStats {
+        public static string HighScoreStats {
             get {
-                return ResourceManager.GetString("HighscoreStats", resourceCulture);
+                return ResourceManager.GetString("HighScoreStats", resourceCulture);
             }
         }
         
@@ -738,9 +738,9 @@ namespace Locima.SlidingBlock.Resources {
         /// <summary>
         ///   Looks up a localized string similar to no high scores yet!.
         /// </summary>
-        public static string NoHighscoresFound {
+        public static string NoHighScoresFound {
             get {
-                return ResourceManager.GetString("NoHighscoresFound", resourceCulture);
+                return ResourceManager.GetString("NoHighScoresFound", resourceCulture);
             }
         }
         

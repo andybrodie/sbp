@@ -145,7 +145,7 @@ namespace Locima.SlidingBlock
             }
             catch (Exception e)
             {
-                Logger.Debug("Exception thrown by thumbnail creation, probably because game has been completed so level is never rendered");
+                Logger.DebugException("Exception thrown by thumbnail creation, probably because game has been completed so level is never rendered", e);
                 thumbnail = null;
             }
             return thumbnail;

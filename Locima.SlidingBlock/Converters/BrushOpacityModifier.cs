@@ -36,6 +36,10 @@ namespace Locima.SlidingBlock.Converters
             return brush;
         }
 
+
+        /// <summary>
+        /// Throws <see cref="NotImplementedException"/>
+        /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

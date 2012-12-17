@@ -46,6 +46,10 @@ namespace Locima.SlidingBlock
         }
 
 
+        /// <summary>
+        /// Invokes <see cref="Initialise"/>
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);

@@ -43,7 +43,7 @@ namespace Locima.SlidingBlock.IO
         void Delete(string id);
 
         /// <summary>
-        /// Deletes the game template (and all associated images) specified by its ID in <paramref name="id"/>
+        /// Deletes the game template (and all associated images) specified by its ID in <paramref name="gameTemplate"/>
         /// </summary>
         /// <param name="gameTemplate">The game template to remove</param>
         void Delete(GameTemplate gameTemplate);
