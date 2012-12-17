@@ -221,6 +221,10 @@
     <value>edit or create your own game templates</value>
     <comment>Describes a custom game</comment>
   </data>
+  <data name="CustomDifficulty" xml:space="preserve">
+    <value>custom</value>
+    <comment>The name given for a difficulty which isn't registered as Easy, Medium or Hard</comment>
+  </data>
   <data name="CustomGameContextMenuCopy" xml:space="preserve">
     <value>clone</value>
     <comment>Context menu option to clone a game template</comment>
@@ -284,6 +288,10 @@
   <data name="GameDescription" xml:space="preserve">
     <value>start a game using a {0} x {1} grid</value>
     <comment>Describes an easy, medium or hard game</comment>
+  </data>
+  <data name="GameDescriptionHighScoreItem" xml:space="preserve">
+    <value>{0} game on {1}</value>
+    <comment>The game description given for each game in the high score table</comment>
   </data>
   <data name="GameEditorPageTitle" xml:space="preserve">
     <value>edit game template</value>

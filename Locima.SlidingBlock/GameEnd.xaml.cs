@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
+using Locima.SlidingBlock.GameTemplates;
 using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Persistence;
 using Microsoft.Phone.Controls;
@@ -94,6 +95,7 @@ namespace Locima.SlidingBlock
         private int AddSaveGameToHighScores(SaveGame saveGame)
         {
             HighScoreTable table = HighScoresStorageManager.Instance.Load();
+            GameTemplate template = GameTemplateStorageManager.Instance.Load(saveGame.GameDefinitionId);
             HighScore newHs = new HighScore
                 {
                     GameId = saveGame.Id,
@@ -101,7 +103,9 @@ namespace Locima.SlidingBlock
                     PlayerId = saveGame.LocalPlayerDetails.Id,
                     TotalTime = saveGame.TotalTime,
                     When = DateTime.Now,
-                    TotalMoves = saveGame.TotalMoves
+                    TotalMoves = saveGame.TotalMoves,
+                    TemplateName = template.Title,
+                    Difficulty = GetDifficulty(saveGame)
                 };
             HighScore existingHighScore = table.Scores.FirstOrDefault(highScore => highScore.GameId == saveGame.Id);
             int hsIndex;
@@ -120,6 +124,25 @@ namespace Locima.SlidingBlock
                 hsIndex = table.Scores.IndexOf(existingHighScore);
             }
             return hsIndex;
+        }
+
+        private string GetDifficulty(SaveGame saveGame)
+        {
+            if (saveGame.Levels == null || saveGame.Levels.Count == 0)
+            {
+                return LocalizationHelper.GetString("CustomDifficulty");
+            }
+            switch (saveGame.Levels[0].TilesAcross)
+            {
+                case 3:
+                    return LocalizationHelper.GetString("Easy");
+                case 4:
+                    return LocalizationHelper.GetString("Medium");
+                case 5:
+                    return LocalizationHelper.GetString("Hard");
+                default:
+                    return LocalizationHelper.GetString("CustomDifficulty");
+            }
         }
 
 
