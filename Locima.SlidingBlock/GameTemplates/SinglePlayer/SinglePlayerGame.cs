@@ -56,7 +56,7 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
                                         "My wife's dog, \"Dax\", an adorable, dopey yellow labrador",
                                     OwnerName = andy,
                                     OwnerUri = andyLink,
-                                    License = LicenseDefinition.CcBy30,
+                                    License = LicenseDefinition.CcByNcNd30,
                                     ScrambleType = scramble
                                 },
                             new LevelDefinition
@@ -66,7 +66,7 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
                                     ImageText = "A holiday snap from when I went to Rome in 2010",
                                     OwnerName = andy,
                                     OwnerUri = andyLink,
-                                    License = LicenseDefinition.CcBy30,
+                                    License = LicenseDefinition.CcByNcNd30,
                                     ScrambleType = scramble
                                 },
                             new LevelDefinition
@@ -77,7 +77,7 @@ namespace Locima.SlidingBlock.GameTemplates.SinglePlayer
                                         "A flower in Exbury Gardens, Hampshire",
                                     OwnerName = andy,
                                     OwnerUri = andyLink,
-                                    License = LicenseDefinition.CcBy30,
+                                    License = LicenseDefinition.CcByNcNd30,
                                     ScrambleType = scramble
                                 }
                         }

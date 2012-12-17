@@ -46,11 +46,19 @@ namespace Locima.SlidingBlock.ViewModel
 
             Logger.Info("Refreshing save game list for player {0}", PlayerStorageManager.Instance.CurrentPlayer);
             SavedGames.Clear();
-            foreach (SaveGame puzzle in SaveGameStorageManager.Instance.LoadGames(PlayerStorageManager.Instance.CurrentPlayer.Id))
+            foreach (SaveGame saveGame in SaveGameStorageManager.Instance.LoadGames(PlayerStorageManager.Instance.CurrentPlayer.Id))
             {
-                SaveGameMenuItem sgmi = new SaveGameMenuItem();
-                sgmi.Initialise(this, puzzle);
-                SavedGames.Add(sgmi);
+                if (saveGame.CurrentLevelIndex < saveGame.Levels.Count)
+                {
+                    SaveGameMenuItem sgmi = new SaveGameMenuItem();
+                    sgmi.Initialise(this, saveGame);
+                    SavedGames.Add(sgmi);
+                    Logger.Debug("Added selectable game {0}", saveGame);
+                }
+                else
+                {
+                    Logger.Debug("Ignoring finished game {0}", saveGame);
+                }
             }
         }
 

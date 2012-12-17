@@ -270,6 +270,11 @@ namespace Locima.SlidingBlock
         }
 
         #endregion
+
+        private void LicenseLinkClick(object sender, RoutedEventArgs e)
+        {            
+            Logger.Info("Launching external browser for license view");
+        }
     }
 
 

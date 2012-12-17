@@ -26,12 +26,12 @@ namespace Locima.SlidingBlock.GameTemplates
         #region Built-in License Definitions
 
         /// <summary>
-        /// License for Creative Common Attribution 3.0 (http://ccby3.0.org/licenses/by/3.0/)
-        /// </summary>
-        public static readonly LicenseDefinition CcBy30 = new LicenseDefinition
+        /// License for Creative Commons: Attribution-NonCommercial-NoDerivs 3.0 Unported (see http://creativecommons.org/licenses/by-nc-nd/3.0/legalcode)
+        /// </summary>        
+        public static readonly LicenseDefinition CcByNcNd30 = new LicenseDefinition
                                                               {
-                                                                  Link = new Uri("http://ccby3.0.org/licenses/by/3.0/"),
-                                                                  Title = "Creative Commons Attribution 3.0 (CC BY 3.0)"
+                                                                  Link = new Uri("http://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US"),
+                                                                  Title = "CC BY-NC-ND 3.0"
                                                               };
 
 
@@ -40,7 +40,7 @@ namespace Locima.SlidingBlock.GameTemplates
         /// </summary>
         public static List<LicenseDefinition> Licenses = new List<LicenseDefinition>
                                                              {
-                                                                 CcBy30
+                                                                 CcByNcNd30
                                                              };
 
         #endregion

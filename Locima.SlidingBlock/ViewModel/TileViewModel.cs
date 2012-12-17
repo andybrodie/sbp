@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -330,6 +331,13 @@ namespace Locima.SlidingBlock.ViewModel
             get { return _tile.IsPlayerTile ? Visibility.Collapsed : Visibility.Visible; }
         }
 
+        /// <summary>
+        /// Returns <see cref="Visibility.Visible"/> if the debugger is attached, <see cref="Visibility.Collapsed"/> otherwise
+        /// </summary>
+        public Visibility TileDebugVisibility
+        {
+            get { return Debugger.IsAttached ? Visibility.Visible : Visibility.Collapsed; }
+        }
 
         /// <summary>
         /// The brush to paint the image with (this is the image for the tile)

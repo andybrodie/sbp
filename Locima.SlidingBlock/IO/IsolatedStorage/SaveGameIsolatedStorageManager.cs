@@ -132,7 +132,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         /// <inheritdoc/>
         public SaveGame GetContinuableGame(string playerId)
         {
-            return LoadGames(playerId).FirstOrDefault();
+            return LoadGames(playerId).FirstOrDefault(game => game.CurrentLevelIndex < game.Levels.Count);
         }
 
     }
