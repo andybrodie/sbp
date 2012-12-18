@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Microsoft.Phone.Tasks;
@@ -81,5 +82,14 @@ namespace Locima.SlidingBlock.IO
         /// <param name="imageId">The ID of the image to update</param>
         /// <returns>Temporary and permanent images have different IDs.  This is the new ID for the image.</returns>
         string Promote(string imageId);
+
+        /// <summary>
+        /// Obtains a list of all the image IDs known by the system.
+        /// </summary>
+        /// <remarks>
+        /// Does not include images located within the XAP for this app</remarks>
+        /// <param name="includeTemporaryImages">If <c>true</c> include temporary images, false otherwise</param>
+        /// <returns>A list (potentially empty) of all images stored by this storage manager.</returns>
+        List<string> ListImages(bool includeTemporaryImages);
     }
 }
