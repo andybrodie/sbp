@@ -176,7 +176,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         {
             MenuPageViewModel mpvm;
 
-            List<GameTemplate> templates = GameTemplateStorageManager.Instance.GetGameTemplates(false, false);
+            List<GameTemplate> templates = GameTemplateStorageManager.Instance.GetGameTemplates(false, false, false);
             if (templates.Count > 1)
             {
                 // The user needs to select a game template because there's more than one
@@ -285,7 +285,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// <returns>A menu page view model that offers a selection of templates</returns>
         public static MenuPageViewModel CreateGameTemplateSelector(IEnumerable<JournalEntry> unused)
         {
-            return CreateGameTemplateSelector(GameTemplateStorageManager.Instance.GetGameTemplates(false, false));
+            return CreateGameTemplateSelector(GameTemplateStorageManager.Instance.GetGameTemplates(false, false, false));
         }
 
         /// <summary>

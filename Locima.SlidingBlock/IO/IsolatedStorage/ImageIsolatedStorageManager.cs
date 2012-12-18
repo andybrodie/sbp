@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Windows.Media.Imaging;
@@ -183,6 +184,18 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
             Logger.Info("Promoting temporary image {0} to {1}", temporaryImageId, promotedImageId);
             IOHelper.MoveFile(temporaryImageId, promotedImageId);
             return promotedImageId;
+        }
+
+
+        /// <inheritDoc/>
+        public List<string> ListImages(bool includeTemporaryImages)
+        {
+            List<string> imageIds = IOHelper.GetFileNames(ImageDirectory);
+            if (includeTemporaryImages)
+            {
+                imageIds.AddRange(IOHelper.GetFileNames(ImageTempDirectory));
+            }
+            return imageIds;
         }
     }
 }

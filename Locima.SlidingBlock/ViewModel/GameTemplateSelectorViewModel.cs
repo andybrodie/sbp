@@ -72,7 +72,7 @@ namespace Locima.SlidingBlock.ViewModel
         {
             Logger.Info("Refreshing list of gample templates");
             GameTemplateList.Clear();
-            List<GameTemplate> gameTemplates = GameTemplateStorageManager.Instance.GetGameTemplates(true, true);            
+            List<GameTemplate> gameTemplates = GameTemplateStorageManager.Instance.GetGameTemplates(true, true, true);
 
             gameTemplates.Sort(
                 (definition, gameTemplate) =>

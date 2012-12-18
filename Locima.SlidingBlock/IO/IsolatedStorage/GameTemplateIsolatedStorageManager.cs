@@ -36,7 +36,50 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         public void Initialise()
         {
             IOHelper.EnsureDirectory(GameTemplateDirectory);
+
+            CheckAndRemoveOrphanImages();
+
             EnsureSinglePlayerGame();
+        }
+
+        /// <summary>
+        /// Delete all images that aren't referred to by game template
+        /// </summary>
+        /// <remarks>
+        /// This method is as quick as it realistically can be, but it's still a concern that once there are lots of images and templates it could significantly slow down
+        /// the startup of the app which isn't a good idea</remarks>
+        private void CheckAndRemoveOrphanImages()
+        {
+            // 1. Assemble a list of all the images that are in use by all the game templates
+            List<string> imageIdsInUse =
+                GetGameTemplates(true, false, true)
+                    .SelectMany(template => template.Levels)
+                    .Select(definition => definition.ImageId)
+                    .Distinct().ToList();
+
+            // 2. Assemble a list of all the image IDs
+            List<string> imageIds = ImageStorageManager.Instance.ListImages(true).ToList();
+
+            // 3. Create a list of all the images from (2) that aren't in (1) 
+            // Use an array so we can use String.Join later for logging
+            string[] imagesToDelete = imageIds.Except(imageIdsInUse).ToArray();
+
+            if (imagesToDelete.Length > 0)
+            {
+                // 4. Delete the unused images
+                if (Logger.IsInfoEnabled)
+                {
+                    Logger.Info("Deleting {0} unused images: {1} leaving a total of {2} images in use", imagesToDelete.Length,
+                                string.Join(", ", imagesToDelete), imageIds.Count - imagesToDelete.Length);
+                }
+// ReSharper disable ReturnValueOfPureMethodIsNotUsed
+                imagesToDelete.Select(IOHelper.DeleteFile);
+// ReSharper restore ReturnValueOfPureMethodIsNotUsed
+            }
+            else
+            {
+                Logger.Info("No orphan images found to remove.  Found {0} total images", imageIdsInUse.Count);
+            }
         }
 
 
@@ -46,8 +89,9 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         /// <param name="includeShadows">If <c>true</c> then shadow templates will be included in the list</param>
         /// <param name="collapseShadows">Only used if <paramref name="includeShadows"/> is <c>true</c>, if this is <c>true</c> then any templates which
         /// have shadows are ommitted from the list</param>
+        /// <param name="includeUnplayable">If <c>true</c> then invlid game templates (e.g. ones with no levels) will be included. </param>
         /// <returns></returns>
-        public List<GameTemplate> GetGameTemplates(bool includeShadows, bool collapseShadows)
+        public List<GameTemplate> GetGameTemplates(bool includeShadows, bool collapseShadows, bool includeUnplayable)
         {
             List<GameTemplate> games = new List<GameTemplate>();
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
@@ -55,6 +99,11 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
                 List<string> filenames = IOHelper.GetFileNames(GameTemplateDirectory, store);
                 games.AddRange(filenames.Select(filename => IOHelper.LoadObject<GameTemplate>(store, filename)));
             }
+            if (!includeUnplayable)
+            {
+                games = games.Where(template => template.Levels != null && template.Levels.Count > 0).ToList();
+            }
+
             if (!includeShadows)
             {
                 games = games.Where(template => !template.IsShadow).ToList();

@@ -18,10 +18,11 @@ namespace Locima.SlidingBlock.IO
         /// Gets a list of all the game templates, allowing the caller to specify whether shadows should be included and, if so, whether objects which have shadows
         /// should be omitted from the returned list
         /// </summary>
-        /// <param name="includeShadows">If <c>true</c>, then shadow game template will be returned (i.e. ones which are mid-edit)</param>
-        /// <param name="collapseShadows">If <c>true</c>, then objects which have shadows will be omitted from the list (only valid if <paramref name="includeShadows"/> is also true</param>
+        /// <param name="includeShadows">If <c>true</c> then shadow game template will be returned (i.e. ones which are mid-edit)</param>
+        /// <param name="collapseShadows">If <c>true</c> then objects which have shadows will be omitted from the list (only valid if <paramref name="includeShadows"/> is also true</param>
+        /// <param name="includeUnplayable">If <c>true</c> then invlid game templates (e.g. ones with no levels) will be included. </param>
         /// <returns>A list of game template, never null</returns>
-        List<GameTemplate> GetGameTemplates(bool includeShadows, bool collapseShadows);
+        List<GameTemplate> GetGameTemplates(bool includeShadows, bool collapseShadows, bool includeUnplayable);
 
         /// <summary>
         /// Loads the game template specified by <paramref name="id"/>
