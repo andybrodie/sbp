@@ -276,12 +276,4 @@ namespace Locima.SlidingBlock
             Logger.Info("Launching external browser for license view");
         }
     }
-
-
-    internal class GameStateChangeMessageArgs : MessageArgs
-    {
-        public GameStates GameState;
-    }
-
-
 }

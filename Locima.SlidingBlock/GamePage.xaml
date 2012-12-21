@@ -67,7 +67,6 @@
                 <TextBlock Text="{Binding Path=Strings.TimeLabel,Source={StaticResource Localization}}" Margin="0,0,12,0"/>
                 <TextBlock Text="{Binding Path=ElapsedTime, Converter={StaticResource ElapsedTimeConverter}, ConverterParameter='hh\\:mm\\:ss'}"/>
             </StackPanel>
-                
         </Grid>
 
         <Border Grid.Column="0" Grid.Row="2" Style="{StaticResource AreaBorder}" x:Name="PuzzleBorder" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -108,6 +107,19 @@
                         </StackPanel>
                     </Grid>
                 </controls:Puzzle.StartScreen>
+                <controls:Puzzle.CompleteScreen>
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Rectangle Fill="{StaticResource PhoneBackgroundBrush}" Opacity="0.5"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CompletedTitle}" TextAlignment="Center"
+                                   Margin="0,0,0,0" Style="{StaticResource PhoneTextLargeStyle}" TextWrapping="Wrap"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CompletedText}" TextAlignment="Center"
+                                   Margin="0,12,0,0" Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Path=Strings.StartNextLevelPrompt, Source={StaticResource Localization}}" HorizontalAlignment="Center" Style="{StaticResource PhoneTextExtraLargeStyle}"
+                                   Margin="0,24,0,0" />
+                        </StackPanel>
+                    </Grid>
+                </controls:Puzzle.CompleteScreen>
             </controls:Puzzle>
         </Border>
 

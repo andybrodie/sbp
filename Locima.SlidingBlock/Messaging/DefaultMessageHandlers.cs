@@ -116,7 +116,7 @@ namespace Locima.SlidingBlock.Messaging
             }
             else
             {
-                Logger.Debug("Cancel clicked, so checking action {0}", confirmArgs.OnCancelCommand);
+                Logger.Debug("{0} event raised , so invoking Cancel action {1}", result, confirmArgs.OnCancelCommand);
                 if (confirmArgs.OnCancelCommand != null && confirmArgs.OnCancelCommand.CanExecute(null))
                 {
                     Logger.Info("Invoking Cancel action on confirm message \"{0}\" from {1} and action is available ",

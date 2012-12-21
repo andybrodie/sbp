@@ -79,6 +79,13 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         public ICommand CopyGameTemplateCommand { get; set; }
 
+
+        /// <summary>
+        /// Action for <see cref="CopyGameTemplateCommand"/> that creates a duplicate of this <see cref="GameTemplate"/> by saving it as a different name.
+        /// </summary>
+        /// <remarks>
+        /// This method will allocated a new ID, change the title to say "Copy of..." at the front and set the <see cref="GameTemplate.IsReadOnly"/> to false</remarks>
+        /// <param name="obj"></param>
         private void CopyGameTemplateAction(object obj)
         {
             Logger.Info("Cloning game template {0} ({1})", Title, Id);
@@ -93,6 +100,10 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
 
+        /// <summary>
+        /// Action for <see cref="DeleteGameTemplateCommand"/> that, once the user confirms, will delete this game template
+        /// </summary>
+        /// <param name="obj"></param>
         private void DeleteGameTemplateAction(object obj)
         {
             if (IsReadOnly)

@@ -45,8 +45,8 @@
                                           Link="http://shfb.codeplex.com/"
                                           Author="Eric Woodruff"
                                           Description="Sandcastle builds the HTML API documentation."/>
-                <Controls:Acknowledgement Title="Scott Hanselman"
-                                          Author="Scott's parents"
+                <Controls:Acknowledgement Title="From Concept to Code in 6 hours: Shipping my first Windows Phone App"
+                                          Author="Scott Hanselman"
                                           Description="I was inspired to write this having read Scott's post on &quot;Shipping my first Windows App&quot;.  He's a truly motivational speaker and writer!"
                                           Link="http://www.hanselman.com/blog/FromConceptToCodeIn6HoursShippingMyFirstWindowsPhoneApp.aspx"/>
                 <Controls:Acknowledgement Title="WP7 Binding - Lost Focus Workaround"
