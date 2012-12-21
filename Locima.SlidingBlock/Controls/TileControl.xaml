@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Converters="clr-namespace:Locima.SlidingBlock.Converters"
+    xmlns:converters="clr-namespace:Locima.SlidingBlock.Converters"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -12,8 +12,8 @@
 >
 
   <UserControl.Resources>
-        <Converters:PositionToStringConverter x:Key="positionToStringConverter" />
-        <Converters:DoubleToThicknessConverter x:Key="doubleToThicknessConverter" />
+        <converters:PositionToStringConverter x:Key="PositionToStringConverter" />
+        <converters:DoubleToThicknessConverter x:Key="DoubleToThicknessConverter" />
   </UserControl.Resources>
   <Canvas x:Name="TileRoot" Background="Transparent"
             Width="{Binding Width, Mode=OneWay}" 
@@ -37,13 +37,13 @@
                    Canvas.Left="{Binding TileBorder}" Canvas.Top="{Binding TileBorder}"
                    TextAlignment="Center"
                    TextWrapping="Wrap"
-                   Text="{Binding SolvedPosition, Converter={StaticResource positionToStringConverter}}"
+                   Text="{Binding SolvedPosition, Converter={StaticResource PositionToStringConverter}}"
                    Visibility="{Binding TileDebugVisibility}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"/>
         <Border x:Name="TileBorder" Width="{Binding Width}"
                 Height="{Binding Height}"
-                BorderThickness="{Binding TileBorder, Converter={StaticResource doubleToThicknessConverter}}"
+                BorderThickness="{Binding TileBorder, Converter={StaticResource DoubleToThicknessConverter}}"
                 BorderBrush="Black"
                 Visibility="{Binding TileImageVisibility}"
                 />

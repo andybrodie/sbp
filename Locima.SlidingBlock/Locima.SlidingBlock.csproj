@@ -87,6 +87,7 @@
     <Compile Include="LevelEditor.xaml.cs">
       <DependentUpon>LevelEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Messaging\GameStateChangeMessageArgs.cs" />
     <Compile Include="PlayerEditor.xaml.cs">
       <DependentUpon>PlayerEditor.xaml</DependentUpon>
     </Compile>

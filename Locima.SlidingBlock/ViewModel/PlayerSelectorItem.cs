@@ -130,7 +130,8 @@ namespace Locima.SlidingBlock.ViewModel
                                         Message =
                                             LocalizationHelper.GetString("DeleteConfirmationMessage", Name,
                                                                          saveGameCount),
-                                        OnOkCommand = ForceDeletePlayerCommand
+                                        OnOkCommand = ForceDeletePlayerCommand,
+                                        OnCancelCommand = ConfirmationMessageArgs.NoOpCommand
                                     });
             }
             else

@@ -55,6 +55,8 @@ namespace Locima.SlidingBlock.ViewModel
         /// <summary>
         ///   Set when the model reports that the puzzle has been completed
         /// </summary>
+        /// <remarks>
+        /// When this happens and all the running animations have finished <see cref="GameState"/> will move to <see cref="GameStates.Completed"/></remarks>
         private bool _puzzleCompleted;
 
         /// <summary>
@@ -98,6 +100,9 @@ namespace Locima.SlidingBlock.ViewModel
         /// Backing field for <see cref="ImageTitle"/>
         /// </summary>
         private string _imageTitle;
+
+        private string _completedTitle;
+        private string _completedText;
 
         /// <summary>
         /// Invoked by the view when the user wishes to pause the game
@@ -281,6 +286,32 @@ namespace Locima.SlidingBlock.ViewModel
             OnNotifyPropertyChanged("LicenseTitle");}
         }
 
+        /// <summary>
+        /// The title of the message to show when the user has completed a level
+        /// </summary>
+        public string CompletedTitle
+        {
+            get { return _completedTitle; }
+            set
+            {
+                _completedTitle = value;
+                OnNotifyPropertyChanged("CompletedTitle");
+            }
+        }
+
+
+        /// <summary>
+        /// A description of the stats accumulated when the user has completed a level
+        /// </summary>
+        public string CompletedText
+        {
+            get { return _completedText; }
+            set
+            {
+                _completedText = value;
+                OnNotifyPropertyChanged("CompletedText");
+            }
+        }
 
 
         /// <summary>
@@ -474,11 +505,17 @@ namespace Locima.SlidingBlock.ViewModel
         private void CompleteLevel()
         {
             _puzzleModel.Stopwatch.Stop();
-
             GameState = GameStates.Completed;
+            CompletedTitle = LocalizationHelper.GetString("LevelFinishedCaption");
+            CompletedText = LocalizationHelper.GetString("LevelFinishedMessage",
+                                                         _currentLevelNumber + 1,
+                                                         LocalizationHelper.GetTimeSpanString(
+                                                             _puzzleModel.Stopwatch.ElapsedTime),
+                                                         _puzzleModel.MoveCount,
+                                                         _puzzleModel.MoveCount != 1 ? "moves" : "move");
 
             // Congratulate the user, when they've finished celebrating, the ok button will invoke ProceedToNextLevel
-            SendViewMessage(new ConfirmationMessageArgs
+/*            SendViewMessage(new ConfirmationMessageArgs
                 {
                     Title = LocalizationHelper.GetString("LevelFinishedCaption"),
                     Message = LocalizationHelper.GetString("LevelFinishedMessage",
@@ -487,12 +524,18 @@ namespace Locima.SlidingBlock.ViewModel
                                                                _puzzleModel.Stopwatch.ElapsedTime),
                                                            _puzzleModel.MoveCount,
                                                            _puzzleModel.MoveCount != 1 ? "moves" : "move"),
-                    OnOkCommand = new DelegateCommand(ProceedToNextLevel)
-                });
+                    OnOkCommand = new DelegateCommand(ProceedToNextLevel),
+                });*/
         }
 
 
-        private void ProceedToNextLevel(object obj)
+        /// <summary>
+        /// Loads the next level, or proceeds to <see cref="GameEnd"/> if all levels are complete
+        /// </summary>
+        /// <remarks>
+        /// Invoked when the user taps the puzzle and <see cref="GameState"/> is <see cref="GameStates.Completed"/>
+        /// </remarks>
+        public void ProceedToNextLevel()
         {
             // Update with ElapsedTime and TotalMoves
             UpdateCurrentGame();

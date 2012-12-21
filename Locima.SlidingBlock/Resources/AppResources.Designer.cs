@@ -997,6 +997,15 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CONTINUE.
+        /// </summary>
+        public static string StartNextLevelPrompt {
+            get {
+                return ResourceManager.GetString("StartNextLevelPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to time:.
         /// </summary>
         public static string TimeLabel {
