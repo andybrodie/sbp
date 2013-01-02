@@ -57,24 +57,27 @@ namespace Locima.SlidingBlock
         /// <item><description>Finally, <see cref="Locima.SlidingBlock.Controls.Puzzle.Initialise"/> is called </description></item>
         /// </list>
         /// </remarks>
-        /// <param name="e"></param>
+        /// <param name="e">unused</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            Logger.Info("OnNavigatedTo entry");
             base.OnNavigatedTo(e);
             ViewModel.RegisterMessageHandler<GameStateChangeMessageArgs>(HandleGameStateChanges);
             ViewModel.Initialise();
             this.RegisterDefaultMessageHandlers(ViewModel);
-            SaveGame gameState = LoadSaveGame();
-            if (gameState.IsCompletedGame)
+            SaveGame saveGame = LoadSaveGame();
+            if (saveGame.IsCompletedGame)
             {
                 Logger.Info("Completed game loaded, bouncing user directly to the GameEnd screen");
-                NavigationService.Navigate(GameEnd.CreateNavigationUri(gameState.Id));
+                NavigationService.Navigate(GameEnd.CreateNavigationUri(saveGame.Id));
             }
             else
             {
-                Puzzle.Game = gameState;
+                Puzzle.Game = saveGame;
                 Puzzle.Initialise();
-            }
+            }                        
+            ConfigureApplicationBar(ViewModel.GameState);
+            Logger.Info("OnNavigatedTo exit");
         }
 
 
@@ -120,6 +123,7 @@ namespace Locima.SlidingBlock
         {
             base.OnNavigatingFrom(e);
 
+            // Update the thumbnail of the current level (shown when offering the user a list of game to load)
             WriteableBitmap thumbnail = CreateThumbnail();
             if (thumbnail != null)
             {

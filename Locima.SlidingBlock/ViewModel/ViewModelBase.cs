@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Threading;
+using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Messaging;
+using Microsoft.Phone.Shell;
 using NLog;
 
 namespace Locima.SlidingBlock.ViewModel
@@ -127,5 +128,48 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
         #endregion
+
+        /// <summary>
+        /// Sets the property in <see cref="PhoneApplicationService.State"/> with the name
+        /// </summary>
+        /// <param name="propertyName">The name of the property to retrieve</param>
+        /// <param name="propertyValue">The value to set.</param>
+        protected void SetState(string propertyName, object propertyValue)
+        {
+            StateManagementHelper.SetState(GetType().Name, propertyName, propertyValue);
+        }
+
+        /// <summary>
+        /// Removes a <see cref="KeyValuePair{TKey,TValue}"/> from the <see cref="PhoneApplicationService.State"/> dictionary.
+        /// </summary>
+        /// <param name="propertyName">The name of the property to remove</param>
+        /// <returns><c>true</c> if an object was found to delete, <c>false</c> otherwise</returns>
+        protected bool ClearState(string propertyName)
+        {
+            return StateManagementHelper.ClearState(GetType().Name, propertyName);
+        }
+ 
+
+        /// <summary>
+        /// Attempts to retrieve a property from the <see cref="PhoneApplicationService.Current"/>'s <see cref="PhoneApplicationService.State"/> dictionary.
+        /// </summary>
+        /// <typeparam name="T">The type of the output parameter</typeparam>
+        /// <param name="propertyName">The name of the property to retrieve</param>
+        /// <param name="outputValue">The value to populate with the property.  If the property doesn't exist or is of the wrong type then <c>default(<typeparamref name="T"/>) will be set</c>.</param>
+        /// <returns><c>true</c> if a property value was successfully retrieved and <paramref name="outputValue"/> has been set successfully, <c>false</c> otherwise</returns>
+        protected bool TryGetState<T>(string propertyName, out T outputValue)
+        {
+            return StateManagementHelper.TryGetState(GetType().Name, propertyName, out outputValue);
+        }
+ 
+        /// <summary>
+        /// Remove all keys from the <see cref="PhoneApplicationService.State"/> dictionary set by this page
+        /// </summary>
+        protected void ClearState()
+        {
+            StateManagementHelper.ClearState(GetType().Name);
+        }
+
+
     }
 }
