@@ -163,9 +163,9 @@ namespace Locima.SlidingBlock.Controls
             Logger.Info("New game state: {0}", newState);
             Puzzle puzzle = (Puzzle) dependencyObject;
 
-            puzzle.PauseScreen.Visibility = newState==GameStates.Paused ? Visibility.Visible : Visibility.Collapsed;
-            puzzle.StartScreen.Visibility = newState==GameStates.NotStarted ? Visibility.Visible : Visibility.Collapsed;
-            puzzle.CompleteScreen.Visibility = newState==GameStates.Completed ? Visibility.Visible : Visibility.Collapsed;
+            if (puzzle.PauseScreen!=null) puzzle.PauseScreen.Visibility = newState==GameStates.Paused ? Visibility.Visible : Visibility.Collapsed;
+            if (puzzle.StartScreen != null) puzzle.StartScreen.Visibility = newState == GameStates.NotStarted ? Visibility.Visible : Visibility.Collapsed;
+            if (puzzle.CompleteScreen != null) puzzle.CompleteScreen.Visibility = newState == GameStates.Completed ? Visibility.Visible : Visibility.Collapsed;
         }
 
 

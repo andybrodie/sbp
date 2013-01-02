@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Locima.SlidingBlock.Common;
-using Locima.SlidingBlock.Controls;
 using Locima.SlidingBlock.Model;
 using NLog;
 
@@ -359,7 +358,7 @@ namespace Locima.SlidingBlock.ViewModel
                 Color originalColor = _tile.PlayerBrush;
                 originalColor.A = 0;
                 return new SolidColorBrush(originalColor);
-            }
+            }            
         }
 
         /// <summary>

@@ -32,6 +32,9 @@ namespace Locima.SlidingBlock.ViewModel
         /// </remarks>
         private readonly ICollection<object> _animationsPending = new List<object>();
 
+        private string _completedText;
+        private string _completedTitle;
+
         /// <summary>
         ///   The current game, as saved by the player
         /// </summary>
@@ -41,6 +44,43 @@ namespace Locima.SlidingBlock.ViewModel
         ///   The current level number, used to display the <see cref="PageTitle" /> and the level completion message
         /// </summary>
         private int _currentLevelNumber;
+
+        /// <summary>
+        /// Used to indicate whether the game should be saved during <see cref="OnNavigatingFrom"/>
+        /// </summary>
+        /// <remarks>
+        /// Used in <see cref="ProceedToNextLevel"/> to stop <see cref="OnNavigatingFrom"/> from updating
+        /// and saving the game when the user navigates away, because when proceeding to the next level
+        /// we don't want <see cref="OnNavigatingFrom"/> to update and save <see cref="_currentGame"/>.
+        /// In all other cases of navigating away from the page, it's because the user has quit
+        /// or an event is deactivating the application, so we want the game to be saved.
+        /// </remarks>
+        private bool _dontSaveGameOnNavigatingFrom;
+
+        /// <summary>
+        /// Backing field for <see cref="GameState"/>
+        /// </summary>
+        private GameStates _gameState;
+
+        /// <summary>
+        /// Backing field for <see cref="ImageText"/>
+        /// </summary>
+        private string _imageText;
+
+        /// <summary>
+        /// Backing field for <see cref="ImageTitle"/>
+        /// </summary>
+        private string _imageTitle;
+
+        /// <summary>
+        /// Backing field for <see cref="LicenseLink"/>
+        /// </summary>
+        private Uri _licenseLink;
+
+        /// <summary>
+        /// Backing field for <see cref="LicenseTitle"/>
+        /// </summary>
+        private string _licenseTitle;
 
         /// <summary>
         ///   Backing field for <see cref="PageTitle" />
@@ -63,46 +103,6 @@ namespace Locima.SlidingBlock.ViewModel
         /// The underlying model for this puzzle control
         /// </summary>
         private PuzzleModel _puzzleModel;
-
-        /// <summary>
-        /// Used to indicate whether the game should be saved during <see cref="OnNavigatingFrom"/>
-        /// </summary>
-        /// <remarks>
-        /// Used in <see cref="ProceedToNextLevel"/> to stop <see cref="OnNavigatingFrom"/> from updating
-        /// and saving the game when the user navigates away, because when proceeding to the next level
-        /// we don't want <see cref="OnNavigatingFrom"/> to update and save <see cref="_currentGame"/>.
-        /// In all other cases of navigating away from the page, it's because the user has quit
-        /// or an event is deactivating the application, so we want the game to be saved.
-        /// </remarks>
-        private bool _dontSaveGameOnNavigatingFrom;
-
-        /// <summary>
-        /// Backing field for <see cref="ImageText"/>
-        /// </summary>
-        private string _imageText;
-
-        /// <summary>
-        /// Backing field for <see cref="LicenseLink"/>
-        /// </summary>
-        private Uri _licenseLink;
-
-        /// <summary>
-        /// Backing field for <see cref="LicenseTitle"/>
-        /// </summary>
-        private string _licenseTitle;
-
-        /// <summary>
-        /// Backing field for <see cref="GameState"/>
-        /// </summary>
-        private GameStates _gameState;
-
-        /// <summary>
-        /// Backing field for <see cref="ImageTitle"/>
-        /// </summary>
-        private string _imageTitle;
-
-        private string _completedTitle;
-        private string _completedText;
 
         /// <summary>
         /// Invoked by the view when the user wishes to pause the game
@@ -218,9 +218,19 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         public GameStates GameState
         {
-            get { return _gameState; }
+            get
+            {
+//                return _gameState;
+                GameStates output;
+                if (TryGetState("GameState", out output))
+                {
+                    return output;
+                }
+                return GameStates.Running;
+            }
             set
             {
+                SetState("GameState", value);
                 _gameState = value;
                 OnNotifyPropertyChanged("GameState");
                 SendViewMessage(new GameStateChangeMessageArgs {GameState = value});
@@ -282,8 +292,11 @@ namespace Locima.SlidingBlock.ViewModel
         public string LicenseTitle
         {
             get { return _licenseTitle; }
-            set { _licenseTitle = value;
-            OnNotifyPropertyChanged("LicenseTitle");}
+            set
+            {
+                _licenseTitle = value;
+                OnNotifyPropertyChanged("LicenseTitle");
+            }
         }
 
         /// <summary>
@@ -436,7 +449,7 @@ namespace Locima.SlidingBlock.ViewModel
 
             _currentLevelNumber = game.CurrentLevelIndex;
             PageTitle = LocalizationHelper.GetString("GamePageTitle", _currentLevelNumber + 1);
-                // Have to add 1 as the first level should be "level 1", not "level 0"
+            // Have to add 1 as the first level should be "level 1", not "level 0"
 
 
             // Set up the fields used in the display of the start screen
@@ -444,22 +457,15 @@ namespace Locima.SlidingBlock.ViewModel
             ImageText = game.CurrentLevel.Text;
             LicenseLink = game.CurrentLevel.License.Link;
             LicenseTitle = game.CurrentLevel.License.Title;
-            
+
             _currentGame = game;
 
-            // If resuming a previously started level just straight in else this is a new level so show the start screen first
-            if (_puzzleModel.Stopwatch.ElapsedTime.Equals(new TimeSpan(0)))
+            Logger.Info("Loaded GameState as {0}", GameState);
+            if (GameState == GameStates.Running)
             {
-                Logger.Info("Level has not been started yet, so setting GameState to NotStarted");
-                GameState = GameStates.NotStarted;
-            }
-            else
-            {
-                Logger.Info("Level is being continued, so setting GameState to Running");
-                GameState = GameStates.Running;
                 _puzzleModel.Stopwatch.Start();
             }
-
+            
             Logger.Debug("Initialise exit");
         }
 
@@ -500,12 +506,11 @@ namespace Locima.SlidingBlock.ViewModel
 
 
         /// <summary>
-        ///   Shows a level completion message and moves to the next level
+        /// Invoked when the user completes the level
         /// </summary>
         private void CompleteLevel()
         {
             _puzzleModel.Stopwatch.Stop();
-            GameState = GameStates.Completed;
             CompletedTitle = LocalizationHelper.GetString("LevelFinishedCaption");
             CompletedText = LocalizationHelper.GetString("LevelFinishedMessage",
                                                          _currentLevelNumber + 1,
@@ -513,19 +518,8 @@ namespace Locima.SlidingBlock.ViewModel
                                                              _puzzleModel.Stopwatch.ElapsedTime),
                                                          _puzzleModel.MoveCount,
                                                          _puzzleModel.MoveCount != 1 ? "moves" : "move");
-
-            // Congratulate the user, when they've finished celebrating, the ok button will invoke ProceedToNextLevel
-/*            SendViewMessage(new ConfirmationMessageArgs
-                {
-                    Title = LocalizationHelper.GetString("LevelFinishedCaption"),
-                    Message = LocalizationHelper.GetString("LevelFinishedMessage",
-                                                           _currentLevelNumber + 1,
-                                                           LocalizationHelper.GetTimeSpanString(
-                                                               _puzzleModel.Stopwatch.ElapsedTime),
-                                                           _puzzleModel.MoveCount,
-                                                           _puzzleModel.MoveCount != 1 ? "moves" : "move"),
-                    OnOkCommand = new DelegateCommand(ProceedToNextLevel),
-                });*/
+            GameState = GameStates.Completed;
+            // TODO Find a way to make the player tile disappear
         }
 
 
@@ -543,7 +537,7 @@ namespace Locima.SlidingBlock.ViewModel
             SaveGameStorageManager.Instance.SaveGame(_currentGame);
 
             // Move on to the next level, or redirect to the "Game Completed" page
-            Uri nextPageUri;
+            Uri nextPageUri; 
             if (_currentGame.CurrentLevelIndex == _currentGame.Levels.Count)
             {
                 Logger.Info("Player has finished the game, redirecting to the endgame page");
@@ -556,7 +550,9 @@ namespace Locima.SlidingBlock.ViewModel
                 nextPageUri = GamePage.CreateNavigationUri(_currentGame.Id, 1);
             }
             Logger.Info("Navigating on to {0}", nextPageUri);
-            _dontSaveGameOnNavigatingFrom = true; // Prevent the game being saved again when we navigate away (otherwise desirable when deactivating!)
+            GameState = GameStates.NotStarted; // Something wrong here? xxx
+            _dontSaveGameOnNavigatingFrom = true;
+                // Prevent the game being saved again when we navigate away (otherwise desirable when deactivating!)
             SendViewMessage(new NavigationMessageArgs(nextPageUri));
         }
 
@@ -570,8 +566,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// <param name="tapPosition"> The position on the screen that was tapped </param>
         public void MoveTileBasedOnTap(Point tapPosition)
         {
-            Point relativeToBlank = Subtract(tapPosition,
-                                             ConvertTilePositionToPoint(_puzzleModel.LocalPlayer.Position));
+            Point relativeToBlank = tapPosition.Subtract(ConvertTilePositionToPoint(_puzzleModel.LocalPlayer.Position));
             IEnumerable<TileDirection> preferredDirections = CalculateDirectionPreferences(relativeToBlank);
 
             foreach (TileDirection dir in preferredDirections)
@@ -607,17 +602,6 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
 
-        /// <summary>
-        ///   Work out the relative position of <paramref name="p1" /> to <paramref name="p2" />
-        /// </summary>
-        /// <param name="p1"> The point to substract <paramref name="p2" /> from </param>
-        /// <param name="p2"> The origin </param>
-        /// <returns> </returns>
-        private static Point Subtract(Point p1, Point p2)
-        {
-            return new Point(p1.X - p2.X, p1.Y - p2.Y);
-        }
-
 
         /// <summary>
         ///   Converts a co-ordinate position of a tile within the grid (e.g. 0 to <see cref="TilesAcross" /> ) (as opposed to <see
@@ -641,6 +625,13 @@ namespace Locima.SlidingBlock.ViewModel
         public void OnNavigatingFrom(NavigatingCancelEventArgs navigatingCancelEventArgs)
         {
             Logger.Info("OnNavigatingFrom fired");
+
+            if (GameState == GameStates.Running)
+            {
+                // Pause the game when we exit the page, so when the player resumes it doens't go straight in
+                GameState = GameStates.Paused;
+            }
+
             if (!_dontSaveGameOnNavigatingFrom && _currentGame != null)
             {
                 Logger.Info("OnNavigatingFrom event fired, repopulating _currentGame with current state and saving it");
@@ -685,6 +676,5 @@ namespace Locima.SlidingBlock.ViewModel
         {
             return Thumbnail;
         }
-
     }
 }

@@ -126,29 +126,14 @@ namespace Locima.SlidingBlock.Common
 
 
         /// <summary>
-        /// Creates a key to use with <see cref="PhoneApplicationService.State"/> that is specific to this page (prefixes with the type name of the page and an underscore)
-        /// </summary>
-        /// <param name="page">The page that this property key is associated with</param>
-        /// <param name="key">The name of the property to generate a key for</param>
-        /// <returns>A string key to use wih <see cref="PhoneApplicationService.State"/></returns>
-        private static string CreateKey(PhoneApplicationPage page, string key)
-        {
-            return string.Format("{0}_{1}", page.GetType().Name, key);
-        }
-
-
-
-        /// <summary>
         /// Sets the property in <see cref="PhoneApplicationService.State"/> with the name
         /// </summary>
         /// <param name="page">The page that this property key is associated with</param>
-        /// <param name="propertyName">The name of the property to retrieve (note this isn't the property name as stored in <see cref="PhoneApplicationService.State"/>, see <see cref="CreateKey"/>)</param>
+        /// <param name="propertyName">The name of the property to retrieve</param>
         /// <param name="propertyValue">The value to set.</param>
         public static void SetState(this PhoneApplicationPage page, string propertyName, object propertyValue)
         {
-            string key = CreateKey(page, propertyName);
-            PhoneApplicationService.Current.State[key] = propertyValue;
-            Logger.Debug("Saved property \"{0}\"=\"{1}\"", key, propertyValue);
+            StateManagementHelper.SetState(page.GetType().Name, propertyName, propertyValue);
         }
 
 
@@ -160,20 +145,7 @@ namespace Locima.SlidingBlock.Common
         /// <returns><c>true</c> if an object was found to delete, <c>false</c> otherwise</returns>
         public static bool ClearState(this PhoneApplicationPage page, string propertyName)
         {
-            bool result;
-            string key = CreateKey(page, propertyName);
-            if (PhoneApplicationService.Current.State.ContainsKey(key))
-            {
-                Logger.Debug("Clearing property \"{0}\"", key);
-                PhoneApplicationService.Current.State.Remove(key);
-                result = true;
-            }
-            else
-            {
-                Logger.Warn("Could not find key \"{0}\" when asked to clear it", key);
-                result = false;
-            }
-            return result;
+            return StateManagementHelper.ClearState(page.GetType().Name, propertyName);
         }
 
 
@@ -183,15 +155,7 @@ namespace Locima.SlidingBlock.Common
         /// <param name="page">The page this property is associated with</param>
         public static void ClearState(this PhoneApplicationPage page)
         {
-            string ownedKeysPrefix = page.GetType().Name + "_";
-            foreach (KeyValuePair<string, object> keyPair in PhoneApplicationService.Current.State)
-            {
-                if (keyPair.Key.StartsWith(ownedKeysPrefix))
-                {
-                    Logger.Info("Removing \"{0}\"=\"{1}\"", keyPair.Key, keyPair.Value);
-                    PhoneApplicationService.Current.State.Remove(keyPair);
-                }
-            }
+            StateManagementHelper.ClearState(page.GetType().Name);
         }
 
         /// <summary>
@@ -199,43 +163,12 @@ namespace Locima.SlidingBlock.Common
         /// </summary>
         /// <typeparam name="T">The type of the output parameter</typeparam>
         /// <param name="page">The phone application page to store the property for</param>
-        /// <param name="propertyName">The name of the property to retrieve (note this isn't the property name as stored in <see cref="PhoneApplicationService.State"/>, see <see cref="CreateKey"/>)</param>
+        /// <param name="propertyName">The name of the property to retrieve</param>
         /// <param name="outputValue">The value to populate with the property.  If the property doesn't exist or is of the wrong type then <c>default(<typeparamref name="T"/>) will be set</c>.</param>
         /// <returns><c>true</c> if a property value was successfully retrieved and <paramref name="outputValue"/> has been set successfully, <c>false</c> otherwise</returns>
         public static bool TryGetState<T>(this PhoneApplicationPage page, string propertyName, out T outputValue)
         {
-            object stateObject;
-            string key = CreateKey(page, propertyName);
-            bool result = PhoneApplicationService.Current.State.TryGetValue(key, out stateObject);
-            if (result)
-            {
-                // If null has been explicitly stored, then I won't be able to cast this to a value type (e.g. int, struct), therefore manually set this to the default value
-                if (stateObject == null)
-                {
-                    outputValue = default(T);
-                }
-                else
-                {
-                    try
-                    {
-                        outputValue = (T) stateObject;
-                    }
-                    catch (InvalidCastException)
-                    {
-                        // If you can't cast because the object stored in the property is incompatible, then behave as if the the property didn't exist
-                        result = false;
-                        Logger.Error(
-                            "Attempt to retrieve {0} from PhoneApplicationService.Current.State as {1} but object was {2}",
-                            key, typeof(T), stateObject.GetType().Name);
-                        outputValue = default(T);
-                    }
-                }
-            }
-            else
-            {
-                outputValue = default(T);
-            }
-            return result;
+            return StateManagementHelper.TryGetState(page.GetType().Name, propertyName, out outputValue);
         }
 
 

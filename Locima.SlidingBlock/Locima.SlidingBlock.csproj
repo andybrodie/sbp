@@ -74,6 +74,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\PointExtensions.cs" />
+    <Compile Include="Common\StateManagementHelper.cs" />
     <Compile Include="Common\UriConstructor.cs" />
     <Compile Include="Converters\BrushOpacityModifier.cs" />
     <Compile Include="Converters\ScrambleTextConverter.cs" />
