@@ -64,7 +64,7 @@
             <Border x:Name="CropArea" BorderBrush="{StaticResource PhoneForegroundBrush}" BorderThickness="5" Canvas.Top="{Binding CropTop}" Canvas.Left="{Binding CropLeft}" Width="{Binding CropWidth}" Height="{Binding CropHeight}"/>
         </Canvas>
         <StackPanel x:Name="ToolsPanel" Grid.Row="2">
-            <TextBlock x:Name="DebugText" Text="{Binding DebugString}" TextWrapping="Wrap"/>
+            <TextBlock x:Name="DebugText" Text="{Binding DebugString}" TextWrapping="Wrap" Visibility="Collapsed"/>
         </StackPanel>
     </Grid>
 

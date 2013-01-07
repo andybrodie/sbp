@@ -6,18 +6,18 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ViewModel="clr-namespace:Locima.SlidingBlock.ViewModel"
-    xmlns:Converters="clr-namespace:Locima.SlidingBlock.Converters" x:Name="mainWindow"
+    xmlns:converters="clr-namespace:Locima.SlidingBlock.Converters" x:Name="MainWindow"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True"
+    Style="{StaticResource TransitionPageStyle}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <phone:PhoneApplicationPage.Resources>
-        <Converters:ElapsedTimeConverter x:Key="ElapsedTimeConverter" />
+        <converters:ElapsedTimeConverter x:Key="ElapsedTimeConverter" />
     </phone:PhoneApplicationPage.Resources>
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
@@ -45,7 +45,7 @@
                        Style="{StaticResource PhoneTextNormalStyle}"/>
 
             <ListBox Grid.Column="0" Grid.Row="1"  Margin="12,12,12,12"
-                     DataContext="{Binding ElementName=mainWindow}" ItemsSource="{Binding LevelStats}">
+                     DataContext="{Binding ElementName=MainWindow}" ItemsSource="{Binding LevelStats}">
                 <ListBox.ItemTemplate>
                 <DataTemplate>
                         <Grid Grid.Row="1" Grid.Column="0" Margin="12,12,12,12">
