@@ -37,7 +37,7 @@ namespace Locima.SlidingBlock
         /// </summary>
         public PlayerSelectorViewModel ViewModel
         {
-            get { return ((PlayerSelectorViewModel) Resources["viewModel"]); }
+            get { return ((PlayerSelectorViewModel) Resources["ViewModel"]); }
         }
 
 
