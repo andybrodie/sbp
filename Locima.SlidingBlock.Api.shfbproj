@@ -71,6 +71,7 @@
       <NamespaceSummaryItem name="Locima.SlidingBlock.Test" isDocumented="True" xmlns="">Unused.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Locima.SlidingBlock.ViewModel" isDocumented="True" xmlns="">Contains all the MVVM view model implementations.</NamespaceSummaryItem>
     </NamespaceSummaries>
+    <RootNamespaceTitle>Sliding Block Puzzle</RootNamespaceTitle>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
