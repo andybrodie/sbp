@@ -49,11 +49,14 @@ namespace Locima.SlidingBlock
         private void SaveGameListBoxItemChanged(object sender, SelectionChangedEventArgs e)
         {
             SaveGameMenuItem selectedItem = (SaveGameMenuItem) SaveGameListbox.SelectedItem;
-            Logger.Debug("Save game selected {0}", selectedItem);
-            if (selectedItem.LaunchGameCommand.CanExecute(selectedItem))
-            {             
-                Logger.Info("Invoking launch game action using {0}", selectedItem);
-                selectedItem.LaunchGameCommand.Execute(selectedItem);
+            if (selectedItem != null)
+            {
+                Logger.Debug("Save game selected {0}", selectedItem);
+                if (selectedItem.LaunchGameCommand.CanExecute(selectedItem))
+                {
+                    Logger.Info("Invoking launch game action using {0}", selectedItem);
+                    selectedItem.LaunchGameCommand.Execute(selectedItem);
+                }
             }
         }
 
