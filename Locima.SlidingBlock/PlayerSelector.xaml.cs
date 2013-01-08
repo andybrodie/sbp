@@ -69,12 +69,15 @@ namespace Locima.SlidingBlock
         private void PlayerListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PlayerSelectorItem selectedItem = (PlayerSelectorItem)((ListBox)sender).SelectedItem;
-            Logger.Debug("Player selected {0}", selectedItem);
-            if (selectedItem.SelectPlayerCommand.CanExecute(selectedItem))
+            if (selectedItem != null)
             {
-                Logger.Info("Invoking select player action using {0}", selectedItem);
-                selectedItem.SelectPlayerCommand.Execute(selectedItem);
-            }            
+                Logger.Debug("Player selected {0}", selectedItem);
+                if (selectedItem.SelectPlayerCommand.CanExecute(selectedItem))
+                {
+                    Logger.Info("Invoking select player action using {0}", selectedItem);
+                    selectedItem.SelectPlayerCommand.Execute(selectedItem);
+                }
+            }
         }
 
     }
