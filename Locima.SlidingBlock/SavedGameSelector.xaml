@@ -41,7 +41,7 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <ListBox x:Name="SaveGameListbox" Grid.Row="0" Grid.Column="0"
-                     ItemsSource="{Binding Path=SavedGames}" SelectionChanged="SaveGameListBoxItemChanged">
+                     ItemsSource="{Binding Path=SavedGames}" SelectionChanged="SaveGameListBoxSelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>

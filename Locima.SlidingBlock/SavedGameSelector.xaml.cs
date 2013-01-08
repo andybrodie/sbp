@@ -46,7 +46,7 @@ namespace Locima.SlidingBlock
         }
     
 
-        private void SaveGameListBoxItemChanged(object sender, SelectionChangedEventArgs e)
+        private void SaveGameListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SaveGameMenuItem selectedItem = (SaveGameMenuItem) SaveGameListbox.SelectedItem;
             if (selectedItem != null)
