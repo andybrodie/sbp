@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Locima.SlidingBlock.Common;
+using Locima.SlidingBlock.Model;
 using NLog;
 
 namespace Locima.SlidingBlock.Scrambles
@@ -56,7 +57,12 @@ namespace Locima.SlidingBlock.Scrambles
             /// <remarks>
             /// Used for testing
             /// </remarks>
-            OneMoveToFinish
+            OneMoveToFinish,
+
+            /// <summary>
+            /// Starts with a solved puzzle and moves the tiles a configurable number of times
+            /// </summary>
+            Shuffle,
         }
 
         #endregion
@@ -104,6 +110,9 @@ namespace Locima.SlidingBlock.Scrambles
                     case ScrambleType.OneMoveToFinish:
                     scramble = IdentityScramble(tilesAcross, tilesHigh);
                     ArrayTools.SwapElements(scramble, 0, 0, 1, 0);
+                    break;
+                case ScrambleType.Shuffle:
+                    scramble = ShuffleScramble(tilesAcross, tilesHigh, 100); // Picked an arbitrary number of 100 moves, TODO make this link to difficulty or something!
                     break;
                 default:
                     Logger.Error("Unknown ScrambleType passed: {0}.  Returning random scramble.", type);
@@ -214,6 +223,60 @@ namespace Locima.SlidingBlock.Scrambles
                 }
             }
 
+            return solvedPosition;
+        }
+
+
+        /// <summary>
+        /// Creates a scramble randomly based on moving tiles
+        /// </summary>
+        /// <remarks>
+        /// This allows us to create different scrambles which maintain a known number of moves to finish.  Whilst the implementation of this method may appear inefficient, it seems to work
+        /// fine for 100 moves or so (takes less than a second)</remarks>
+        /// <param name="tilesAcross">The number of tiles across in the puzzle</param>
+        /// <param name="tilesHigh">The number of tiles high in the puzzle</param>
+        /// <param name="totalMoves">The number of moves to apply to the initial (solved) grid</param>
+        /// <returns>A 2D array of <see cref="Position"/> instances.  Each <see cref="Position"/> object contains the solved position of the tile, it's position within the array determines
+        /// where the tile currently is in the puzzle</returns>
+        public Position[][] ShuffleScramble(int tilesAcross, int tilesHigh, int totalMoves)
+        {
+            Random random = new Random(); // Default random constructor is good enough for our purposes
+            Position[][] solvedPosition = ArrayTools.Create(tilesAcross, tilesHigh, (x,y) => new Position(x,y));
+            
+            Position blankTile = new Position(0,0);
+            int moveCount = 0;
+            List<TileDirection> allowedMoves = new List<TileDirection>();
+            DateTime startTime = DateTime.Now;
+            while (moveCount < totalMoves)
+            {
+                allowedMoves.Clear();
+                if (blankTile.X > 0) allowedMoves.Add(TileDirection.FromLeft);
+                if (blankTile.X < tilesAcross-1) allowedMoves.Add(TileDirection.FromRight);
+                if (blankTile.Y > 0) allowedMoves.Add(TileDirection.FromAbove);
+                if (blankTile.Y < tilesHigh - 1) allowedMoves.Add(TileDirection.FromBelow);
+                switch (allowedMoves[random.Next(allowedMoves.Count)])
+                {
+                    case TileDirection.FromLeft:
+                        ArrayTools.SwapElements(solvedPosition, blankTile.X, blankTile.Y, blankTile.X - 1, blankTile.Y);
+                        blankTile.X--;
+                        break;
+                    case TileDirection.FromRight:
+                        ArrayTools.SwapElements(solvedPosition, blankTile.X, blankTile.Y, blankTile.X + 1, blankTile.Y);
+                        blankTile.X++;
+                        break;
+                    case TileDirection.FromAbove:
+                        ArrayTools.SwapElements(solvedPosition, blankTile.X, blankTile.Y, blankTile.X, blankTile.Y - 1);
+                        blankTile.Y--;
+                        break;
+                    case TileDirection.FromBelow:
+                        ArrayTools.SwapElements(solvedPosition, blankTile.X, blankTile.Y, blankTile.X, blankTile.Y + 1);
+                        blankTile.Y++;
+                        break;
+                }
+                moveCount++;
+            }
+            TimeSpan timeTaken = DateTime.Now - startTime;
+            Logger.Info("Took {0} to apply {1} moves to a {2} x {3} grid", timeTaken, totalMoves, tilesAcross, tilesHigh);
             return solvedPosition;
         }
 

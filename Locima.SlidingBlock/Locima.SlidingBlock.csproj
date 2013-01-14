@@ -77,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\PointExtensions.cs" />
+    <Compile Include="Common\ReflectionHelper.cs" />
     <Compile Include="Common\StateManagementHelper.cs" />
     <Compile Include="Common\UriConstructor.cs" />
     <Compile Include="Converters\BrushOpacityModifier.cs" />
@@ -84,7 +85,11 @@
     <Compile Include="GameEditor.xaml.cs">
       <DependentUpon>GameEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameTemplates\Animals\AnimalGameTemplateFactory.cs" />
+    <Compile Include="GameTemplates\GameTemplateFactory.cs" />
+    <Compile Include="GameTemplates\IGameTemplateFactory.cs" />
     <Compile Include="GameTemplates\SaveGameFactory.cs" />
+    <Compile Include="GameTemplates\Toys\ToysGameTemplate.cs" />
     <Compile Include="IO\IGameTemplateManager.cs" />
     <Compile Include="IO\ImageHelper.cs" />
     <Compile Include="IO\IShadowableObject.cs" />

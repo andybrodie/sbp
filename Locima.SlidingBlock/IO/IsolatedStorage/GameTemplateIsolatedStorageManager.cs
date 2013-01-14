@@ -5,7 +5,6 @@ using System.IO.IsolatedStorage;
 using System.Text;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.GameTemplates;
-using Locima.SlidingBlock.GameTemplates.SinglePlayer;
 using NLog;
 
 namespace Locima.SlidingBlock.IO.IsolatedStorage
@@ -29,17 +28,14 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-
         /// <summary>
-        /// Ensures that <see cref="GameTemplateDirectory"/> exists and that the default game exists (<see cref="EnsureSinglePlayerGame"/>
+        /// Ensures that <see cref="GameTemplateDirectory"/> exists and that the default games exist (<see cref="EnsureBuiltInTemplatesExist"/>
         /// </summary>
         public void Initialise()
         {
             IOHelper.EnsureDirectory(GameTemplateDirectory);
-
             CheckAndRemoveOrphanImages();
-
-            EnsureSinglePlayerGame();
+            EnsureBuiltInTemplatesExist();
         }
 
         /// <summary>
@@ -313,22 +309,36 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
 
 
         /// <summary>
-        /// Ensure that the default single player game exists
+        /// Ensure that the passed game template is available
         /// </summary>
-        private void EnsureSinglePlayerGame()
+        private void EnsureGameTemplate(IGameTemplateFactory factory)
         {
-            GameTemplate singlePlayerGame = IOHelper.LoadFileByAppId<GameTemplate>(GameTemplateDirectory,
-                                                                                   SinglePlayerGame
-                                                                                       .SinglePlayerGamePersistentId);
-            if (singlePlayerGame == null)
+            GameTemplate template = IOHelper.LoadFileByAppId<GameTemplate>(GameTemplateDirectory, factory.PersistentId);
+            
+            if (template == null)
             {
-                Logger.Info("Creating default game template");
-                Save(SinglePlayerGame.Create());
+                Logger.Info("Could not find persisted version of {0} ({1}), therefore creating it", factory, factory.PersistentId);
+                Save(factory.Create());
             }
             else
             {
-                Logger.Info("Verified that default game template exists");
+                Logger.Info("Verified that {0} game template exists", factory);
             }
         }
+
+        /// <summary>
+        /// Ensures that all built in game templates are available
+        /// </summary>
+        private void EnsureBuiltInTemplatesExist()
+        {
+            Logger.Info("Finding built-in games");
+            foreach (IGameTemplateFactory factory in ReflectionHelper.CreateInstancesOf<IGameTemplateFactory>())
+            {
+                EnsureGameTemplate(factory);
+            }
+
+        }
+
+
     }
 }
