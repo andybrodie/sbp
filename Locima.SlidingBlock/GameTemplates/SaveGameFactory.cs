@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.GameTemplates.SinglePlayer;
 using Locima.SlidingBlock.IO;
@@ -67,14 +68,17 @@ namespace Locima.SlidingBlock.GameTemplates
 
         private static LevelState CreateLevel(LevelDefinition levelDefinition, int tilesAcross, int tilesHigh)
         {
+            Scrambler.ScrambleType scrambleType = Debugger.IsAttached
+                                         ? Scrambler.ScrambleType.OneMoveToFinish
+                                         : levelDefinition.ScrambleType;
+            Logger.Info("Creating LevelState from LevelDefinition {0} for {1}x{2} using scramble {3}", levelDefinition, tilesAcross, tilesHigh, scrambleType);
+
             LevelState level = new LevelState
                                    {
                                        ImageId = levelDefinition.ImageId,
                                        XapImageUri = levelDefinition.XapImageUri,
                                        ElapsedTime = new TimeSpan(0),
-                                       SolvedTilePositions =
-                                           Scrambler.Instance.Scramble(levelDefinition.ScrambleType, tilesAcross,
-                                                                       tilesHigh),
+                                       SolvedTilePositions = Scrambler.Instance.Scramble(scrambleType, tilesAcross, tilesHigh),
                                        Title = levelDefinition.ImageTitle,
                                        Text = levelDefinition.ImageText,
                                        License = levelDefinition.License

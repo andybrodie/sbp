@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Scrambles;
 
 namespace Locima.SlidingBlock.GameTemplates.Toys
@@ -19,7 +18,7 @@ namespace Locima.SlidingBlock.GameTemplates.Toys
         }
 
         /// <inheritdoc/>
-        protected override string TemplatePath { get { return "/GameTemplates/Toys"; } }
+        protected override string TemplatePath { get { return "GameTemplates/Toys/"; } }
 
         /// Creates the game template for the toys on a black background collection
         public override GameTemplate Create()
@@ -32,12 +31,12 @@ namespace Locima.SlidingBlock.GameTemplates.Toys
                 AppId = PersistentId,  // We fix the ID here as we only want one instance of this definition
                 Title = "Robin's Toys",
                 Author = "Robin Kearney",
-                Levels = new List<LevelDefinition>(3)
+                Levels = new List<LevelDefinition>(4)
                         {
                             new LevelDefinition
                                 {
-                                    XapImageUri = CreateImageUri("Stormtooper.jpg"),
-                                    ImageTitle = "Stormtrooper",
+                                    XapImageUri = CreateImageUri("Stormtrooper.jpg"),
+                                    ImageTitle = "Stormtrooper Helmet",
                                     ImageText =
                                         "Toy stormtrooper helmet",
                                     OwnerName = robin,
@@ -48,7 +47,7 @@ namespace Locima.SlidingBlock.GameTemplates.Toys
                             new LevelDefinition
                                 {
                                     XapImageUri = CreateImageUri("Mushroom.jpg"),
-                                    ImageTitle = "Mario Mushroom",
+                                    ImageTitle = "Mario Mushroom Toy",
                                     ImageText = "A mushroom from Mario",
                                     OwnerName = robin,
                                     OwnerUri = robinLink,
@@ -61,6 +60,17 @@ namespace Locima.SlidingBlock.GameTemplates.Toys
                                     ImageTitle = "Toy Viking",
                                     ImageText =
                                         "A toy viking",
+                                    OwnerName = robin,
+                                    OwnerUri = robinLink,
+                                    License = LicenseDefinition.CcByNcNd30,
+                                    ScrambleType = Scrambler.ScrambleType.Shuffle
+                                },
+                            new LevelDefinition
+                                {
+                                    XapImageUri = CreateImageUri("Tetris.png"),
+                                    ImageTitle = "My Tetris lamp",
+                                    ImageText =
+                                        "A lamp you can assemble in to different shapes, just like the game!",
                                     OwnerName = robin,
                                     OwnerUri = robinLink,
                                     License = LicenseDefinition.CcByNcNd30,

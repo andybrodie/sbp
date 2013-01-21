@@ -143,7 +143,7 @@ namespace Locima.SlidingBlock
             WriteableBitmap thumbnail;
             try
             {
-                thumbnail = new WriteableBitmap(Puzzle, null);
+                thumbnail = Puzzle.CapturePuzzleBitmap();
                 thumbnail.Resize(LevelState.ThumbnailSize, LevelState.ThumbnailSize,
                                  WriteableBitmapExtensions.Interpolation.Bilinear);
             }

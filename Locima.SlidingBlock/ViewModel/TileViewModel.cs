@@ -93,9 +93,19 @@ namespace Locima.SlidingBlock.ViewModel
         {
             _tile = tileModel;
             PropertyChanged += UpdatePositionBasedOnModelChange;
+            tileModel.ModelPropertyChanged += ModelPropertyChanged;
 
             // Detects changes to the X and Y position of the tile from the puzzle (relative to the other tiles, e.g. 0,0; 0,1; 2,2; etc. (not to be confused with Top and Left which are pixel offsets)
             tileModel.TileMoved += TileModelOnTileMoved;
+        }
+
+        private void ModelPropertyChanged(object sender, PropertyEventChangeArgs propertyEventChangeArgs)
+        {
+            if (propertyEventChangeArgs.Name == "Player")
+            {
+                OnNotifyPropertyChanged("PlayerTileVisibility");
+                OnNotifyPropertyChanged("TileImageVisibility");
+            }
         }
 
         /// <summary>
@@ -437,8 +447,7 @@ namespace Locima.SlidingBlock.ViewModel
                 OnNotifyPropertyChanged("ModelTop");
                 OnNotifyPropertyChanged("ModelLeft");
             }
-        }
-
+        }       
 
         /// <summary>
         /// Overrides default implementation to include the position of the tile

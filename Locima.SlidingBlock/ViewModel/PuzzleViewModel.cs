@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
@@ -56,11 +58,6 @@ namespace Locima.SlidingBlock.ViewModel
         /// or an event is deactivating the application, so we want the game to be saved.
         /// </remarks>
         private bool _dontSaveGameOnNavigatingFrom;
-
-        /// <summary>
-        /// Backing field for <see cref="GameState"/>
-        /// </summary>
-        private GameStates _gameState;
 
         /// <summary>
         /// Backing field for <see cref="ImageText"/>
@@ -220,7 +217,6 @@ namespace Locima.SlidingBlock.ViewModel
         {
             get
             {
-//                return _gameState;
                 GameStates output;
                 if (TryGetState("GameState", out output))
                 {
@@ -231,7 +227,6 @@ namespace Locima.SlidingBlock.ViewModel
             set
             {
                 SetState("GameState", value);
-                _gameState = value;
                 OnNotifyPropertyChanged("GameState");
                 SendViewMessage(new GameStateChangeMessageArgs {GameState = value});
             }
@@ -511,6 +506,7 @@ namespace Locima.SlidingBlock.ViewModel
         private void CompleteLevel()
         {
             _puzzleModel.Stopwatch.Stop();
+            _puzzleModel.ShowAllTiles();
             CompletedTitle = LocalizationHelper.GetString("LevelFinishedCaption");
             CompletedText = LocalizationHelper.GetString("LevelFinishedMessage",
                                                          _currentLevelNumber + 1,
@@ -533,7 +529,14 @@ namespace Locima.SlidingBlock.ViewModel
         {
             // Update with ElapsedTime and TotalMoves
             UpdateCurrentGame();
+
+            // Overwrite the thumbnail with one of the completed image
+            WriteableBitmap thumbnail = _puzzleModel.Image;
+            thumbnail.Resize(LevelState.ThumbnailSize, LevelState.ThumbnailSize,
+                                 WriteableBitmapExtensions.Interpolation.Bilinear);
+
             _currentGame.CurrentLevelIndex++;
+            _currentGame.LocalPlayer.Position = new Position(0,0);
             SaveGameStorageManager.Instance.SaveGame(_currentGame);
 
             // Move on to the next level, or redirect to the "Game Completed" page

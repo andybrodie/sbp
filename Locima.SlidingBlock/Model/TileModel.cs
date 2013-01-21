@@ -21,6 +21,11 @@ namespace Locima.SlidingBlock.Model
         private readonly PuzzleModel _puzzleModel;
 
         /// <summary>
+        /// Fired when any property on the model changes, includes the name of the property
+        /// </summary>
+        public EventHandler<PropertyEventChangeArgs> ModelPropertyChanged;
+
+        /// <summary>
         /// Store the <paramref name="puzzleModel"/> and adds this class as a listener for the <see cref="PuzzleModel.PlayerMoving"/> and <see cref="PuzzleModel.PlayerMoved"/> events
         /// so we know when things change
         /// </summary>
@@ -149,5 +154,14 @@ namespace Locima.SlidingBlock.Model
         }
 
 
+        /// <summary>
+        /// Forces the tile image to be shown, regardless of the player settings
+        /// </summary>
+        public void ShowImage()
+        {
+            // TODO This is crude an irreversible
+            Player = null;
+            SafeRaise.Raise(ModelPropertyChanged, this, new PropertyEventChangeArgs { Name = "Player"});
+        }
     }
 }

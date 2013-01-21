@@ -97,6 +97,7 @@
       <DependentUpon>LevelEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messaging\GameStateChangeMessageArgs.cs" />
+    <Compile Include="Model\PropertyEventChangeArgs.cs" />
     <Compile Include="PlayerEditor.xaml.cs">
       <DependentUpon>PlayerEditor.xaml</DependentUpon>
     </Compile>
@@ -339,6 +340,15 @@
     <Content Include="Content\About\Data.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="GameTemplates\Animals\Lion.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameTemplates\Animals\Monkey.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameTemplates\Animals\Tiger.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="GameTemplates\DefaultImage.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -349,6 +359,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="GameTemplates\SinglePlayer\3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameTemplates\Toys\Stormtrooper.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameTemplates\Toys\Mushroom.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameTemplates\Toys\Tetris.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameTemplates\Toys\Viking.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Icons\appbar.cancel.rest.png" />

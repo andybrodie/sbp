@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
 using Locima.SlidingBlock.Persistence;
@@ -115,6 +116,16 @@ namespace Locima.SlidingBlock.Model
         {
             get { return _puzzleGrid.Length; }
         }
+
+
+        /// <summary>
+        /// The image that is used for this puzzle level
+        /// </summary>
+        public WriteableBitmap Image
+        {
+            get { return _tileBrushFactory.ImageBitmap; }
+        }
+
 
         /// <summary>
         ///   Raised when a player wishes to a move a tile.
@@ -423,6 +434,18 @@ namespace Locima.SlidingBlock.Model
                 }
             }
             throw new InvalidOperationException(string.Format("Tile {0} is not present in the puzzle grid", tileModel));
+        }
+
+
+        /// <summary>
+        /// Shows all the tiles on the puzzle (removes the player tile)
+        /// </summary>
+        public void ShowAllTiles()
+        {
+            foreach (TileModel tile in AllTiles())
+            {
+                tile.ShowImage();
+            }
         }
     }
 }   
