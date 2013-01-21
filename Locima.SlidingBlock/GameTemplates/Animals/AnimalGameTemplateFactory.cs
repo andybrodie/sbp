@@ -5,7 +5,6 @@ using Locima.SlidingBlock.Scrambles;
 namespace Locima.SlidingBlock.GameTemplates.Animals
 {
 
-
     /// <summary>
     /// Creates the game template for the Animals collection
     /// </summary>
@@ -14,7 +13,7 @@ namespace Locima.SlidingBlock.GameTemplates.Animals
         /// <inheritdoc/>
         protected override string TemplatePath
         {
-            get { return "GameTemplates/Animals"; }
+            get { return "GameTemplates/Animals/"; }
         }
 
         /// <inheritdoc/>
@@ -32,8 +31,8 @@ namespace Locima.SlidingBlock.GameTemplates.Animals
             {
                 IsReadOnly = true,
                 AppId = PersistentId,  // We fix the ID here as we only want one instance of this definition
-                Title = "Animals",
-                Author = "Various",
+                Title = "animals",
+                Author = "various shots of animals",
                 Levels = new List<LevelDefinition>(3)
                         {
                             new LevelDefinition
@@ -52,6 +51,16 @@ namespace Locima.SlidingBlock.GameTemplates.Animals
                                     XapImageUri = CreateImageUri("Tiger.jpg"),
                                     ImageTitle = "Tiger",
                                     ImageText = "Hungry tiger!",
+                                    OwnerName = robin,
+                                    OwnerUri = robinLink,
+                                    License = LicenseDefinition.CcByNcNd30,
+                                    ScrambleType = Scrambler.ScrambleType.Shuffle
+                                },
+                            new LevelDefinition
+                                {
+                                    XapImageUri = CreateImageUri("Monkey.jpg"),
+                                    ImageTitle = "Monkey",
+                                    ImageText = "And a monkey!",
                                     OwnerName = robin,
                                     OwnerUri = robinLink,
                                     License = LicenseDefinition.CcByNcNd30,

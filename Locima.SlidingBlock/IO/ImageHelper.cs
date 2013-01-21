@@ -22,7 +22,6 @@ namespace Locima.SlidingBlock.IO
         /// Used for the <c>quality</c> parameter of <see cref="Extensions.SaveJpeg"/></remarks>
         public const int JpegQuality = 70;
 
-
         /// <summary>
         /// Converts a JPEG stored in a byte array in to a <see cref="WriteableBitmap"/> object
         /// </summary>

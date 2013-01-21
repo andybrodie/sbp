@@ -3,6 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Persistence;
 using Locima.SlidingBlock.ViewModel;
@@ -316,5 +318,34 @@ namespace Locima.SlidingBlock.Controls
             }
             Logger.Debug("CreateTileControls Exit");
         }
+
+
+        /// <summary>
+        /// Captures a screenshot of the puzzle area
+        /// </summary>
+        /// <remarks>
+        /// I've messed up the control hierarchy here which means I can't just grab a shot of the tiles, I have to hide the overlay screens first.
+        /// </remarks>
+        public WriteableBitmap CapturePuzzleBitmap()
+        {
+            Visibility psVis = PauseScreen.Visibility;
+            Visibility ssVis = StartScreen.Visibility;
+            Visibility csVis = CompleteScreen.Visibility;
+
+            PauseScreen.Visibility = StartScreen.Visibility = CompleteScreen.Visibility = Visibility.Collapsed;
+            try
+            {
+                WriteableBitmap bitmap = new WriteableBitmap(this, null);
+                return bitmap;
+            }
+            finally
+            {
+                PauseScreen.Visibility = psVis;
+                StartScreen.Visibility = ssVis;
+                CompleteScreen.Visibility = csVis;
+            }
+        }
+
+
     }
 }
