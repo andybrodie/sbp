@@ -221,11 +221,7 @@ namespace Locima.SlidingBlock.ViewModel
             get
             {
                 GameStates output;
-                if (TryGetState("GameState", out output))
-                {
-                    return output;
-                }
-                return GameStates.Running;
+                return TryGetState("GameState", out output) ? output : GameStates.NotStarted;
             }
             set
             {
@@ -584,7 +580,7 @@ namespace Locima.SlidingBlock.ViewModel
                 nextPageUri = GamePage.CreateNavigationUri(_currentGame.Id, 1);
             }
             Logger.Info("Navigating on to {0}", nextPageUri);
-            GameState = GameStates.NotStarted; // Something wrong here? xxx
+            GameState = GameStates.NotStarted;
             _dontSaveGameOnNavigatingFrom = true;
                 // Prevent the game being saved again when we navigate away (otherwise desirable when deactivating!)
             SendViewMessage(new NavigationMessageArgs(nextPageUri));
