@@ -279,5 +279,10 @@ namespace Locima.SlidingBlock
         {            
             Logger.Info("Launching external browser for license view");
         }
+
+        private void ImageLinkClick(object sender, RoutedEventArgs e)
+        {
+            Logger.Info("Launching external browser for image view");
+        }
     }
 }

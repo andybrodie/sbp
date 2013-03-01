@@ -48,7 +48,7 @@ namespace Locima.SlidingBlock.GameTemplates
         /// A link associated with image (.e.g to the license holders home page)
         /// </summary>
         [DataMember]
-        public Uri OwnerUri { get; set; }
+        public Uri ImageLink { get; set; }
 
         /// <summary>
         /// The name of the license holder for the image

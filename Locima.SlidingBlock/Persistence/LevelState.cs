@@ -19,7 +19,6 @@ namespace Locima.SlidingBlock.Persistence
     [DataContract]
     public class LevelState
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         ///   The size of the <see cref="ThumbnailData" /> image
@@ -173,6 +172,18 @@ namespace Locima.SlidingBlock.Persistence
         /// </summary>
         [DataMember]
         public LicenseDefinition License { get; set; }
+
+        /// <summary>
+        /// The name of the author of the image
+        /// </summary>
+        [DataMember]
+        public string ImageOwner { get; set; }
+
+        /// <summary>
+        /// A link associated with the image (usually to the original version online)
+        /// </summary>
+        [DataMember]
+        public Uri ImageLink { get; set; }
 
         /// <summary>
         ///   Re-initialises any non-serialised objects which require initialisation (typically via a constructor which isn't called during deserialisation)
