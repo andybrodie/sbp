@@ -43,7 +43,7 @@ namespace Locima.SlidingBlock.GameTemplates.Animals
                                     ImageText =
                                         "Lion against a blue sky",
                                     OwnerName = robin,
-                                    OwnerUri = new Uri("http://www.flickr.com/photos/robinkearney/5017237783/", UriKind.Absolute),
+                                    ImageLink = new Uri("http://www.flickr.com/photos/robinkearney/5017237783/", UriKind.Absolute),
                                     License = LicenseDefinition.CcByNcNd30,
                                     ScrambleType = Scrambler.ScrambleType.Shuffle
                                 },
@@ -53,7 +53,7 @@ namespace Locima.SlidingBlock.GameTemplates.Animals
                                     ImageTitle = "Tiger",
                                     ImageText = "Tiger from the Isle of Wight Zoo",
                                     OwnerName = robin,
-                                    OwnerUri = new Uri("http://www.flickr.com/photos/robinkearney/4999324236/", UriKind.Absolute),
+                                    ImageLink = new Uri("http://www.flickr.com/photos/robinkearney/4999324236/", UriKind.Absolute),
                                     License = LicenseDefinition.CcByNcNd30,
                                     ScrambleType = Scrambler.ScrambleType.Shuffle
                                 },
@@ -63,7 +63,7 @@ namespace Locima.SlidingBlock.GameTemplates.Animals
                                     ImageTitle = "Monkey",
                                     ImageText = "And a monkey!",
                                     OwnerName = emma,
-                                    OwnerUri = null,
+                                    ImageLink = null,
                                     License = LicenseDefinition.CcByNcNd30,
                                     ScrambleType = Scrambler.ScrambleType.Shuffle
                                 },
@@ -73,7 +73,7 @@ namespace Locima.SlidingBlock.GameTemplates.Animals
                                     ImageTitle = "\"Over here!\"",
                                     ImageText = "A rhinoceros at Whipsnade Zoo",
                                     OwnerName = ells,
-                                    OwnerUri = new Uri("http://www.flickr.com/photos/elliotmoore/155906621/in/set-72157594149098888", UriKind.Absolute),
+                                    ImageLink = new Uri("http://www.flickr.com/photos/elliotmoore/155906621/in/set-72157594149098888", UriKind.Absolute),
                                     License = LicenseDefinition.CcByNcNd30,
                                     ScrambleType = Scrambler.ScrambleType.Shuffle
                                 },
@@ -83,7 +83,7 @@ namespace Locima.SlidingBlock.GameTemplates.Animals
                                     ImageTitle = "Elephant Pals",
                                     ImageText = "Two elephants at Whipsnade",
                                     OwnerName = ells,
-                                    OwnerUri = new Uri("http://www.flickr.com/photos/elliotmoore/155918350/in/set-72157594149098888", UriKind.Absolute),
+                                    ImageLink = new Uri("http://www.flickr.com/photos/elliotmoore/155918350/in/set-72157594149098888", UriKind.Absolute),
                                     License = LicenseDefinition.CcByNcNd30,
                                     ScrambleType = Scrambler.ScrambleType.Shuffle
                                 },
@@ -93,7 +93,7 @@ namespace Locima.SlidingBlock.GameTemplates.Animals
                                     ImageTitle = "Giraffes",
                                     ImageText = "Two giraffes at Whipsnade Zoo",
                                     OwnerName = ells,
-                                    OwnerUri = new Uri("http://www.flickr.com/photos/elliotmoore/155913506/in/set-72157594149098888", UriKind.Absolute),
+                                    ImageLink = new Uri("http://www.flickr.com/photos/elliotmoore/155913506/in/set-72157594149098888", UriKind.Absolute),
                                     License = LicenseDefinition.CcByNcNd30,
                                     ScrambleType = Scrambler.ScrambleType.Shuffle
                                 },
@@ -103,7 +103,7 @@ namespace Locima.SlidingBlock.GameTemplates.Animals
                                     ImageTitle = "Penguins!",
                                     ImageText = "Penguins at London Zoo",
                                     OwnerName = robin,
-                                    OwnerUri = new Uri("http://www.flickr.com/photos/robinkearney/92251928/",UriKind.Absolute),
+                                    ImageLink = new Uri("http://www.flickr.com/photos/robinkearney/92251928/",UriKind.Absolute),
                                     License = LicenseDefinition.CcByNcNd30,
                                     ScrambleType = Scrambler.ScrambleType.Shuffle
                                 }

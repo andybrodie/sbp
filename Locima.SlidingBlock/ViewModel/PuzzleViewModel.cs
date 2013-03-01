@@ -101,6 +101,9 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         private PuzzleModel _puzzleModel;
 
+        private string _imageOwner;
+        private Uri _imageLink;
+
         /// <summary>
         /// Invoked by the view when the user wishes to pause the game
         /// </summary>
@@ -321,6 +324,32 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+        /// <summary>
+        /// The name of the level image author
+        /// </summary>
+        public string ImageOwner
+        {
+            get { return _imageOwner; }
+            set
+            {
+                _imageOwner = value;
+                OnNotifyPropertyChanged("ImageOwner");
+            }
+        }
+
+        /// <summary>
+        /// A link to an online resource connected to the image
+        /// </summary>
+        public Uri ImageLink
+        {
+            get { return _imageLink; }
+            set
+            {
+                _imageLink = value;
+                OnNotifyPropertyChanged("ImageLink");
+            }
+        }
+
 
         /// <summary>
         /// Initialises the view model, creating a new <see cref="PuzzleModel"/>.
@@ -450,6 +479,8 @@ namespace Locima.SlidingBlock.ViewModel
             // Set up the fields used in the display of the start screen
             ImageTitle = game.CurrentLevel.Title;
             ImageText = game.CurrentLevel.Text;
+            ImageOwner = game.CurrentLevel.ImageOwner;
+            ImageLink = game.CurrentLevel.ImageLink;
             LicenseLink = game.CurrentLevel.License.Link;
             LicenseTitle = game.CurrentLevel.License.Title;
 

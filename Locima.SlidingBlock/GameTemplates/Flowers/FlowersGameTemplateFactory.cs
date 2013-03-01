@@ -60,7 +60,7 @@ namespace Locima.SlidingBlock.GameTemplates.Flowers
                     ImageTitle = title,
                     ImageText = description,
                     OwnerName = "Stephanie Brodie",
-                    OwnerUri = null,
+                    ImageLink = null,
                     License = LicenseDefinition.ByNcNd30,
                     ScrambleType = Scrambler.ScrambleType.Shuffle
                 };

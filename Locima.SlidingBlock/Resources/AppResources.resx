@@ -345,6 +345,10 @@
     <value>Image Title</value>
     <comment>Label on level editor to edit the image title</comment>
   </data>
+  <data name="LevelByLabel" xml:space="preserve">
+    <value>by</value>
+    <comment>Used on GamePage level start screen to indicate who the image for the level was created by</comment>
+  </data>
   <data name="LevelFinishedCaption" xml:space="preserve">
     <value>LEVEL COMPLETE</value>
     <comment>The caption on the message box displayed when a player completes a level</comment>

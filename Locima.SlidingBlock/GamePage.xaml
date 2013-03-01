@@ -90,9 +90,18 @@
                                     <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeSmall}"/>
                                 </Style>
                             </StackPanel.Resources>
-                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ImageTitle}" TextAlignment="Center"
-                                   Margin="0,0,0,0" Style="{StaticResource PhoneTextLargeStyle}" TextWrapping="Wrap"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ImageText}" TextAlignment="Center"
+                            <HyperlinkButton TargetName="_blank"
+                                         Click="ImageLinkClick"
+                                         NavigateUri="{Binding ImageLink}"
+                                         Content="{Binding ImageTitle}"
+                                         Style="{StaticResource Hyperlink}"
+                                         Margin="0,12,0,0"
+                                         />
+                            <TextBlock Text="{Binding ImageText}" TextAlignment="Center"
+                                   Margin="0,12,0,0" Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Path=Strings.LevelByLabel,Source={StaticResource Localization}}" TextAlignment="Center"
+                                   Margin="0,12,0,0" Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Path=ImageOwner}" TextAlignment="Center"
                                    Margin="0,12,0,0" Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap"/>
                             <HyperlinkButton TargetName="_blank"
                                          Click="LicenseLinkClick"
@@ -100,10 +109,8 @@
                                          Content="{Binding LicenseTitle}"
                                          Style="{StaticResource Hyperlink}"
                                          Margin="0,12,0,0"
-                                         >
-                            </HyperlinkButton>
-                            <TextBlock Text="{Binding Path=Strings.StartLevelPrompt, Source={StaticResource Localization}}" HorizontalAlignment="Center" Style="{StaticResource PhoneTextExtraLargeStyle}"
-                                   Margin="0,24,0,0" />
+                                         />
+                            <TextBlock Text="{Binding Path=Strings.StartLevelPrompt, Source={StaticResource Localization}}" HorizontalAlignment="Center" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="0,24,0,0" />
                         </StackPanel>
                     </Grid>
                 </controls:Puzzle.StartScreen>
