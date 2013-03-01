@@ -86,10 +86,10 @@
       <DependentUpon>GameEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="GameTemplates\Animals\AnimalGameTemplateFactory.cs" />
+    <Compile Include="GameTemplates\Flowers\FlowersGameTemplateFactory.cs" />
     <Compile Include="GameTemplates\GameTemplateFactory.cs" />
     <Compile Include="GameTemplates\IGameTemplateFactory.cs" />
     <Compile Include="GameTemplates\SaveGameFactory.cs" />
-    <Compile Include="GameTemplates\Toys\ToysGameTemplate.cs" />
     <Compile Include="IO\IGameTemplateManager.cs" />
     <Compile Include="IO\ImageHelper.cs" />
     <Compile Include="IO\IShadowableObject.cs" />
@@ -134,7 +134,6 @@
     <Compile Include="GameTemplates\GameTemplate.cs" />
     <Compile Include="GameTemplates\LevelDefinition.cs" />
     <Compile Include="GameTemplates\LicenseDefinition.cs" />
-    <Compile Include="GameTemplates\SinglePlayer\SinglePlayerGame.cs" />
     <Compile Include="HighScores.xaml.cs">
       <DependentUpon>HighScores.xaml</DependentUpon>
     </Compile>
@@ -340,10 +339,22 @@
     <Content Include="Content\About\Data.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="GameTemplates\Animals\Elephants.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameTemplates\Animals\Giraffes.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="GameTemplates\Animals\Lion.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="GameTemplates\Animals\Monkey.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameTemplates\Animals\Penguins.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameTemplates\Animals\Rhino.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="GameTemplates\Animals\Tiger.jpg">
@@ -352,25 +363,25 @@
     <Content Include="GameTemplates\DefaultImage.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GameTemplates\SinglePlayer\1.jpg">
+    <Content Include="GameTemplates\Flowers\Lillies.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GameTemplates\SinglePlayer\2.jpg">
+    <Content Include="GameTemplates\Flowers\Lillies2.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GameTemplates\SinglePlayer\3.jpg">
+    <Content Include="GameTemplates\Flowers\Purple.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GameTemplates\Toys\Stormtrooper.jpg">
+    <Content Include="GameTemplates\Flowers\Rose.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GameTemplates\Toys\Mushroom.jpg">
+    <Content Include="GameTemplates\Flowers\Roses.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GameTemplates\Toys\Tetris.png">
+    <Content Include="GameTemplates\Flowers\YellowFlower.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GameTemplates\Toys\Viking.jpg">
+    <Content Include="GameTemplates\Flowers\3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Icons\appbar.cancel.rest.png" />

@@ -1,6 +1,5 @@
 ﻿using System;
 using Locima.SlidingBlock.GameTemplates;
-using Locima.SlidingBlock.GameTemplates.SinglePlayer;
 using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Persistence;
 

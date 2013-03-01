@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Locima.SlidingBlock.Common;
-using Locima.SlidingBlock.GameTemplates.SinglePlayer;
 using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Model;
 using Locima.SlidingBlock.Persistence;
@@ -12,7 +11,7 @@ using NLog;
 namespace Locima.SlidingBlock.GameTemplates
 {
     /// <summary>
-    /// Creates a new <see cref="SinglePlayerGame"/> for the current player
+    /// Creates a new <see cref="GameTemplate"/> for the current player
     /// </summary>
     public class SaveGameFactory
     {
