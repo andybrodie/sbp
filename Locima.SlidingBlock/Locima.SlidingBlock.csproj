@@ -372,16 +372,16 @@
     <Content Include="GameTemplates\Flowers\Purple.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GameTemplates\Flowers\Rose.jpg">
+    <Content Include="GameTemplates\Flowers\RedBegonia.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GameTemplates\Flowers\Roses.jpg">
+    <Content Include="GameTemplates\Flowers\Begonias.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GameTemplates\Flowers\YellowFlower.jpg">
+    <Content Include="GameTemplates\Flowers\Hibiscus.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GameTemplates\Flowers\3.jpg">
+    <Content Include="GameTemplates\Flowers\Rhodedendron.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Icons\appbar.cancel.rest.png" />

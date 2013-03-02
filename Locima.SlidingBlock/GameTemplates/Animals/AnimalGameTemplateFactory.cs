@@ -63,7 +63,7 @@ namespace Locima.SlidingBlock.GameTemplates.Animals
                                     ImageTitle = "Monkey",
                                     ImageText = "And a monkey!",
                                     OwnerName = emma,
-                                    ImageLink = null,
+                                    ImageLink = new Uri("http://www.locima.co.uk", UriKind.Absolute),
                                     License = LicenseDefinition.CcByNcNd30,
                                     ScrambleType = Scrambler.ScrambleType.Shuffle
                                 },
