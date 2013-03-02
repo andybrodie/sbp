@@ -61,7 +61,7 @@ namespace Locima.SlidingBlock.ViewModel
             SaveGameTitle = LocalizationHelper.GetString("SaveGameLevelTitle", game.CurrentLevelIndex + 1);
             SaveGameLastUpdate = game.LastUpdate.DateTime;
             Thumbnail = game.CurrentLevel.Thumbnail;
-            _launchGameUri = GamePage.CreateNavigationUri(game.Id, 0);
+            _launchGameUri = GamePage.CreateNavigationUri(game.Id, 0, null);
 
             DeleteGameCommand = new DelegateCommand(DeleteGameAction);
             LaunchGameCommand = new DelegateCommand(LaunchGameAction);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,8 +11,10 @@ using Locima.SlidingBlock.Persistence;
 using Locima.SlidingBlock.ViewModel;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
 using NLog;
 using Locima.SlidingBlock.Messaging;
+using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Locima.SlidingBlock
 {
@@ -25,6 +26,7 @@ namespace Locima.SlidingBlock
 
         private const string SaveGameQueryParameterName = "SaveGame";
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string GameStateQueryParameterName = "GameState";
 
         /// <summary>
         /// Convenient getter for the view model that is defined in XAML
@@ -65,6 +67,11 @@ namespace Locima.SlidingBlock
             ViewModel.RegisterMessageHandler<GameStateChangeMessageArgs>(HandleGameStateChanges);
             ViewModel.Initialise();
             this.RegisterDefaultMessageHandlers(ViewModel);
+            GameStates? explicitGameState = this.GetQueryParameter(GameStateQueryParameterName, s => string.IsNullOrEmpty(s) ? null : new GameStates?((GameStates)Enum.Parse(typeof(GameStates), s, true)));
+            if (explicitGameState != null)
+            {
+                ViewModel.GameState = explicitGameState.Value;
+            }
             SaveGame saveGame = LoadSaveGame();
             if (saveGame.IsCompletedGame)
             {
@@ -260,29 +267,60 @@ namespace Locima.SlidingBlock
         /// <remarks>
         ///   This method is designed to be used by other classes that which to navigate to this page
         /// </remarks>
-        /// <param name="puzzleMetadataFilename"> The file name for the <see cref="SaveGame" /> that contains the configuration for this game </param>
-        /// <param name="suppressBack">If true, then the loaded game page will remove the previous page from the backstack.
+        /// <param name="saveGameId"> The file name for the <see cref="SaveGame" /> that contains the configuration for this game </param>
+        /// <param name="suppressPreviousPageCount">If true, then the loaded game page will remove the previous page from the backstack.
         /// This is useful when progressing another level</param>
+        /// <param name="gameState">If set, this will force <see cref="gameState"/> to be set to this value on the <see cref="OnNavigatedTo"/> handler</param>
         /// <returns> A <see cref="Uri" /> that will launch the game using the parameters provided </returns>
-        public static Uri CreateNavigationUri(string puzzleMetadataFilename, int suppressBack)
+        public static Uri CreateNavigationUri(string saveGameId, int suppressPreviousPageCount, GameStates? gameState)
         {
-            return
-                new Uri(
-                    string.Format("/GamePage.xaml?{0}={1}&{2}={3}", SaveGameQueryParameterName,
-                                  HttpUtility.UrlEncode(puzzleMetadataFilename), App.SuppressBackQueryParameterName,
-                                  suppressBack), UriKind.Relative);
+            if (saveGameId == null) throw new ArgumentNullException("saveGameId");
+            UriConstructor uriCons = new UriConstructor("/GamePage.xaml", UriKind.Relative);
+            uriCons.AddParameter(SaveGameQueryParameterName, saveGameId);
+            if (gameState.HasValue)
+            {
+                uriCons.AddParameter(GameStateQueryParameterName, gameState.Value);
+            }
+            if (suppressPreviousPageCount > 0)
+            {
+                uriCons.AddParameter(App.SuppressBackQueryParameterName, suppressPreviousPageCount);
+            }
+            return uriCons.ToUri();        
         }
 
         #endregion
 
-        private void LicenseLinkClick(object sender, RoutedEventArgs e)
-        {            
-            Logger.Info("Launching external browser for license view");
+        private static bool LaunchBrowser(Uri uri)
+        {
+            bool result;
+            if (uri == null)
+            {
+                Logger.Error("Uri was null, no action");
+                result = true;
+            }
+            else
+            {
+                Logger.Info("Launching external browser to {0} in {1}", uri);
+                WebBrowserTask browserTask = new WebBrowserTask
+                    {
+                        Uri = uri
+                    };
+                browserTask.Show();
+                result = false;
+            }
+            return result;
         }
 
-        private void ImageLinkClick(object sender, RoutedEventArgs e)
+        private void LicenseLinkTap(object sender, GestureEventArgs e)
         {
-            Logger.Info("Launching external browser for image view");
+            e.Handled = true;
+            LaunchBrowser(ViewModel.LicenseLink);
+        }
+
+        private void ImageLinkTap(object sender, GestureEventArgs e)
+        {
+            e.Handled = true;
+            LaunchBrowser(ViewModel.ImageLink);
         }
     }
 }

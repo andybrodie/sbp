@@ -111,7 +111,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
                                                                              continuableGame == null
                                                                                  ? null
                                                                                  : GamePage.CreateNavigationUri(
-                                                                                     continuableGame.Id, 0),
+                                                                                     continuableGame.Id, 0, null),
                                                                          IsEnabled = continuableGame != null
                                                                      },
                                                                  new MenuItemViewModel
@@ -163,7 +163,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
             /* We want to suppress navigating back to this page because otherwise clicking "Back" from a game would put you back to this menu item
              * which isn't useful for the user (i.e. in the middle of a game, clicking back would give you the "Easy", "Medium", "Hard" choice again
              */
-            return GamePage.CreateNavigationUri(sg.Id, pagesOnBackStackToSuppress);
+            return GamePage.CreateNavigationUri(sg.Id, pagesOnBackStackToSuppress, GameStates.NotStarted);
         }
 
 

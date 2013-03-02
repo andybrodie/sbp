@@ -347,6 +347,7 @@ namespace Locima.SlidingBlock.ViewModel
         }
 
 
+
         /// <summary>
         /// Initialises the view model, creating a new <see cref="PuzzleModel"/>.
         /// </summary>
@@ -577,10 +578,9 @@ namespace Locima.SlidingBlock.ViewModel
             {
                 Logger.Info("Moving to level {0} of {1}", _currentGame.CurrentLevelIndex,
                             _currentGame.Levels.Count);
-                nextPageUri = GamePage.CreateNavigationUri(_currentGame.Id, 1);
+                nextPageUri = GamePage.CreateNavigationUri(_currentGame.Id, 1, GameStates.NotStarted);
             }
             Logger.Info("Navigating on to {0}", nextPageUri);
-            GameState = GameStates.NotStarted;
             _dontSaveGameOnNavigatingFrom = true;
                 // Prevent the game being saved again when we navigate away (otherwise desirable when deactivating!)
             SendViewMessage(new NavigationMessageArgs(nextPageUri));
