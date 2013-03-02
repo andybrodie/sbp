@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Locima.SlidingBlock.Scrambles;
 
@@ -32,13 +33,13 @@ namespace Locima.SlidingBlock.GameTemplates.Flowers
                 Author = "flowers from the garden",
                 Levels = new List<LevelDefinition>
                         {
-                            Create("Flower 1", "Flower 1", "3.jpg"),
-                            Create("Flower 2", "Flower 2", "Lillies.jpg"),
-                            Create("Flower 3", "Flower 3", "Lillies2.jpg"),
-                            Create("Flower 4", "Flower 4", "Purple.jpg"),
-                            Create("Flower 5", "Flower 5", "Rose.jpg"),
-                            Create("Flower 6", "Flower 6", "Roses.jpg"),
-                            Create("Flower 7", "Flower 7", "YellowFlower.jpg")
+                            Create("Rhododendron", "Rhododendron from Exbury Gardens, taken in 2009", "Rhodedendron.jpg", "http://en.wikipedia.org/wiki/Rhododendron"),
+                            Create("Virginia Water Lily", "A hardy Virginia Water Lily (Nymphaeaceae)", "Lillies.jpg", "http://en.wikipedia.org/wiki/Nymphaeaceae"),
+                            Create("Mixed Water Lilies", "Albeda and Attraction Water Lily", "Lillies2jpg", "http://en.wikipedia.org/wiki/Nymphaeaceae"),
+                            Create("Blue Cloud Water Lily", "Despite being purple, this lily is classified as blue!", "Purple.jpg", "http://en.wikipedia.org/wiki/Nymphaeaceae"),
+                            Create("Begonia", "Looks like a rose, but is actually a begonia", "RedBegonia.jpg","http://en.wikipedia.org/wiki/Begonia"),
+                            Create("Begonias", "A selection of begonias", "Begonias.jpg","http://en.wikipedia.org/wiki/Begonia"),
+                            Create("Hibiscus", "Hibiscus plant found in Portugal", "Hibiscus.jpg", "http://en.wikipedia.org/wiki/Hibiscus")
                         }
             };
             return gm;
@@ -52,7 +53,7 @@ namespace Locima.SlidingBlock.GameTemplates.Flowers
         /// <param name="description">Image description</param>
         /// <param name="filename">Image filename</param>
         /// <returns>Level definition using the parameters passed and default owner, cliense and scramble information</returns>
-        private LevelDefinition Create(string title, string description, string filename)
+        private LevelDefinition Create(string title, string description, string filename, string uriString)
         {
             return new LevelDefinition
                 {
@@ -60,7 +61,7 @@ namespace Locima.SlidingBlock.GameTemplates.Flowers
                     ImageTitle = title,
                     ImageText = description,
                     OwnerName = "Stephanie Brodie",
-                    ImageLink = null,
+                    ImageLink = new Uri(uriString, UriKind.Absolute),
                     License = LicenseDefinition.ByNcNd30,
                     ScrambleType = Scrambler.ScrambleType.Shuffle
                 };

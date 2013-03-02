@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using NLog;
 
 namespace Locima.SlidingBlock.Common
 {
@@ -13,6 +14,7 @@ namespace Locima.SlidingBlock.Common
         private readonly Dictionary<string, string> _parameters = new Dictionary<string,string>();
         private readonly string _baseUri;
         private readonly UriKind _uriKind;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Create a new instance using the parameters specified.
@@ -60,7 +62,9 @@ namespace Locima.SlidingBlock.Common
 
                 }
             }
-            return new Uri(builder.ToString(), _uriKind);
+            string uriString = builder.ToString();
+            Logger.Debug("Returning {0} URI {1}", _uriKind, uriString);
+            return new Uri(uriString, _uriKind);
         }
     }
 }

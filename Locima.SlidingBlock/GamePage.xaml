@@ -90,26 +90,20 @@
                                     <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeSmall}"/>
                                 </Style>
                             </StackPanel.Resources>
-                            <HyperlinkButton TargetName="_blank"
-                                         Click="ImageLinkClick"
-                                         NavigateUri="{Binding ImageLink}"
-                                         Content="{Binding ImageTitle}"
-                                         Style="{StaticResource Hyperlink}"
-                                         Margin="0,12,0,0"
-                                         />
+                            <Button Tap="ImageLinkTap"
+                                    Content="{Binding ImageTitle}"
+                                    Margin="0,12,0,0"
+                            />
                             <TextBlock Text="{Binding ImageText}" TextAlignment="Center"
                                    Margin="0,12,0,0" Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding Path=Strings.LevelByLabel,Source={StaticResource Localization}}" TextAlignment="Center"
                                    Margin="0,12,0,0" Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding Path=ImageOwner}" TextAlignment="Center"
                                    Margin="0,12,0,0" Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap"/>
-                            <HyperlinkButton TargetName="_blank"
-                                         Click="LicenseLinkClick"
-                                         NavigateUri="{Binding LicenseLink}"
-                                         Content="{Binding LicenseTitle}"
-                                         Style="{StaticResource Hyperlink}"
-                                         Margin="0,12,0,0"
-                                         />
+                            <Button Tap="LicenseLinkTap"
+                                    Content="{Binding LicenseTitle}"
+                                    Margin="0,12,0,0"
+                            />
                             <TextBlock Text="{Binding Path=Strings.StartLevelPrompt, Source={StaticResource Localization}}" HorizontalAlignment="Center" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="0,24,0,0" />
                         </StackPanel>
                     </Grid>
