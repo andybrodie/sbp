@@ -190,6 +190,7 @@
     <Compile Include="SavedGameSelector.xaml.cs">
       <DependentUpon>SavedGameSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Scrambles\ScrambleChecker.cs" />
     <Compile Include="Scrambles\Scrambler.cs" />
     <Compile Include="Model\PuzzleModel.cs" />
     <Compile Include="App.xaml.cs">

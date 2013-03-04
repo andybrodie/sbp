@@ -152,7 +152,7 @@ namespace Locima.SlidingBlock
                 // An unhandled exception has occurred; break into the debugger
                 Debugger.Break();
             }
-        }
+        }       
 
         #region Phone application initialization
 
