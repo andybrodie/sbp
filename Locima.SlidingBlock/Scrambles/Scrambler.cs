@@ -119,6 +119,9 @@ namespace Locima.SlidingBlock.Scrambles
                     scramble = RandomScramble(tilesAcross, tilesHigh);
                     break;
             }
+
+            // There's a 50/50 chance that any scramble is unsolveable, this method call ensures that the puzzle is solveable.
+            ScrambleChecker.Instance.EnsureSolveable(scramble);
             return scramble;
         }
 
@@ -130,14 +133,13 @@ namespace Locima.SlidingBlock.Scrambles
         /// <param name="tilesHigh">The number of tiles high in the puzzle</param>
         /// <returns>A 2D array of <see cref="Position"/> instances.  Each <see cref="Position"/> object contains the solved position of the tile, it's position within the array determines
         /// where the tile currently is in the puzzle</returns>
-        public Position[][] Scramble(Func<int, int, Position> customScrambler, int tilesAcross, int tilesHigh)
+        private Position[][] Scramble(Func<int, int, Position> customScrambler, int tilesAcross, int tilesHigh)
         {
             return ArrayTools.Create(tilesAcross, tilesHigh, customScrambler);
         }
 
         #region Scramblers
-
-
+        
         /// <summary>
         /// Flips the tiles along an imaginary Y-axis down the middle of the puzzle
         /// </summary>
@@ -185,7 +187,7 @@ namespace Locima.SlidingBlock.Scrambles
         /// <param name="tilesHigh">The number of tiles high in the puzzle</param>
         /// <returns>A 2D array of <see cref="Position"/> instances.  Each <see cref="Position"/> object contains the solved position of the tile, it's position within the array determines
         /// where the tile currently is in the puzzle</returns>
-        public Position[][] IdentityScramble(int tilesAcross, int tilesHigh)
+        private Position[][] IdentityScramble(int tilesAcross, int tilesHigh)
         {
             return ArrayTools.Create(tilesAcross, tilesHigh, (x, y) => new Position(x, y));
         }
@@ -197,7 +199,7 @@ namespace Locima.SlidingBlock.Scrambles
         /// <param name="tilesHigh">The number of tiles high in the puzzle</param>
         /// <returns>A 2D array of <see cref="Position"/> instances.  Each <see cref="Position"/> object contains the solved position of the tile, it's position within the array determines
         /// where the tile currently is in the puzzle</returns>
-        public Position[][] RandomScramble(int tilesAcross, int tilesHigh)
+        private Position[][] RandomScramble(int tilesAcross, int tilesHigh)
         {
             int totalTiles = tilesAcross*tilesHigh;
             List<Position> allTiles = new List<Position>(totalTiles);
@@ -238,7 +240,7 @@ namespace Locima.SlidingBlock.Scrambles
         /// <param name="totalMoves">The number of moves to apply to the initial (solved) grid</param>
         /// <returns>A 2D array of <see cref="Position"/> instances.  Each <see cref="Position"/> object contains the solved position of the tile, it's position within the array determines
         /// where the tile currently is in the puzzle</returns>
-        public Position[][] ShuffleScramble(int tilesAcross, int tilesHigh, int totalMoves)
+        private Position[][] ShuffleScramble(int tilesAcross, int tilesHigh, int totalMoves)
         {
             Random random = new Random(); // Default random constructor is good enough for our purposes
             Position[][] solvedPosition = ArrayTools.Create(tilesAcross, tilesHigh, (x,y) => new Position(x,y));
@@ -280,7 +282,9 @@ namespace Locima.SlidingBlock.Scrambles
             return solvedPosition;
         }
 
+
         #endregion
     }
+
 
 }
