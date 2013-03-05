@@ -67,10 +67,14 @@ namespace Locima.SlidingBlock
             ViewModel.RegisterMessageHandler<GameStateChangeMessageArgs>(HandleGameStateChanges);
             ViewModel.Initialise();
             this.RegisterDefaultMessageHandlers(ViewModel);
-            GameStates? explicitGameState = this.GetQueryParameter(GameStateQueryParameterName, s => string.IsNullOrEmpty(s) ? null : new GameStates?((GameStates)Enum.Parse(typeof(GameStates), s, true)));
-            if (explicitGameState != null)
+            // Only set the game state from the Uri if this is a "new" navigation and not a "back", otherwise we'll reset to NotStarted on resume most of the time!
+            if (e.NavigationMode != NavigationMode.Back)
             {
-                ViewModel.GameState = explicitGameState.Value;
+                GameStates? explicitGameState = this.GetQueryParameterAsEnum<GameStates>(GameStateQueryParameterName);
+                if (explicitGameState != null)
+                {
+                    ViewModel.GameState = explicitGameState.Value;
+                }
             }
             SaveGame saveGame = LoadSaveGame();
             if (saveGame.IsCompletedGame)
