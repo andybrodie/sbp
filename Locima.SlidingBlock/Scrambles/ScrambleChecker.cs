@@ -13,6 +13,9 @@ namespace Locima.SlidingBlock.Scrambles
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// Single instance initialised in static initialiser
+        /// </summary>
         public static ScrambleChecker Instance { get; private set; }
 
         static ScrambleChecker()
@@ -46,8 +49,14 @@ namespace Locima.SlidingBlock.Scrambles
             }
         }
 
-
-        #region Parity calculators and support methods
+        /// <summary>
+        /// Used to represent the parity of a puzzle
+        /// </summary>
+        private enum Parity
+        {
+            Even,
+            Odd
+        }
 
         private List<int> ConvertToParityList(int tilesAcross, int tilesHigh)
         {
@@ -92,6 +101,14 @@ namespace Locima.SlidingBlock.Scrambles
         }
 
 
+        /// <summary>
+        /// Calculates the parity of a solved puzzle of size <paramref name="tilesAcross"/> and <paramref name="tilesHigh"/>
+        /// </summary>
+        /// <remarks>
+        /// The parity of the built-in puzzles: 3x3, 4x4 and 5x5 is hard-coded to save time, but this method remains generic and can handle and size</remarks>
+        /// <param name="tilesAcross">The number of tiles horizontally in the puzzle</param>
+        /// <param name="tilesHigh">The number of tiles vertically in the puzzle</param>
+        /// <returns></returns>
         private Parity CalculateParity(int tilesAcross, int tilesHigh)
         {
             if (tilesAcross == tilesHigh)
@@ -110,82 +127,35 @@ namespace Locima.SlidingBlock.Scrambles
         }
 
 
+        /// <summary>
+        /// Calculates the parity of any puzzle state by converting it to a list (<see cref="ConvertToParityList(int,int)"/>) and 
+        /// calling <see cref="CalculateParity(System.Collections.Generic.IList{int})"/>
+        /// </summary>
+        /// <param name="tiles">The tiles (typically this would be calculated by a scramble)</param>
+        /// <returns></returns>
         private Parity CalculateParity(Position[][] tiles)
         {
             return CalculateParity(ConvertToParityList(tiles));
         }
 
 
+        /// <summary>
+        /// Calculates the parity of a list representation of a puzzle
+        /// </summary>
+        /// <remarks>
+        /// The parity of the puzzle can be identified by performing a bubble sort (swap sort) on the list.  The number of moves it takes 
+        /// to sort the list in ascending order (i.e. the solved position) is the parity.  For a puzzle to be solveable the solved puzzle and scrambled
+        /// puzzle must have the same parity.</remarks>
+        /// <param name="list">A puzzle grid, flattened by <see cref="ConvertToParityList(Position[][])"/></param>
+        /// <returns>Whether the puzzle is even parity or odd parity.</returns>
         private Parity CalculateParity(IList<int> list)
         {
             int movesRequiredToSort;
-            BubbleSort(list, out movesRequiredToSort);
+            BubbleSorter.Sort(list, out movesRequiredToSort);
             Parity parity = movesRequiredToSort % 2 == 0 ? Parity.Even : Parity.Odd;
             Logger.Debug("Required {0} moves to sort, so parity is {1}", movesRequiredToSort, parity);
             return parity;
         }
 
-        private enum Parity
-        {
-            Even,
-            Odd
-        }
-
-        #endregion
-
-        #region Simple bubble sort implementation
-
-        /// <summary>
-        /// Simple optimised bubble sorter
-        /// </summary>
-        /// <remarks>
-        /// We need our own implementation because we need to know how many swaps occurred</remarks>
-        /// <typeparam name="T">The type of element within <paramref name="list"/></typeparam>
-        /// <param name="list">The list to sort</param>
-        /// <param name="moves">The number of moves that it took to sort the list</param>
-        /// <returns>The sorted list</returns>
-        /// <see cref="BubbleSort{T}(System.Collections.Generic.IList{T},out int)"/>
-        public IList<T> BubbleSort<T>(IList<T> list, out int moves)
-        {
-            return BubbleSort(list, Comparer<T>.Default, out moves);
-        }
-
-
-        /// <summary>
-        /// Simple optimised bubble sorter
-        /// </summary>
-        /// <remarks>
-        /// We need our own implementation because we need to know how many swaps occurred</remarks>
-        /// <typeparam name="T">The type of element within <paramref name="list"/></typeparam>
-        /// <param name="list">The list to sort</param>
-        /// <param name="comparer">The function to compare two elements of type <typeparamref name="T"/> within the <paramref name="list"/></param>
-        /// <param name="moves">The number of moves that it took to sort the list</param>
-        /// <returns>The sorted list</returns>
-        public IList<T> BubbleSort<T>(IList<T> list, IComparer<T> comparer, out int moves)
-        {
-            IList<T> workList = new List<T>(list);
-            int moveCount = 0;
-            bool stillGoing = true;
-            while (stillGoing)
-            {
-                stillGoing = false;
-                for (int i = 0; i < workList.Count - 1; i++)
-                {
-                    T x = workList[i];
-                    T y = workList[i + 1];
-                    if (comparer.Compare(x, y) > 0)
-                    {
-                        workList[i] = y;
-                        workList[i + 1] = x;
-                        moveCount++;
-                        stillGoing = true;
-                    }
-                }
-            }
-            moves = moveCount;
-            return workList;
-        }
-
-        #endregion
     }
 }

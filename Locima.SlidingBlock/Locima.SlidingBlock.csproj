@@ -76,6 +76,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\BubbleSorter.cs" />
     <Compile Include="Common\PointExtensions.cs" />
     <Compile Include="Common\ReflectionHelper.cs" />
     <Compile Include="Common\StateManagementHelper.cs" />

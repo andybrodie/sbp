@@ -53,6 +53,10 @@
                                           Author="Frederick Chapleau"
                                           Description="A pattern for updating bindings when application bar buttons are clicked"
                                           Link="http://www.chapleau.info/blog/2012/01/15/WP7BindingLostFocusWorkaround.html"/>
+                <Controls:Acknowledgement Title="The 15 Puzzle"
+                                          Author="Jim Loy"
+                                          Description="Jim's algorithm for using parity to check whether a puzzle is solveable saved me from an embarrasing bug!"
+                                          Link="http://www.jimloy.com/puzz/15.htm"/>
             </Controls:AcknowledgementList>
             <Style TargetType="HyperlinkButton" x:Name="hyperlink">
                 <Setter Property="Foreground" Value="{StaticResource PhoneSubtleBrush}"/>
