@@ -52,6 +52,7 @@ namespace Locima.SlidingBlock.GameTemplates.Flowers
         /// <param name="title">Image title</param>
         /// <param name="description">Image description</param>
         /// <param name="filename">Image filename</param>
+        /// <param name="uriString">The Uri that this image links to</param>
         /// <returns>Level definition using the parameters passed and default owner, cliense and scramble information</returns>
         private LevelDefinition Create(string title, string description, string filename, string uriString)
         {
