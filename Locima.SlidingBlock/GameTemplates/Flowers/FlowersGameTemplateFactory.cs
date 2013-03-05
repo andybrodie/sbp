@@ -35,7 +35,7 @@ namespace Locima.SlidingBlock.GameTemplates.Flowers
                         {
                             Create("Rhododendron", "Rhododendron from Exbury Gardens, taken in 2009", "Rhodedendron.jpg", "http://en.wikipedia.org/wiki/Rhododendron"),
                             Create("Virginia Water Lily", "A hardy Virginia Water Lily (Nymphaeaceae)", "Lillies.jpg", "http://en.wikipedia.org/wiki/Nymphaeaceae"),
-                            Create("Mixed Water Lilies", "Albeda and Attraction Water Lily", "Lillies2jpg", "http://en.wikipedia.org/wiki/Nymphaeaceae"),
+                            Create("Mixed Water Lilies", "Albeda and Attraction Water Lily", "Lillies2.jpg", "http://en.wikipedia.org/wiki/Nymphaeaceae"),
                             Create("Blue Cloud Water Lily", "Despite being purple, this lily is classified as blue!", "Purple.jpg", "http://en.wikipedia.org/wiki/Nymphaeaceae"),
                             Create("Begonia", "Looks like a rose, but is actually a begonia", "RedBegonia.jpg","http://en.wikipedia.org/wiki/Begonia"),
                             Create("Begonias", "A selection of begonias", "Begonias.jpg","http://en.wikipedia.org/wiki/Begonia"),
