@@ -66,6 +66,54 @@ namespace Locima.SlidingBlock.Common
 
 
         /// <summary>
+        /// Retrieves a query parameter from the Uri used to launch this page and converts to an <see cref="Enum"/> of type <typeparamref name="T"/>
+        /// </summary>
+        /// <remarks>
+        /// This handles error conditions (returns null on all error cases and logs the error) and the call to <see cref="HttpUtility.UrlDecode"/></remarks>
+        /// <typeparam name="T">The enum that the query parameter <paramref name="queryParamName"/> should be converted to</typeparam>
+        /// <param name="page">The page instance that we'll use the <see cref="Page.NavigationContext"/> from.</param>
+        /// <param name="queryParamName">The query parameter name to retrieve</param>
+        /// <returns>The nullable enum value of the parameter</returns>
+        public static T? GetQueryParameterAsEnum<T>(this PhoneApplicationPage page, string queryParamName)
+            where T : struct
+        {
+            T? enumValue = GetQueryParameter(page, queryParamName, s =>
+                {
+                    T? parsedEnumValue;
+                    if (string.IsNullOrEmpty(s))
+                    {
+                        parsedEnumValue = null;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            parsedEnumValue = (T) Enum.Parse(typeof (T), s, true);
+                        }
+                        catch (ArgumentException ae)
+                        {
+                            Logger.ErrorException(
+                                string.Format(
+                                    "Unable to convert {0} to an enum of type {1} as an argument exception was thrown",
+                                    s, typeof (T).FullName), ae);
+                            parsedEnumValue = null;
+                        }
+                        catch (OverflowException oe)
+                        {
+                            Logger.ErrorException(
+                                string.Format(
+                                    "Unable to convert {0} to an enum of type {1} as an overflow exception was thrown",
+                                    s, typeof (T).FullName), oe);
+                            parsedEnumValue = null;
+                        }
+                    }
+                    return parsedEnumValue;
+                });
+            return enumValue;
+        }
+
+
+        /// <summary>
         /// Uses <see cref="GetQueryParameter{T}"/> to retrieve the query parameter specific as an <see cref="int"/>
         /// </summary>
         /// <param name="page">The page instance that we'll use the <see cref="Page.NavigationContext"/> from.</param>
