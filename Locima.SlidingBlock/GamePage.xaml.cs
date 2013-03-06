@@ -274,7 +274,7 @@ namespace Locima.SlidingBlock
         /// <param name="saveGameId"> The file name for the <see cref="SaveGame" /> that contains the configuration for this game </param>
         /// <param name="suppressPreviousPageCount">If true, then the loaded game page will remove the previous page from the backstack.
         /// This is useful when progressing another level</param>
-        /// <param name="gameState">If set, this will force <see cref="gameState"/> to be set to this value on the <see cref="OnNavigatedTo"/> handler</param>
+        /// <param name="gameState">If set, this will force <see cref="PuzzleViewModel.GameState"/> to be set to this value on the <see cref="OnNavigatedTo"/> handler</param>
         /// <returns> A <see cref="Uri" /> that will launch the game using the parameters provided </returns>
         public static Uri CreateNavigationUri(string saveGameId, int suppressPreviousPageCount, GameStates? gameState)
         {

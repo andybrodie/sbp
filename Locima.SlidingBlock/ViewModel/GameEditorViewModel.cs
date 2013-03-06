@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
+using System.ComponentModel;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.GameTemplates;
@@ -30,6 +31,11 @@ namespace Locima.SlidingBlock.ViewModel
         private GameTemplate _gameTemplate;
 
         /// <summary>
+        /// Backing field for <see cref="IsEditable"/>
+        /// </summary>
+        private bool _isEditable;
+
+        /// <summary>
         /// Backing field for <see cref="LevelList"/>
         /// </summary>
         private ObservableCollection<LevelDefinitionViewModel> _levelList;
@@ -44,11 +50,34 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         public GameEditorViewModel()
         {
-            ConfirmCancelCommand = new DelegateCommand(ConfirmCancelAction);
+            ConfirmCancelCommand = new DelegateCommand(ConfirmCancelAction, IsEditableCanExecuteHandler);
+            SaveFinalTemplateChangesCommand = new DelegateCommand(SaveFinalTemplateChangesAction, IsEditableCanExecuteHandler);
+            AppendLevelCommand = new DelegateCommand(AppendLevelAction, IsEditableCanExecuteHandler);
             CancelDiscardChangesCommand =
-                new DelegateCommand(o => Logger.Debug("User didn't want to discard changes after all"));
-            DiscardChangesCommand = new DelegateCommand(DiscardChangesAction);
+                new DelegateCommand(o => Logger.Debug("User didn't want to discard changes after all"), IsEditableCanExecuteHandler);
+            DiscardChangesCommand = new DelegateCommand(DiscardChangesAction, IsEditableCanExecuteHandler);
             LevelList = new ObservableCollection<LevelDefinitionViewModel>();
+        }
+
+        /// <summary>
+        /// Action for <see cref="AppendLevelCommand"/> to add a new level to the end of the levels in the template
+        /// </summary>
+        /// <remarks>We only need this for helping Application Bar button updates, all other controls can just bind their <see cref="Control.IsEnabled"/>
+        /// property to our <see cref="IsEditable"/> property</remarks>
+        /// <param name="unused"></param>
+        private void AppendLevelAction(object unused)
+        {
+            AddEditLevel(true, LevelList.Count);
+        }
+
+        /// <summary>
+        /// Used to control various command's executability
+        /// </summary>
+        /// <param name="o">unused</param>
+        /// <returns>The value of <see cref="IsEditable"/></returns>
+        private bool IsEditableCanExecuteHandler(object o)
+        {
+            return IsEditable;
         }
 
         /// <summary>
@@ -115,6 +144,31 @@ namespace Locima.SlidingBlock.ViewModel
         protected ICommand DiscardChangesCommand { get; set; }
 
         /// <summary>
+        /// If false then all the actions which would change the template are disabled
+        /// </summary>
+        public bool IsEditable
+        {
+            get { return _isEditable; }
+            set
+            {
+                _isEditable = value;
+                OnNotifyPropertyChanged("IsEditable");
+            }
+        }
+
+        /// <summary>
+        /// Command to instruct that all changes to the template should be committed and the original game template overwritten
+        /// </summary>
+        /// <see cref="SaveFinalTemplateChangesAction"/>
+        public ICommand SaveFinalTemplateChangesCommand { get; set; }
+
+        
+        /// <summary>
+        /// Command to add a new level to the end of the template
+        /// </summary>
+        public ICommand AppendLevelCommand { get; set; }
+
+        /// <summary>
         /// Action for <see cref="DiscardChangesCommand"/> to discard any changes made to the current game template by discard the shadow and navigating back to the game template selector
         /// </summary>
         /// <param name="obj"></param>
@@ -133,12 +187,12 @@ namespace Locima.SlidingBlock.ViewModel
         private void ConfirmCancelAction(object obj)
         {
             SendViewMessage(new ConfirmationMessageArgs
-                                {
-                                    Title = LocalizationHelper.GetString("ConfirmDiscardGameChangesTitle"),
-                                    Message = LocalizationHelper.GetString("ConfirmDiscardGameChangesText"),
-                                    OnCancelCommand = CancelDiscardChangesCommand,
-                                    OnOkCommand = DiscardChangesCommand
-                                });
+                {
+                    Title = LocalizationHelper.GetString("ConfirmDiscardGameChangesTitle"),
+                    Message = LocalizationHelper.GetString("ConfirmDiscardGameChangesText"),
+                    OnCancelCommand = CancelDiscardChangesCommand,
+                    OnOkCommand = DiscardChangesCommand
+                });
         }
 
 
@@ -151,6 +205,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// </remarks>
         public void Initialise()
         {
+            PropertyChanged += OnPropertyChanged;
             if (!string.IsNullOrEmpty(GameTemplateId))
             {
                 _gameTemplate = GameTemplateStorageManager.Instance.Load(GameTemplateId);
@@ -170,20 +225,36 @@ namespace Locima.SlidingBlock.ViewModel
             {
                 Logger.Info("Creating new game template, no shadow required");
                 _gameTemplate = new GameTemplate
-                                    {
-                                        Title = LocalizationHelper.GetString("DefaultGameTemplateTitle"),
-                                        Author = PlayerStorageManager.Instance.CurrentPlayer.Name,
-                                        Levels = new List<LevelDefinition>()
-                                    };
+                    {
+                        Title = LocalizationHelper.GetString("DefaultGameTemplateTitle"),
+                        Author = PlayerStorageManager.Instance.CurrentPlayer.Name,
+                        Levels = new List<LevelDefinition>()
+                    };
             }
             PopulateViewModelFromModel();
+        }
+
+        /// <summary>
+        /// This view model cares about property changes to support disabling application bar buttons when <see cref="IsEditable"/> is updated
+        /// </summary>
+        /// <param name="sender">Ignored</param>
+        /// <param name="propertyChangedEventArgs">Need <see cref="PropertyChangedEventArgs.PropertyName"/> to only react to changes to <see cref="IsEditable"/></param>
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            if ("IsEditable" == propertyChangedEventArgs.PropertyName)
+            {
+                Logger.Debug("Firing CanExecuteChanged events as IsEditable has been changed");
+                ((DelegateCommand)ConfirmCancelCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)SaveFinalTemplateChangesCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)AppendLevelCommand).RaiseCanExecuteChanged();
+            }
         }
 
 
         /// <summary>
         /// Called when the save button is pressed, this will overwrite the original game template with our modified version
         /// </summary>
-        public void SaveFinalTemplateChanges()
+        private void SaveFinalTemplateChangesAction(object ignored)
         {
             _gameTemplate.Title = Title;
             _gameTemplate.Author = Author;
@@ -210,7 +281,8 @@ namespace Locima.SlidingBlock.ViewModel
         {
             foreach (LevelDefinition level in gameTemplate.Levels)
             {
-                if (level.ImageId != null)    // Ignore any levels which don't have an image (usually because it's in the XapImageUri field)
+                if (level.ImageId != null)
+                    // Ignore any levels which don't have an image (usually because it's in the XapImageUri field)
                 {
                     if (ImageStorageManager.Instance.IsTemporary(level.ImageId))
                     {
@@ -219,7 +291,6 @@ namespace Locima.SlidingBlock.ViewModel
                     }
                 }
             }
-
         }
 
 
@@ -231,17 +302,15 @@ namespace Locima.SlidingBlock.ViewModel
         {
             Logger.Info("Creating new level at index {0}", insertPoint);
             LevelDefinition newLevel = new LevelDefinition
-                                           {
-                                               ImageTitle = LocalizationHelper.GetString("DefaultLevelTitle"),
-                                               ImageText = LocalizationHelper.GetString("DefaultLevelText"),
-                                               License = LicenseDefinition.CcByNcNd30,
-                                               XapImageUri = new Uri("GameTemplates/DefaultImage.jpg", UriKind.Relative)
-                                           };
+                {
+                    ImageTitle = LocalizationHelper.GetString("DefaultLevelTitle"),
+                    ImageText = LocalizationHelper.GetString("DefaultLevelText"),
+                    License = LicenseDefinition.CcByNcNd30,
+                    XapImageUri = new Uri("GameTemplates/DefaultImage.jpg", UriKind.Relative)
+                };
             _gameTemplate.Levels.Insert(insertPoint, newLevel);
             SaveTemplateAndResyncViewModel();
         }
-
-
 
 
         /// <summary>
@@ -289,14 +358,14 @@ namespace Locima.SlidingBlock.ViewModel
             InsertLevelAt(insertPoint);
         }
 
-
         /// <summary>
         /// Moves the <paramref name="relativePosition"/> number of levels up (if negative) or down (if positive)
         /// </summary>
         /// <param name="level">The level to move</param>
         /// <param name="relativePosition">The new relative position (0 means stay still) of the level to its original location</param>
         /// <remarks><see cref="ICommand"/> action for <see cref="LevelDefinitionViewModel.MoveLeveCommand"/></remarks>
-        public void MoveLevel(LevelDefinition level, int relativePosition)
+        public
+            void MoveLevel(LevelDefinition level, int relativePosition)
         {
             int index = _gameTemplate.Levels.IndexOf(level);
             int newIndex = index + relativePosition;
@@ -336,6 +405,7 @@ namespace Locima.SlidingBlock.ViewModel
         {
             Title = _gameTemplate.Title;
             Author = _gameTemplate.Author;
+            IsEditable = !_gameTemplate.IsReadOnly;
             LevelList.Clear();
             foreach (LevelDefinition level in _gameTemplate.Levels)
             {
@@ -354,6 +424,5 @@ namespace Locima.SlidingBlock.ViewModel
             GameTemplateStorageManager.Instance.Save(_gameTemplate);
             PopulateViewModelFromModel();
         }
-
     }
 }

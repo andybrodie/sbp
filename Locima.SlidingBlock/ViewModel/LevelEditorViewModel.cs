@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Locima.SlidingBlock.Common;
@@ -15,7 +17,6 @@ namespace Locima.SlidingBlock.ViewModel
     public class LevelEditorViewModel : ViewModelBase
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
 
         /// <summary>
         /// Backing field for <see cref="CreateNew"/>
@@ -47,6 +48,8 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         private string _imageTitle;
 
+        private bool _isEditable;
+
         /// <summary>
         /// Backing field for <see cref="LicenseTitle"/>
         /// </summary>
@@ -72,11 +75,10 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         public LevelEditorViewModel()
         {
-            SaveCommand = new DelegateCommand(SaveAction);
-            CancelCommand = new DelegateCommand(CancelAction);
-            SelectImageCommand = new DelegateCommand(SelectImageAction);
+            SaveCommand = new DelegateCommand(SaveAction, IsEditableCanExecuteHandler);
+            CancelCommand = new DelegateCommand(CancelAction, IsEditableCanExecuteHandler);
+            SelectImageCommand = new DelegateCommand(SelectImageAction, IsEditableCanExecuteHandler);
         }
-
 
         /// <summary>
         /// Sets <see cref="PageTitle"/> according to whether we're editing an existing level or creating a new level here
@@ -127,7 +129,6 @@ namespace Locima.SlidingBlock.ViewModel
         /// Command to cancel changes to the level and go back to the <see cref="GameEditor"/>
         /// </summary>
         public ICommand CancelCommand { get; set; }
-
 
         /// <summary>
         /// The title for the level/image, maps to <see cref="LevelDefinition.ImageTitle"/>
@@ -218,6 +219,30 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+        /// <summary>
+        /// If true then the fields of this level may be edited.  This is used by <see cref="ICommand.CanExecute"/> implementations and as a binding
+        /// target for <see cref="Control.IsEnabled"/>
+        /// </summary>
+        public bool IsEditable
+        {
+            get { return _isEditable; }
+            private set
+            {
+                _isEditable = value;
+                OnNotifyPropertyChanged("IsEditable");
+            }
+        }
+
+        /// <summary>
+        /// Used to control various command's executability
+        /// </summary>
+        /// <param name="o">unused</param>
+        /// <returns>The value of <see cref="IsEditable"/></returns>
+        private bool IsEditableCanExecuteHandler(object o)
+        {
+            return IsEditable;
+        }
+
 
         private void SaveLevel()
         {
@@ -257,9 +282,9 @@ namespace Locima.SlidingBlock.ViewModel
             Logger.Debug(
                 "Creating the illusion of navigating \"back\" to GameEditor by removing backstack entry to it and creating new Uri that refers to the shadow");
             SendViewMessage(new NavigationMessageArgs
-                                {
-                                    Uri = GameEditor.CreateNavigationUri(GameTemplateId,2)
-                                });
+                {
+                    Uri = GameEditor.CreateNavigationUri(GameTemplateId, 2)
+                });
         }
 
 
@@ -268,6 +293,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         public void Initialise()
         {
+            PropertyChanged += OnPropertyChanged;
             _gameTemplate = GameTemplateStorageManager.Instance.Load(GameTemplateId);
             Logger.Info("{0} level {0} of {1}", CreateNew ? "Creating" : "Editing", LevelIndex,
                         _gameTemplate.Levels.Count);
@@ -275,9 +301,25 @@ namespace Locima.SlidingBlock.ViewModel
 
             // At this point, if a NewImageId has been specified, replace the existing image in the level with the new image
             UpdateImage();
-
+            IsEditable = !_gameTemplate.IsReadOnly;
             Image = _currentLevel.GetImage();
             PopulateViewModelWithLevel();
+        }
+
+        /// <summary>
+        /// This view model cares about property changes to support disabling application bar buttons when <see cref="IsEditable"/> is updated
+        /// </summary>
+        /// <param name="sender">Ignored</param>
+        /// <param name="propertyChangedEventArgs">Need <see cref="PropertyChangedEventArgs.PropertyName"/> to only react to changes to <see cref="IsEditable"/></param>
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            if ("IsEditable" == propertyChangedEventArgs.PropertyName)
+            {
+                Logger.Debug("Firing CanExecuteChanged events as IsEditable has been changed");
+                ((DelegateCommand) CancelCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand) SelectImageCommand).RaiseCanExecuteChanged();
+            }
         }
 
 

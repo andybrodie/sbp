@@ -41,9 +41,9 @@
         <!--ContentPanel - place additional content here-->
         <StackPanel x:Name="ContentPanel" Margin="12,0,12,0" Grid.Row="1">
             <TextBlock Text="{Binding Path=Strings.GameName, Source={StaticResource Localization}}" />
-            <TextBox x:Name="GameTitle" Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="ControlChanged" />
+            <TextBox x:Name="GameTitle" Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="ControlChanged" IsEnabled="{Binding IsEditable}" />
             <TextBlock Text="{Binding Path=Strings.AuthorName, Source={StaticResource Localization}}" />
-            <TextBox x:Name="GameAuthor" Text="{Binding Author, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="ControlChanged" />
+            <TextBox x:Name="GameAuthor" Text="{Binding Author, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="ControlChanged" IsEnabled="{Binding IsEditable}" />
             <TextBlock Text="{Binding Path=Strings.LevelList, Source={StaticResource Localization}}" />
         </StackPanel>
 
@@ -64,10 +64,9 @@
                             <StackPanel Grid.Column="1" Margin="10,0,0,0">
                                 <TextBlock Text="{Binding Path=ImageTitle}" />
                                 <TextBlock Text="{Binding Path=ImageText}" />
-                                <TextBlock Text="{Binding Path=LicenseTitle}" />
                             </StackPanel>
                             <toolkit:ContextMenuService.ContextMenu>
-                                <toolkit:ContextMenu Name="MyContextMenu">
+                                <toolkit:ContextMenu Name="MyContextMenu" IsEnabled="{Binding IsEditable}">
                                     <toolkit:MenuItem Header="{Binding Path=Strings.MoveLevelUp, Source={StaticResource Localization}}" Command="{Binding MoveLeveCommand}" CommandParameter="-1" />
                                     <toolkit:MenuItem Header="{Binding Path=Strings.MoveLevelDown, Source={StaticResource Localization}}" Command="{Binding MoveLeveCommand}" CommandParameter="1" />
                                     <toolkit:MenuItem Header="{Binding Path=Strings.AddLevelBefore, Source={StaticResource Localization}}" Command="{Binding AddLevelBeforeCommand}" />

@@ -49,13 +49,13 @@
                 <Button x:Name="SelectImageButton" Content="{Binding Path=Strings.SelectImageButton,Source={StaticResource Localization}}"
                     Command="{Binding SelectImageCommand}" />
                 <TextBlock Text="{Binding Path=Strings.ImageTitleLabel, Source={StaticResource Localization}}"/>
-                <TextBox x:Name="ImageTitleText" Text="{Binding ImageTitle, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="ControlChanged" />
+                <TextBox x:Name="ImageTitleText" Text="{Binding ImageTitle, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="ControlChanged" IsEnabled="{Binding IsEditable}" />
                 <TextBlock Text="{Binding Path=Strings.ImageTextLabel, Source={StaticResource Localization}}"/>
-                <TextBox AcceptsReturn="True" Height="160" x:Name="ImageTextText" TextWrapping="Wrap" Text="{Binding ImageText, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="ControlChanged" />
+                <TextBox AcceptsReturn="True" Height="160" x:Name="ImageTextText" TextWrapping="Wrap" Text="{Binding ImageText, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="ControlChanged" IsEnabled="{Binding IsEditable}" />
                 <TextBlock Text="{Binding Path=Strings.LicenseLabel, Source={StaticResource Localization}}"/>
-                <TextBox x:Name="LicenseText" Text="{Binding LicenseTitle, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="ControlChanged" />
+                <TextBox x:Name="LicenseText" Text="{Binding LicenseTitle, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="ControlChanged" IsEnabled="{Binding IsEditable}" />
                 <TextBlock Text="{Binding Path=Strings.LicenceUriLabel, Source={StaticResource Localization}}"/>
-                <TextBox x:Name="LicenseUrlText" Text="{Binding LicenseUri, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="ControlChanged" />
+                <TextBox x:Name="LicenseUrlText" Text="{Binding LicenseUri, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="ControlChanged" IsEnabled="{Binding IsEditable}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>
