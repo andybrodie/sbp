@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
@@ -14,13 +15,11 @@ using NLog;
 
 namespace Locima.SlidingBlock
 {
-
     /// <summary>
     /// Edits the title and author of a game template and allows the user to add more levels or edit existing ones using <see cref="LevelEditor"/>
     /// </summary>
     public partial class GameEditor : PhoneApplicationPage
     {
-
         /// <summary>
         /// The Uri query parameter for the game template ID
         /// </summary>
@@ -60,7 +59,7 @@ namespace Locima.SlidingBlock
 
             string gameTemplateId = this.GetQueryParameter(GameTemplateQueryParameterName);
             ViewModel.GameTemplateId = gameTemplateId;
-            
+
             ViewModel.Initialise();
         }
 
@@ -72,30 +71,40 @@ namespace Locima.SlidingBlock
             ApplicationBar = new ApplicationBar();
 
             // Add a new level to the end of the set of levels
-            IApplicationBarIconButton icon = ApplicationBarHelper.AddButton(ApplicationBar,
-                                                                            ApplicationBarHelper.ButtonIcons["New"],
-                                                                            LocalizationHelper.GetString(
-                                                                                "AppendLevelButton"));
+            IApplicationBarIconButton addLevelButton = ApplicationBarHelper.AddButton(ApplicationBar,
+                                                                                      ApplicationBarHelper.ButtonIcons[
+                                                                                          "New"],
+                                                                                      LocalizationHelper.GetString(
+                                                                                          "AppendLevelButton"));
 
-            icon.Click += (o, args) => ViewModel.AddEditLevel(true, LevelsListBox.Items.Count);
+            addLevelButton.Click += (o, args) => ViewModel.AppendLevelCommand.Execute(null);
+            ViewModel.AppendLevelCommand.CanExecuteChanged +=
+                (sender, args) => addLevelButton.IsEnabled = ((ICommand) sender).CanExecute(null);
 
             // Save changes made to the game template
-            icon = ApplicationBarHelper.AddButton(ApplicationBar,
-                                                  ApplicationBarHelper.ButtonIcons["Save"],
-                                                  LocalizationHelper.GetString(
-                                                      "SaveGameTemplateButton"));
+            IApplicationBarIconButton saveButton = ApplicationBarHelper.AddButton(ApplicationBar,
+                                                                                  ApplicationBarHelper.ButtonIcons[
+                                                                                      "Save"],
+                                                                                  LocalizationHelper.GetString(
+                                                                                      "SaveGameTemplateButton"));
 
-            icon.Click += (sender, args) => ViewModel.SaveFinalTemplateChanges();
+            saveButton.Click += (sender, args) => ViewModel.SaveFinalTemplateChangesCommand.Execute(null);
+            ViewModel.SaveFinalTemplateChangesCommand.CanExecuteChanged +=
+                (sender, args) => saveButton.IsEnabled = ((ICommand) sender).CanExecute(null);
+
 
             // Cancel changes made to the game template
             // TODO Include an "are you sure?" dialog if the game template has been modified and we'll lose changes
-            icon = ApplicationBarHelper.AddButton(ApplicationBar,
-                                                  ApplicationBarHelper.ButtonIcons["Cancel"],
-                                                  LocalizationHelper.GetString("Cancel"));
+            IApplicationBarIconButton cancelButton = ApplicationBarHelper.AddButton(ApplicationBar,
+                                                                                    ApplicationBarHelper.ButtonIcons[
+                                                                                        "Cancel"],
+                                                                                    LocalizationHelper.GetString(
+                                                                                        "Cancel"));
 
-            icon.Click += (sender, args) => ViewModel.ConfirmCancelCommand.Execute(null);
+            cancelButton.Click += (sender, args) => ViewModel.ConfirmCancelCommand.Execute(null);
+            ViewModel.ConfirmCancelCommand.CanExecuteChanged +=
+                (sender, args) => cancelButton.IsEnabled = ((ICommand) sender).CanExecute(null);
         }
-
 
 
         /// <summary>
@@ -122,7 +131,7 @@ namespace Locima.SlidingBlock
             {
                 uriCons.AddParameter(GameTemplateQueryParameterName, gameTemplateId);
             }
-            if (suppressPreviousPageCount>0)
+            if (suppressPreviousPageCount > 0)
             {
                 uriCons.AddParameter(App.SuppressBackQueryParameterName, suppressPreviousPageCount);
             }

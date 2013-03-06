@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Locima.SlidingBlock.GameTemplates;
@@ -26,6 +27,8 @@ namespace Locima.SlidingBlock.ViewModel
         /// Backing field for <see cref="Thumbnail"/>
         /// </summary>
         private WriteableBitmap _thumbnail;
+
+        private bool _isEditable;
 
         /// <summary>
         /// Initialise commands and internal variables
@@ -115,6 +118,19 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         /// <remarks>The action is provided by <see cref="GameEditorViewModel.MoveLevel"/></remarks>
         public ICommand MoveLeveCommand { get; private set; }
+
+        /// <summary>
+        /// Bound to by <see cref="Control.IsEnabled"/> or to control commands where editing a level is allowed (<see cref="GameTemplate.IsReadOnly"/>)
+        /// </summary>
+        public bool IsEditable
+        {
+            get { return _isEditable; }
+            set
+            {
+                _isEditable = value;
+                OnNotifyPropertyChanged("IsEditable");
+            }
+        }
 
         /// <summary>
         /// Creates a 64 x 64 pixel thumbnail to display next to the level details for this level

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
@@ -79,28 +80,21 @@ namespace Locima.SlidingBlock
         private void BuildApplicationBar()
         {
             ApplicationBar = new ApplicationBar();
-            IApplicationBarIconButton icon = ApplicationBarHelper.AddButton(ApplicationBar,
+            IApplicationBarIconButton saveButton = ApplicationBarHelper.AddButton(ApplicationBar,
                                                                             ApplicationBarHelper.ButtonIcons["Save"],
                                                                             LocalizationHelper.GetString("SaveLevel"));
-            icon.Click += SaveLevelClick;
-            icon = ApplicationBarHelper.AddButton(ApplicationBar, ApplicationBarHelper.ButtonIcons["Cancel"],
-                                                  LocalizationHelper.GetString("Cancel"));
+            saveButton.Click += (sender, args) => ViewModel.SaveCommand.Execute(null);
+            ViewModel.SaveCommand.CanExecuteChanged += (sender, args) => saveButton.IsEnabled = ((ICommand)sender).CanExecute(null);
 
-            icon.Click += CancelClick;
+            IApplicationBarIconButton cancelButton = ApplicationBarHelper.AddButton(ApplicationBar, ApplicationBarHelper.ButtonIcons["Cancel"],
+                                                  LocalizationHelper.GetString("Cancel"));
+            cancelButton.Click += (sender, args) => ViewModel.CancelCommand.Execute(null);
+            ViewModel.CancelCommand.CanExecuteChanged += (sender, args) => cancelButton.IsEnabled = ((ICommand)sender).CanExecute(null);
+
 /*            icon = ApplicationBarHelper.AddButton(ApplicationBar,
                                                     ApplicationBarHelper.ButtonIcons["Edit"],
                                                     LocalizationHelper.GetString("SelectLicense"));
   */ // TODO License selector logic, we could do with a picker
-        }
-
-        private void CancelClick(object sender, EventArgs e)
-        {
-            ViewModel.CancelCommand.Execute(null);
-        }
-
-        private void SaveLevelClick(object sender, EventArgs e)
-        {
-            ViewModel.SaveCommand.Execute(null);
         }
 
 
@@ -115,6 +109,7 @@ namespace Locima.SlidingBlock
         /// <returns></returns>
         public static Uri CreateNavigationUri(string gameTemplateId, int levelIndex, bool createNew, string imageId)
         {
+            // TODO Fix this to use the better Uri creation method
             return new Uri(string.Format("/LevelEditor.xaml?{0}={1}&{2}={3}&{4}={5}&{6}={7}",
                                          GameTemplateIdParameterName,
                                          HttpUtility.UrlEncode(gameTemplateId),
@@ -143,13 +138,20 @@ namespace Locima.SlidingBlock
 
         private void PreviewImageTap(object sender, GestureEventArgs e)
         {
-            ViewModel.SelectImageCommand.Execute(null);
+            // Need to check the command is executable
+            if (ViewModel.SelectImageCommand.CanExecute(null))
+            {
+                ViewModel.SelectImageCommand.Execute(null);
+            }
         }
+    
 
         /// <summary>
         /// Forces a binding update whenever a control is updated
         /// </summary>
-        /// <remarks>Used for ensure that changes to <see cref="TextBox"/> controls are reflected when clicking application bar buttons</remarks>
+        /// <remarks>Used for ensure that changes to <see cref="TextBox"/> controls are reflected when clicking application bar buttons.
+        /// If you don't have this then if you edit a text string and don't dismiss the keyboard before clicking an application bar button you
+        /// WON'T get the changes made to the text box saved.  This event handler forces the binding to be updated and the text entered to be read</remarks>
         /// <param name="sender">The control that was changed</param>
         /// <param name="unused">unused</param>
         private void ControlChanged(object sender, TextChangedEventArgs unused)
