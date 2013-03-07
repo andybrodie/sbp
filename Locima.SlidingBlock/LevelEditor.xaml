@@ -43,9 +43,15 @@
         <!--ContentPanel - place additional content here-->
         <ScrollViewer Grid.Row="1">
             <StackPanel x:Name="ContentPanel" Margin="12,0,12,0">
-                <Border Style="{StaticResource AreaBorder}" x:Name="ImageBorder" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel.Resources>
+                    <Style TargetType="Button" x:Key="CloseButton">
+                        <Setter Property="Padding" Value="0"></Setter>
+                    </Style>
+                </StackPanel.Resources>
+                <Button x:Name="SelectImageButtonImage" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding SelectImageCommand}"
+                        Style="{StaticResource CloseButton}">
                     <Image x:Name="PreviewImage" Width="256" Height="256" Tap="PreviewImageTap" Source="{Binding Image}" />
-                </Border>
+                </Button>                    
                 <Button x:Name="SelectImageButton" Content="{Binding Path=Strings.SelectImageButton,Source={StaticResource Localization}}"
                     Command="{Binding SelectImageCommand}" />
                 <TextBlock Text="{Binding Path=Strings.ImageTitleLabel, Source={StaticResource Localization}}"/>
