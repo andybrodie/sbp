@@ -1,8 +1,10 @@
 using System;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Locima.SlidingBlock.GameTemplates;
+using NLog;
 
 namespace Locima.SlidingBlock.ViewModel
 {
@@ -12,6 +14,8 @@ namespace Locima.SlidingBlock.ViewModel
     /// </summary>
     public class LevelDefinitionViewModel : ViewModelBase
     {
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Backing field for <see cref="Level"/>
@@ -39,13 +43,31 @@ namespace Locima.SlidingBlock.ViewModel
         {
             _parent = gameEditorViewModel;
             _level = level;
-            AddLevelBeforeCommand = new DelegateCommand(parameter => _parent.AddLevelBefore(_level));
-            AddLevelAfterCommand = new DelegateCommand(parameter => _parent.AddLevelAfter(_level));
-            MoveLeveCommand = new DelegateCommand(parameter => _parent.MoveLevel(_level, Int32.Parse((string) parameter)));
-            DeleteLevelCommand = new DelegateCommand(parameter => _parent.DeleteLevel(_level));
+            PropertyChanged += OnPropertyChanged;
+            AddLevelBeforeCommand = new DelegateCommand(parameter => _parent.AddLevelBefore(_level), o => IsEditable);
+            AddLevelAfterCommand = new DelegateCommand(parameter => _parent.AddLevelAfter(_level), o => IsEditable);
+            MoveLeveCommand = new DelegateCommand(parameter => _parent.MoveLevel(_level, Int32.Parse((string)parameter)), o => IsEditable);
+            DeleteLevelCommand = new DelegateCommand(parameter => _parent.DeleteLevel(_level), o => IsEditable);
+            IsEditable = _parent.IsEditable;
             CreateThumbnail();
         }
 
+        /// <summary>
+        /// This view model cares about property changes to support disabling application bar buttons when <see cref="IsEditable"/> is updated
+        /// </summary>
+        /// <param name="sender">Ignored</param>
+        /// <param name="propertyChangedEventArgs">Need <see cref="PropertyChangedEventArgs.PropertyName"/> to only react to changes to <see cref="IsEditable"/></param>
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            if ("IsEditable" == propertyChangedEventArgs.PropertyName)
+            {
+                Logger.Debug("Firing CanExecuteChanged events as IsEditable has been changed");
+                ((DelegateCommand)AddLevelBeforeCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)AddLevelAfterCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)MoveLeveCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)DeleteLevelCommand).RaiseCanExecuteChanged();
+            }
+        }
 
         /// <summary>
         /// The model for thie MVVM view model
@@ -131,6 +153,8 @@ namespace Locima.SlidingBlock.ViewModel
                 OnNotifyPropertyChanged("IsEditable");
             }
         }
+
+
 
         /// <summary>
         /// Creates a 64 x 64 pixel thumbnail to display next to the level details for this level

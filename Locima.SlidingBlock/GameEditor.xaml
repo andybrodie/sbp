@@ -66,12 +66,13 @@
                                 <TextBlock Text="{Binding Path=ImageText}" />
                             </StackPanel>
                             <toolkit:ContextMenuService.ContextMenu>
-                                <toolkit:ContextMenu Name="MyContextMenu" IsEnabled="{Binding IsEditable}">
+                                <toolkit:ContextMenu Name="MyContextMenu">
+                                    <!-- Can't use IsEnabled binding to IsEditable because of a bug in the silverlight toolkit, have to do it using ICommand CanExecute instead -->
                                     <toolkit:MenuItem Header="{Binding Path=Strings.MoveLevelUp, Source={StaticResource Localization}}" Command="{Binding MoveLeveCommand}" CommandParameter="-1" />
                                     <toolkit:MenuItem Header="{Binding Path=Strings.MoveLevelDown, Source={StaticResource Localization}}" Command="{Binding MoveLeveCommand}" CommandParameter="1" />
                                     <toolkit:MenuItem Header="{Binding Path=Strings.AddLevelBefore, Source={StaticResource Localization}}" Command="{Binding AddLevelBeforeCommand}" />
                                     <toolkit:MenuItem Header="{Binding Path=Strings.AddLevelAfter, Source={StaticResource Localization}}" Command="{Binding AddLevelAfterCommand}" />
-                                    <toolkit:MenuItem Header="{Binding Path=Strings.DeleteLevel, Source={StaticResource Localization}}" Command="{Binding DeleteLevelCommand}" />                                    
+                                    <toolkit:MenuItem Header="{Binding Path=Strings.DeleteLevel, Source={StaticResource Localization}}" Command="{Binding DeleteLevelCommand}" />
                                 </toolkit:ContextMenu>
                             </toolkit:ContextMenuService.ContextMenu>
                         </Grid>
