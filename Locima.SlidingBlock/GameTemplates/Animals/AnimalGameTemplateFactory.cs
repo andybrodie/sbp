@@ -33,7 +33,7 @@ namespace Locima.SlidingBlock.GameTemplates.Animals
                 IsReadOnly = true,
                 AppId = PersistentId,  // We fix the ID here as we only want one instance of this definition
                 Title = "animals",
-                Author = "various shots of animals",
+                Author = "Andy Brodie",
                 Levels = new List<LevelDefinition>
                         {
                             new LevelDefinition

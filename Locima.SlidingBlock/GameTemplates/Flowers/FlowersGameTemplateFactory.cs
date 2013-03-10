@@ -30,7 +30,7 @@ namespace Locima.SlidingBlock.GameTemplates.Flowers
                 IsReadOnly = true,
                 AppId = PersistentId,  // We fix the ID here as we only want one instance of this definition
                 Title = "flowers",
-                Author = "flowers from the garden",
+                Author = "Andy Brodie",
                 Levels = new List<LevelDefinition>
                         {
                             Create("Rhododendron", "Rhododendron from Exbury Gardens, taken in 2009", "Rhodedendron.jpg", "http://en.wikipedia.org/wiki/Rhododendron"),
