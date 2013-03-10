@@ -115,7 +115,7 @@ namespace Locima.SlidingBlock
             ListBox listBox = (ListBox) sender;
             if (listBox.SelectedIndex > -1)
             {
-                MenuItemViewModel item = MainMenuListbox.SelectedItem as MenuItemViewModel;
+                MenuItemViewModel item = (MenuItemViewModel) MainMenuListbox.SelectedItem;
                 Debug.Assert(item != null,
                              string.Format(
                                  "Selected item {0} was null or not an instance of MenuItemViewModel.  This is a bug.",
@@ -146,14 +146,14 @@ namespace Locima.SlidingBlock
         /// Creates a Uri to navigate to this page and prompt the user for a source to find an image
         /// </summary>
         /// <param name="gameTemplateId">The ID of the game template to replace the picture of</param>
-        /// <param name="levelIndex"></param>
+        /// <param name="levelIndex">The level to edit the image of</param>
         /// <returns>A Uri to navigate to this page</returns>
         public static Uri CreateNavigationUri(string gameTemplateId, int levelIndex)
         {
-            return new Uri(
-                string.Format("/ImageChooser.xaml?{0}={1}&{2}={3}", GameTemplateIdQueryParameterName,
-                              HttpUtility.UrlEncode(gameTemplateId), LevelIndexQueryParameterName, levelIndex
-                    ), UriKind.Relative);
+            UriConstructor uri = new UriConstructor("/ImageChooser.xaml", UriKind.Relative);
+            uri.AddParameter(GameTemplateIdQueryParameterName, gameTemplateId);
+            uri.AddParameter(LevelIndexQueryParameterName, levelIndex);
+            return uri.ToUri();
         }
     }
 }

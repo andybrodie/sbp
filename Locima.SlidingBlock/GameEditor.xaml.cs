@@ -125,12 +125,8 @@ namespace Locima.SlidingBlock
         /// <returns>A Uri that navigates to this page</returns>
         public static Uri CreateNavigationUri(string gameTemplateId, int suppressPreviousPageCount)
         {
-            const string baseUri = "/GameEditor.xaml";
-            UriConstructor uriCons = new UriConstructor(baseUri, UriKind.Relative);
-            if (!string.IsNullOrEmpty(gameTemplateId))
-            {
-                uriCons.AddParameter(GameTemplateQueryParameterName, gameTemplateId);
-            }
+            UriConstructor uriCons = new UriConstructor("/GameEditor.xaml", UriKind.Relative);
+            uriCons.AddParameter(GameTemplateQueryParameterName, gameTemplateId);
             if (suppressPreviousPageCount > 0)
             {
                 uriCons.AddParameter(App.SuppressBackQueryParameterName, suppressPreviousPageCount);

@@ -154,8 +154,10 @@ namespace Locima.SlidingBlock
         public static Uri CreateNavigationUri(string saveGameId)
         {
             if (string.IsNullOrEmpty(saveGameId)) throw new ArgumentNullException("saveGameId");
-            return new Uri(string.Format("/GameEnd.xaml?{0}={1}&{2}={3}", SaveGameQueryParameterName, saveGameId,
-                                         App.SuppressBackQueryParameterName, Boolean.TrueString), UriKind.Relative);
+            UriConstructor uri = new UriConstructor("/GameEnd.xaml", UriKind.Relative);
+            uri.AddParameter(SaveGameQueryParameterName, saveGameId);
+            uri.AddParameter(App.SuppressBackQueryParameterName, Boolean.TrueString);
+            return uri.ToUri();
         }
 
 

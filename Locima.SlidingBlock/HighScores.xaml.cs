@@ -138,9 +138,10 @@ namespace Locima.SlidingBlock
         /// </summary>
         public static Uri CreateNavigationUri(string label, Uri rawUri)
         {            
-            string uri = string.Format("/HighScores.xaml?{0}={1}&{2}={3}", ButtonLabelQueryParameter, label,
-                ButtonUriQueryParameter, rawUri==null ? String.Empty : HttpUtility.UrlEncode(rawUri.ToString()));
-            return new Uri(uri, UriKind.Relative);
+            UriConstructor uri = new UriConstructor("/Highscores.xaml", UriKind.Relative);
+            uri.AddParameter(ButtonLabelQueryParameter, label);
+            uri.AddParameter(ButtonUriQueryParameter, rawUri==null ? String.Empty : rawUri.ToString());
+            return uri.ToUri();
         }
     }
 }
