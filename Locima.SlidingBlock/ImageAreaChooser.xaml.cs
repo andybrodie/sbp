@@ -105,11 +105,11 @@ namespace Locima.SlidingBlock
         /// <returns></returns>
         public static Uri CreateNavigationUri(string gameTemplateId, int levelIndex, string imageId)
         {
-            return new Uri(
-                string.Format("/ImageAreaChooser.xaml?{0}={1}&{2}={3}&{4}={5}", GameTemplateIdQueryParameterName,
-                              HttpUtility.UrlEncode(gameTemplateId), LevelIndexQueryParameterName, levelIndex,
-                              ImageIdQueryParameterName,
-                              HttpUtility.UrlEncode(imageId)), UriKind.Relative);
+            UriConstructor uri = new UriConstructor("/ImageAreaChooser.xaml", UriKind.Relative);
+            uri.AddParameter(GameTemplateIdQueryParameterName, gameTemplateId);
+            uri.AddParameter(LevelIndexQueryParameterName, levelIndex);
+            uri.AddParameter(ImageIdQueryParameterName, imageId);
+            return uri.ToUri();
         }
 
 

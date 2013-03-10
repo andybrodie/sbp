@@ -17,10 +17,6 @@
 
     <phone:PhoneApplicationPage.Resources>
         <viewModel:LevelEditorViewModel x:Key="ViewModel"/>
-        <Style TargetType="Border" x:Key="AreaBorder">
-            <Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>
-            <Setter Property="BorderThickness" Value="3"/>
-        </Style>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->

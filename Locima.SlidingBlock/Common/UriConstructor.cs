@@ -33,7 +33,7 @@ namespace Locima.SlidingBlock.Common
         /// Adds a new parameter to the query string of the <see cref="Uri"/>
         /// </summary>
         /// <param name="parameterName">The name of the parameter</param>
-        /// <param name="parameterValue">The value of the parameter</param>
+        /// <param name="parameterValue">The value of the parameter, if null then the parameter won't be added</param>
         public void AddParameter(string parameterName, object parameterValue)
         {
             if (parameterValue != null)
