@@ -11,7 +11,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="PortraitOrLandscape"
+    SupportedOrientations="Portrait"
     Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     d:DataContext="{d:DesignData /SampleData/MenuPageViewModelSampleData.xaml}"
