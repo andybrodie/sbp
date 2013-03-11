@@ -5,7 +5,6 @@ using NLog;
 
 namespace Locima.SlidingBlock.Scrambles
 {
-
     /// <summary>
     /// Ensures that any scramble generated is solveable, based on the parity algorithm by Jim Loy: <a href="http://www.jimloy.com/puzz/15.htm">http://www.jimloy.com/puzz/15.htm</a>
     /// </summary>
@@ -13,15 +12,21 @@ namespace Locima.SlidingBlock.Scrambles
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+
+        /// <summary>
+        /// Create the singleton <see cref="Instance" />
+        /// </summary>
+        static ScrambleChecker()
+        {
+            Instance = new ScrambleChecker();
+        }
+
+        
         /// <summary>
         /// Single instance initialised in static initialiser
         /// </summary>
         public static ScrambleChecker Instance { get; private set; }
 
-        static ScrambleChecker()
-        {
-            Instance = new ScrambleChecker();
-        }
 
         /// <summary>
         /// Ensures that a scramble is solveable by fixing it if it's not
@@ -41,7 +46,9 @@ namespace Locima.SlidingBlock.Scrambles
             }
             else
             {
-                Logger.Info("Solved puzzle has parity {0} but scrambled puzzle has parity {1}, so need to correct by swapping first two elements", solvedPuzzleParity, scrambledPuzzleParity);
+                Logger.Info(
+                    "Solved puzzle has parity {0} but scrambled puzzle has parity {1}, so need to correct by swapping first two elements",
+                    solvedPuzzleParity, scrambledPuzzleParity);
                 ArrayTools.SwapElements(scramble, 0, 0, 1, 0);
 
                 // Double check
@@ -49,15 +56,13 @@ namespace Locima.SlidingBlock.Scrambles
             }
         }
 
+        
         /// <summary>
-        /// Used to represent the parity of a puzzle
+        /// Creates the parity list for a solved puzzle of the domensions specified
         /// </summary>
-        private enum Parity
-        {
-            Even,
-            Odd
-        }
-
+        /// <param name="tilesAcross">Number of tiles horizontally in the puzzle</param>
+        /// <param name="tilesHigh">Number of tiles vertically in the puzzle</param>
+        /// <returns>A list ready for <see cref="CalculateParity(int,int)"/> of</returns>
         private List<int> ConvertToParityList(int tilesAcross, int tilesHigh)
         {
             List<int> parityList = new List<int>();
@@ -65,7 +70,7 @@ namespace Locima.SlidingBlock.Scrambles
             {
                 for (int x = 0; x < tilesAcross; x++)
                 {
-                    int number = (y % 2 == 0) ? (x + (y * tilesAcross)) : (((tilesAcross - 1) - x) + (y * tilesAcross));
+                    int number = (y%2 == 0) ? (x + (y*tilesAcross)) : (((tilesAcross - 1) - x) + (y*tilesAcross));
                     parityList.Add(number);
                 }
             }
@@ -78,6 +83,11 @@ namespace Locima.SlidingBlock.Scrambles
         }
 
 
+        /// <summary>
+        /// Creates a parity list from the puzzle positions passed
+        /// </summary>
+        /// <param name="tiles">The representation of any puzzle</param>
+        /// <returns>A list ready to be passed to <see cref="CalculateParity(int,int)"/></returns>
         private IList<int> ConvertToParityList(Position[][] tiles)
         {
             int tilesHigh = tiles.Length;
@@ -87,9 +97,10 @@ namespace Locima.SlidingBlock.Scrambles
             {
                 for (int x = 0; x < tilesAcross; x++)
                 {
-                    int xOffset = (y % 2 == 0) ? x : (tilesAcross - 1) - x;
+                    int xOffset = (y%2 == 0) ? x : (tilesAcross - 1) - x;
                     Position tile = tiles[y][xOffset];
-                    parityList.Add(tile.Y + (tile.X * tilesAcross));
+                    parityList.Add((tile.Y * tilesAcross) + tile.X);
+
                 }
             }
             if (Logger.IsDebugEnabled)
@@ -123,7 +134,8 @@ namespace Locima.SlidingBlock.Scrambles
                         return Parity.Even;
                 }
             }
-            return CalculateParity(ConvertToParityList(tilesAcross, tilesHigh));
+            List<int> parityList = ConvertToParityList(tilesAcross, tilesHigh);
+            return CalculateParity(parityList);
         }
 
 
@@ -148,14 +160,23 @@ namespace Locima.SlidingBlock.Scrambles
         /// puzzle must have the same parity.</remarks>
         /// <param name="list">A puzzle grid, flattened by <see cref="ConvertToParityList(Position[][])"/></param>
         /// <returns>Whether the puzzle is even parity or odd parity.</returns>
-        private Parity CalculateParity(IList<int> list)
+        public Parity CalculateParity(IList<int> list)
         {
             int movesRequiredToSort;
             BubbleSorter.Sort(list, out movesRequiredToSort);
-            Parity parity = movesRequiredToSort % 2 == 0 ? Parity.Even : Parity.Odd;
+            Parity parity = movesRequiredToSort%2 == 0 ? Parity.Even : Parity.Odd;
             Logger.Debug("Required {0} moves to sort, so parity is {1}", movesRequiredToSort, parity);
             return parity;
         }
 
+
+        /// <summary>
+        /// Used to represent the parity of a puzzle
+        /// </summary>
+        public enum Parity
+        {
+            Even,
+            Odd
+        }
     }
 }
