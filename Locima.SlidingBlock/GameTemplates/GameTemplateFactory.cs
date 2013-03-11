@@ -10,7 +10,10 @@ namespace Locima.SlidingBlock.GameTemplates
     public abstract class GameTemplateFactory : IGameTemplateFactory
     {
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// The path to the directory holding the template image files.
+        /// </summary>
+        /// <remarks>Used by <see cref="CreateImageUri"/>, this should look something like this: <c>GameTemplates/Animals/</c></remarks>
         protected abstract string TemplatePath { get; }
 
         /// <summary>
