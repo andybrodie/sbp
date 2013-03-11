@@ -70,8 +70,17 @@ namespace Locima.SlidingBlock.Scrambles
             {
                 for (int x = 0; x < tilesAcross; x++)
                 {
-                    int number = (y%2 == 0) ? (x + (y*tilesAcross)) : (((tilesAcross - 1) - x) + (y*tilesAcross));
-                    parityList.Add(number);
+                    /* Calculate the absolute tile position (i.e. a single integer representing the position of the tile
+                     * by iterating over a each row alterately left to right and right to left.  For example, on a 3 x 3 puzzle, the order is:
+                     * 0 1 2
+                     * 5 4 3
+                     * 7 8 9
+                     * We can achieve this simply by changing the x-offset of the tile we're after to either be based from the left or the right
+                     */
+                    int tilePosition = (y%2 == 0) ? 
+                        (x + (y*tilesAcross)) :     
+                        (((tilesAcross - 1) - x) + (y*tilesAcross));
+                    parityList.Add(tilePosition);
                 }
             }
             if (Logger.IsDebugEnabled)
@@ -124,6 +133,7 @@ namespace Locima.SlidingBlock.Scrambles
         {
             if (tilesAcross == tilesHigh)
             {
+                // Hard-code the parities for solved 3x3, 4x4 and 5x5 puzzles so we don't waste time calculating them
                 switch (tilesAcross)
                 {
                     case 3:
@@ -134,6 +144,7 @@ namespace Locima.SlidingBlock.Scrambles
                         return Parity.Even;
                 }
             }
+            // If it's not a hard-coded one (this code will only ever be called if we extend the game to support weird and wonderful puzzle shapes
             List<int> parityList = ConvertToParityList(tilesAcross, tilesHigh);
             return CalculateParity(parityList);
         }
@@ -175,7 +186,14 @@ namespace Locima.SlidingBlock.Scrambles
         /// </summary>
         public enum Parity
         {
+            /// <summary>
+            /// Even parity means that it takes an even number of swaps in a bubble sort to solve the puzzle
+            /// </summary>
             Even,
+
+            /// <summary>
+            /// Odd parity means that it takes an even number of swaps in a bubble sort to solve the puzzle
+            /// </summary>
             Odd
         }
     }
