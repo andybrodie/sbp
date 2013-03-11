@@ -6,7 +6,7 @@ namespace Locima.SlidingBlock.Common
     /// Thrown when a method or message arrives at an object that is in state incapable of acting on the incoming method invocation or message
     /// </summary>
     /// <remarks>
-    /// Is this is thrown it indicates a defect in the application
+    /// If this is thrown it indicates a defect in the application
     /// </remarks>
     public class InvalidStateException : Exception
     {

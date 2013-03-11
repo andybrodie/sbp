@@ -9,7 +9,6 @@ using NLog;
 
 namespace Locima.SlidingBlock
 {
-
     /// <summary>
     /// Creates a crash report on a file in isolated storage when an uncaught exception is thrown; then when the app is started again the report can be mailed
     /// to me for analysis.
@@ -19,7 +18,7 @@ namespace Locima.SlidingBlock
     /// </remarks>
     public class LittleWatson
     {
-        const string CrashReportFilename = "LittleWatson.txt";
+        private const string CrashReportFilename = "LittleWatson.txt";
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -27,7 +26,7 @@ namespace Locima.SlidingBlock
         {
             try
             {
-                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
                 {
                     IOHelper.DeleteFile(CrashReportFilename, true);
                     Logger.Info("Creating \"{0}\" LittleWatson exception file", CrashReportFilename);
@@ -51,11 +50,14 @@ namespace Locima.SlidingBlock
             try
             {
                 string contents = null;
-                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
                 {
                     if (store.FileExists(CrashReportFilename))
                     {
-                        using (TextReader reader = new StreamReader(store.OpenFile(CrashReportFilename, FileMode.Open, FileAccess.Read, FileShare.None)))
+                        using (
+                            TextReader reader =
+                                new StreamReader(store.OpenFile(CrashReportFilename, FileMode.Open, FileAccess.Read,
+                                                                FileShare.None)))
                         {
                             contents = reader.ReadToEnd();
                         }
@@ -64,8 +66,9 @@ namespace Locima.SlidingBlock
                 }
                 if (contents != null)
                 {
-                    if (MessageBox.Show(LocalizationHelper.GetString("LittleWatson_Message"), 
-                        LocalizationHelper.GetString("LittleWatson_Title"), MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    if (MessageBox.Show(LocalizationHelper.GetString("LittleWatson_Message"),
+                                        LocalizationHelper.GetString("LittleWatson_Title"), MessageBoxButton.OKCancel) ==
+                        MessageBoxResult.OK)
                     {
                         EmailComposeTask email = new EmailComposeTask
                             {
@@ -80,14 +83,14 @@ namespace Locima.SlidingBlock
             }
             catch (Exception e)
             {
+                // Don't let errors in LittleWatson cause any impacts on the overall running of the app
                 Logger.ErrorException("Error ocurred in LittleWatson", e);
             }
             finally
             {
+                // Clean up the LittleWatson file
                 IOHelper.DeleteFile(CrashReportFilename, true);
             }
         }
-
-        
     }
 }
