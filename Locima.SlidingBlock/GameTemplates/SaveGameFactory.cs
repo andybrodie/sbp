@@ -68,7 +68,8 @@ namespace Locima.SlidingBlock.GameTemplates
                                          : levelDefinition.ScrambleType;
 //            scrambleType = levelDefinition.ScrambleType;
 
-            Position blankTilePosition = new Position(tilesAcross - 1, tilesHigh - 1); // TODO Make this random?
+            Random r = new Random();
+            Position blankTilePosition = new Position(r.Next(tilesAcross), r.Next(tilesHigh));
 
             Logger.Info("Creating LevelState from LevelDefinition {0} for {1}x{2} using scramble {3} with blank tile at {4}", levelDefinition, tilesAcross, tilesHigh, scrambleType, blankTilePosition);
 
