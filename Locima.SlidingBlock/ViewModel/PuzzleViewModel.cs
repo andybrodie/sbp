@@ -584,7 +584,7 @@ namespace Locima.SlidingBlock.ViewModel
             WriteableBitmap thumbnail = _puzzleModel.Image;
             thumbnail.Resize(LevelState.ThumbnailSize, LevelState.ThumbnailSize,
                                  WriteableBitmapExtensions.Interpolation.Bilinear);
-
+            _currentGame.CurrentLevel.Thumbnail = thumbnail;
             _currentGame.CurrentLevelIndex++;
             SaveGameStorageManager.Instance.SaveGame(_currentGame);
 
