@@ -97,10 +97,10 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
                 foreach (string filename in fileNames)
                 {
                     // Remember to put the path prefix back on, or you'll get a FileNotFoundException
-                    SaveGame wibble = Load(string.Format("{0}{1}{2}", SaveGameDirectory, PathSeparator, filename));
-                    if (wibble.LocalPlayer.PlayerDetailsId == playerId)
+                    SaveGame saveGame = Load(string.Format("{0}{1}{2}", SaveGameDirectory, PathSeparator, filename));
+                    if (saveGame.LocalPlayerId == playerId)
                     {
-                        puzzles.Add(wibble);
+                        puzzles.Add(saveGame);
                     }
                 }
             }

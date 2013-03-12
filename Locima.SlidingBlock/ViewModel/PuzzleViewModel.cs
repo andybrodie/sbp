@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
@@ -437,6 +436,29 @@ namespace Locima.SlidingBlock.ViewModel
 
 
         /// <summary>
+        /// Finds the position of the tile in <paramref name="tiles"/> that has the solved position passed by <paramref name="solvedPosition"/>
+        /// </summary> 
+        /// <param name="tiles">The tile grid to search</param>
+        /// <param name="solvedPosition">The solved position of the tile to find</param>
+        /// <returns>The position of the tile that belongs at <paramref name="solvedPosition"/></returns>
+        private Position FindTilePosition(Position[][] tiles, Position solvedPosition)
+        {
+            for (int y = 0; y < tiles.Length; y++)
+            {
+                for (int x = 0; x < tiles[y].Length; x++)
+                {
+                    if (tiles[y][x].Equals(solvedPosition))
+                    {
+                        Position foundPosition = new Position(x, y);
+                        Logger.Info("Found tile {0} at {1}", solvedPosition, foundPosition);
+                        return foundPosition;
+                    }
+                }
+            }
+            throw new InvalidStateException("Unable to find tile with solved position {0} in tiles", solvedPosition);
+        }
+
+        /// <summary>
         /// Reconfigure this view model with the <paramref name="game"/>, showing <see cref="SaveGame.CurrentLevel"/>
         /// </summary>
         /// <remarks>
@@ -450,7 +472,7 @@ namespace Locima.SlidingBlock.ViewModel
             _puzzleModel.Initialise(game.CurrentLevel);
 
             _puzzleModel.AddPlayer(game.LocalPlayerDetails.Name, PlayerType.Local,
-                                   game.LocalPlayerDetails.PreferredColor, game.LocalPlayer.Position);
+                                   game.LocalPlayerDetails.PreferredColor, FindTilePosition(game.CurrentLevel.SolvedTilePositions, game.CurrentLevel.BlankTilePosition));
 
             // TODO What about remote players, how do we bring them in to the mix ?  Probably via a popup/Task equivalent that pauses the game until all remote players joined, or something!
 
@@ -564,7 +586,6 @@ namespace Locima.SlidingBlock.ViewModel
                                  WriteableBitmapExtensions.Interpolation.Bilinear);
 
             _currentGame.CurrentLevelIndex++;
-            _currentGame.LocalPlayer.Position = new Position(0,0);
             SaveGameStorageManager.Instance.SaveGame(_currentGame);
 
             // Move on to the next level, or redirect to the "Game Completed" page
@@ -683,16 +704,17 @@ namespace Locima.SlidingBlock.ViewModel
         /// This should be called before persisting the <see cref="SaveGame"/></remarks>
         private void UpdateCurrentGame()
         {
+            LevelState currentLevel = _currentGame.CurrentLevel;
             // Stop the stopwatch
-            _currentGame.CurrentLevel.MoveCount = MoveCount;
-            _currentGame.CurrentLevel.ElapsedTime = _puzzleModel.Stopwatch.ElapsedTime;
+            currentLevel.MoveCount = MoveCount;
+            currentLevel.ElapsedTime = _puzzleModel.Stopwatch.ElapsedTime;
 
             // Copy down tile positions from current grid in to the save game
-            _currentGame.CurrentLevel.SolvedTilePositions = _puzzleModel.GetCurrentPuzzleState();
-            _currentGame.LocalPlayer.Position = _puzzleModel.LocalPlayer.Position;
+            currentLevel.SolvedTilePositions = _puzzleModel.GetCurrentPuzzleState();
+            currentLevel.BlankTilePosition = _puzzleModel.LocalPlayer.Position;
 
             // Create the thumbnail image
-            _currentGame.CurrentLevel.Thumbnail = CreateThumbnailBitmap();
+            currentLevel.Thumbnail = CreateThumbnailBitmap();
         }
 
 
