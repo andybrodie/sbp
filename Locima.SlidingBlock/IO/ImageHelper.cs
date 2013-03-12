@@ -71,7 +71,7 @@ namespace Locima.SlidingBlock.IO
             {
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    bitmap.SaveJpeg(ms, bitmap.PixelWidth, bitmap.PixelHeight, 0, JpegQuality);
+                    bitmap.SaveJpeg(ms, width, height, 0, JpegQuality);
                     jpegData = ms.ToArray();
                     Logger.Info("Saved {0} by {1} JPEG of {2} bytes", width, height, jpegData.Length);
                 }
