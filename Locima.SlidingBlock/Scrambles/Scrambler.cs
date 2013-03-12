@@ -85,8 +85,9 @@ namespace Locima.SlidingBlock.Scrambles
         /// <param name="type">The type of scramble to apply</param>
         /// <param name="tilesAcross">Horizontal dimension of the puzzle</param>
         /// <param name="tilesHigh">Vertical dimension of the puzzle</param>
+        /// <param name="blankTile">The position that the blank tile should be in the solved puzzle</param>
         /// <returns>A grid of solved positions for each each tile</returns>
-        public Position[][] Scramble(ScrambleType type, int tilesAcross, int tilesHigh)
+        public Position[][] Scramble(ScrambleType type, int tilesAcross, int tilesHigh, Position blankTile)
         {
             Position[][] scramble;
             Logger.Info("Creating scramble {0} for a grid {1} x {2}", type, tilesAcross, tilesHigh);
@@ -109,7 +110,8 @@ namespace Locima.SlidingBlock.Scrambles
                     break;
                     case ScrambleType.OneMoveToFinish:
                     scramble = IdentityScramble(tilesAcross, tilesHigh);
-                    ArrayTools.SwapElements(scramble, 0, 0, 1, 0);
+                    int swapTile = blankTile.X + ((blankTile.X == tilesAcross - 1) ? -1 : 1);
+                    ArrayTools.SwapElements(scramble, blankTile.X, blankTile.Y, swapTile, blankTile.Y); // BUG This is sawpping the wrong tile
                     break;
                 case ScrambleType.Shuffle:
                     scramble = ShuffleScramble(tilesAcross, tilesHigh, 100); // Picked an arbitrary number of 100 moves, TODO make this link to difficulty or something!
@@ -121,7 +123,7 @@ namespace Locima.SlidingBlock.Scrambles
             }
 
             // There's a 50/50 chance that any scramble is unsolveable, this method call ensures that the puzzle is solveable.
-            ScrambleChecker.Instance.EnsureSolveable(scramble);
+            ScrambleChecker.Instance.EnsureSolveable(scramble, blankTile);
             return scramble;
         }
 

@@ -44,11 +44,7 @@ namespace Locima.SlidingBlock.GameTemplates
             SaveGame sg = new SaveGame {GameType = SaveGame.GameTypes.SinglePlayer, GameDefinitionId = gameTemplate.Id};
 
             // TODO Allow the level definition to set the player tile
-            sg.LocalPlayer = new PlayerLink
-                                 {
-                                     PlayerDetailsId = PlayerStorageManager.Instance.CurrentPlayer.Id,
-                                     Position = new Position {X = 0, Y = 0}
-                                 };
+            sg.LocalPlayerId = PlayerStorageManager.Instance.CurrentPlayer.Id;
 
             Logger.Info("Creating a new SaveGame for {0} using {1} x {2} tile grid",
                         PlayerStorageManager.Instance.CurrentPlayer.Name, tilesAcross, tilesHigh);
@@ -70,14 +66,19 @@ namespace Locima.SlidingBlock.GameTemplates
             Scrambler.ScrambleType scrambleType = Debugger.IsAttached
                                          ? Scrambler.ScrambleType.OneMoveToFinish
                                          : levelDefinition.ScrambleType;
-            Logger.Info("Creating LevelState from LevelDefinition {0} for {1}x{2} using scramble {3}", levelDefinition, tilesAcross, tilesHigh, scrambleType);
+//            scrambleType = levelDefinition.ScrambleType;
+
+            Position blankTilePosition = new Position(tilesAcross - 1, tilesHigh - 1); // TODO Make this random?
+
+            Logger.Info("Creating LevelState from LevelDefinition {0} for {1}x{2} using scramble {3} with blank tile at {4}", levelDefinition, tilesAcross, tilesHigh, scrambleType, blankTilePosition);
 
             LevelState level = new LevelState
                                    {
                                        ImageId = levelDefinition.ImageId,
                                        XapImageUri = levelDefinition.XapImageUri,
                                        ElapsedTime = new TimeSpan(0),
-                                       SolvedTilePositions = Scrambler.Instance.Scramble(scrambleType, tilesAcross, tilesHigh),
+                                       BlankTilePosition = blankTilePosition,
+                                       SolvedTilePositions = Scrambler.Instance.Scramble(scrambleType, tilesAcross, tilesHigh, blankTilePosition),
                                        Title = levelDefinition.ImageTitle,
                                        Text = levelDefinition.ImageText,
                                        License = levelDefinition.License,

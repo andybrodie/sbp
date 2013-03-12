@@ -87,22 +87,22 @@ namespace Locima.SlidingBlock.Persistence
 
 
         /// <summary>
-        /// The local player's position and ID
+        /// The local player's ID
         /// </summary>
         [DataMember]
-        public PlayerLink LocalPlayer { get; set; }
-
+        public string LocalPlayerId { get; set; }
+        
 
         /// <summary>
         /// Shorthand for <see cref="IPlayerStorageManager.CurrentPlayer"/>
         /// </summary>
-        /// <remarks>Also asserts that <see cref="LocalPlayer"/>'s <see cref="PlayerLink.PlayerDetailsId"/> member matches <see cref="PlayerDetails.Id"/>.  If it doesn't, then
+        /// <remarks>Also asserts that <see cref="LocalPlayerId"/>'s <see cref="PlayerLink.PlayerDetailsId"/> member matches <see cref="PlayerDetails.Id"/>.  If it doesn't, then
         /// we've loaded this save game with the wrong player profile active.</remarks>
         public PlayerDetails LocalPlayerDetails
         {
             get
             {
-                Debug.Assert(LocalPlayer.PlayerDetailsId.Equals(PlayerStorageManager.Instance.CurrentPlayer.Id));
+                Debug.Assert(LocalPlayerId.Equals(PlayerStorageManager.Instance.CurrentPlayer.Id));
                 return PlayerStorageManager.Instance.CurrentPlayer;
             }
         }

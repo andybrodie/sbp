@@ -186,6 +186,12 @@ namespace Locima.SlidingBlock.Persistence
         public Uri ImageLink { get; set; }
 
         /// <summary>
+        /// The solved position of the blank tile
+        /// </summary>
+        [DataMember]
+        public Position BlankTilePosition { get; set; }
+
+        /// <summary>
         ///   Re-initialises any non-serialised objects which require initialisation (typically via a constructor which isn't called during deserialisation)
         /// </summary>
         [OnDeserializing]
