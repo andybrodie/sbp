@@ -157,7 +157,7 @@ namespace Locima.SlidingBlock
         #region Phone application initialization
 
         // Avoid double-initialization
-        private bool _phoneApplicationInitialized = false;
+        private bool _phoneApplicationInitialized;
 
         // Do not add any additional code to this method
         private void InitializePhoneApplication()
