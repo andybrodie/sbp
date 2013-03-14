@@ -33,15 +33,20 @@ namespace Locima.SlidingBlock.Scrambles
         /// Ensures that a scramble is solveable by fixing it if it's not
         /// </summary>
         /// <param name="scramble">The scrambled puzzle</param>
-        /// <param name="blankTile">The position of the blank tile in the solved puzzle</param>
-        public void EnsureSolveable(Position[][] scramble, Position blankTile)
+        /// <param name="blankTileInSolvedPuzzle">The position of the blank tile in the solved puzzle</param>
+        public void EnsureSolveable(Position[][] scramble, Position blankTileInSolvedPuzzle)
         {
             int tilesAcross = scramble[0].Length;
             int tilesHigh = scramble.Length;
-            Parity solvedPuzzleParity = CalculateParity(tilesAcross, tilesHigh, blankTile);
-            Logger.Debug("Parity of solved puzzle = {0}", solvedPuzzleParity);
 
-            Parity scrambledPuzzleParity = CalculateParity(scramble, blankTile);
+            // First calculate the parity of the solved puzzle.  In order to be solveable this must have the same parity as the scrambled puzzle
+            Parity solvedPuzzleParity = CalculateParity(tilesAcross, tilesHigh, blankTileInSolvedPuzzle);
+            Logger.Debug("Parity of solved puzzle with blank tile at {0} = {1}", blankTileInSolvedPuzzle, solvedPuzzleParity);
+
+            // Find the position of the blank tile in the scramble
+            Position blankTileInScramble = FindTile(scramble, blankTileInSolvedPuzzle);
+           
+            Parity scrambledPuzzleParity = CalculateParity(scramble, blankTileInScramble);
             Logger.Debug("Parity of scrambled puzzle = {0}", scrambledPuzzleParity);
             if (scrambledPuzzleParity == solvedPuzzleParity)
             {
@@ -54,14 +59,34 @@ namespace Locima.SlidingBlock.Scrambles
                     "Solved puzzle has parity {0} but scrambled puzzle has parity {1}, so need to correct by swapping two tiles (neither of which can be the blank tile)",
                     solvedPuzzleParity, scrambledPuzzleParity);
                 // We know we've got at least 2 rows, so if the blank tile is in the 1st row, go for the 2nd, or vice versa
-                int rowToSwap = blankTile.Y == 0 ? 1 : 0;
+                int rowToSwap = blankTileInScramble.Y == 0 ? 1 : 0;
+                Logger.Info("Blank tile is on row {0}, so swapping 0,{1} and 1,{1}", blankTileInScramble.Y, rowToSwap);
                 ArrayTools.SwapElements(scramble, 0, rowToSwap, 1, rowToSwap);
 
                 // Double check
-                scrambledPuzzleParity = CalculateParity(scramble, blankTile);
+                scrambledPuzzleParity = CalculateParity(scramble, blankTileInScramble);
                 Logger.Info("New scrambled puzzle parity is {0}", scrambledPuzzleParity);
                 Debug.Assert(scrambledPuzzleParity==solvedPuzzleParity);
             }
+        }
+
+
+        private Position FindTile(Position[][] puzzle, Position tileToSearchFor)
+        {
+            for (int y = 0; y < puzzle.Length; y++)
+            {
+                for (int x = 0; x < puzzle[y].Length; x++)
+                {
+                    Position solvedPositionOfTile = puzzle[y][x];
+                    if (solvedPositionOfTile.Equals(tileToSearchFor))
+                    {
+                        Position foundPosition = new Position(x, y);
+                        Logger.Info("Found tile {0} at position {1}", tileToSearchFor, foundPosition);
+                        return foundPosition;
+                    }
+                }
+            }
+            throw new InvalidStateException("Could not find {0} in {1}", tileToSearchFor, ArrayTools.ArrayToString(puzzle));
         }
 
 
@@ -87,9 +112,8 @@ namespace Locima.SlidingBlock.Scrambles
                      * 7 8 9
                      * We can achieve this simply by changing the x-offset of the tile we're after to either be based from the left or the right
                      */
-                    int tilePosition = (y%2 == 0) ? 
-                        (x + (y*tilesAcross)) :     
-                        (((tilesAcross - 1) - x) + (y*tilesAcross));
+                    int tilePosition = y*tilesAcross;
+                    tilePosition += (y%2 == 0) ? x : ((tilesAcross - 1) - x);
                     parityList.Add(tilePosition);
                 }
             }
@@ -106,7 +130,7 @@ namespace Locima.SlidingBlock.Scrambles
         /// Creates a parity list from the puzzle positions passed
         /// </summary>
         /// <param name="tiles">The representation of any puzzle</param>
-        /// <param name="blankTile">The position of the blank tile in the solved puzzle</param>
+        /// <param name="blankTile">The position of the blank tile</param>
         /// <returns>A list ready to be passed to <see cref="CalculateParity(int,int,Locima.SlidingBlock.Common.Position)"/></returns>
         private IList<int> ConvertToParityList(Position[][] tiles, Position blankTile)
         {
@@ -117,15 +141,18 @@ namespace Locima.SlidingBlock.Scrambles
             {
                 for (int x = 0; x < tilesAcross; x++)
                 {
+                    // Calculate the x co-ordinate in the row making sure that odd numbered rows are traversed right to left
                     int xOffset = (y%2 == 0) ? x : (tilesAcross - 1) - x;
                     Position tile = tiles[y][xOffset];
-                    if (!tile.Equals(blankTile)) // Ignore the blank tile in creating the parity list
+                    if (blankTile.X == x && blankTile.Y == y)
                     {
-                        parityList.Add((tile.Y*tilesAcross) + tile.X);
+                        // Ignore the blank tile in creating the parity list
+                        Logger.Debug("Ignoring tile {0} (position {1} in the list) as it is the blank tile", blankTile,
+                                     parityList.Count);
                     }
                     else
                     {
-                        Logger.Debug("Ignoring tile {0} as it is the blank tile", blankTile);
+                        parityList.Add((tile.Y*tilesAcross) + tile.X);
                     }
                 }
             }
@@ -158,7 +185,7 @@ namespace Locima.SlidingBlock.Scrambles
         /// calling <see cref="CalculateParity(System.Collections.Generic.IList{int})"/>
         /// </summary>
         /// <param name="tiles">The tiles (typically this would be calculated by a scramble)</param>
-        /// <param name="blankTile">The position of the blank tile in the solved puzzle</param>
+        /// <param name="blankTile">The position of the blank tile</param>
         /// <returns>The calculated parity of the puzzle</returns>
         private Parity CalculateParity(Position[][] tiles, Position blankTile)
         {
