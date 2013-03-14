@@ -1,14 +1,13 @@
 using System;
+using System.Text;
 
 namespace Locima.SlidingBlock.Common
 {
-
     /// <summary>
     /// Various tools for creating and converting 1D and 2D arrays
     /// </summary>
     public class ArrayTools
     {
-
         /// <summary>
         /// Converts an array of type <typeparamref name="TSourceType"/> to a similarly sized array of <typeparamref name="TOutputType"/>
         /// </summary>
@@ -38,7 +37,7 @@ namespace Locima.SlidingBlock.Common
         /// <param name="converter">A function to a single element in <paramref name="inputArray"/> to a single element in the output array</param>
         /// <returns>An identically sized array to <paramref name="inputArray"/>, but each element will be of type <typeparamref name="TOutputType"/></returns>
         public static TOutputType[][] ConvertTo<TSourceType, TOutputType>(TSourceType[][] inputArray,
-                                                                        Func<TSourceType, TOutputType> converter)
+                                                                          Func<TSourceType, TOutputType> converter)
         {
             if (inputArray == null) return null;
             TOutputType[][] outputArray = new TOutputType[(inputArray.Length)][];
@@ -73,14 +72,13 @@ namespace Locima.SlidingBlock.Common
             for (int y = 0; y < yDim; y++)
             {
                 array[y] = new T[xDim];
-                if (elementFactory!=null)
+                if (elementFactory != null)
                 {
-                    for (int x=0; x<xDim; x++)
+                    for (int x = 0; x < xDim; x++)
                     {
                         array[y][x] = elementFactory(x, y);
                     }
                 }
-
             }
             return array;
         }
@@ -100,6 +98,24 @@ namespace Locima.SlidingBlock.Common
             T swap = array[y1][x1];
             array[y1][x1] = array[y2][x2];
             array[y2][x2] = swap;
+        }
+
+
+        /// <summary>
+        /// Outputs a 2D array to the Debug log
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        public static string ArrayToString<T>(T[][] array)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (T[] row in array)
+            {
+                sb.Append('(');
+                sb.Append(String.Join(",", row));
+                sb.Append(")\n");
+            }
+            return sb.ToString();
         }
     }
 }
