@@ -1024,7 +1024,7 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No name.
+        ///   Looks up a localized string similar to no name.
         /// </summary>
         public static string UnnamedPlayer {
             get {
