@@ -546,7 +546,7 @@
     <comment>Label on the main game screen indicating the amount of time the player has been on this level</comment>
   </data>
   <data name="UnnamedPlayer" xml:space="preserve">
-    <value>No name</value>
+    <value>no name</value>
     <comment>The name given to a player where the player name has been set to an empty string</comment>
   </data>
 </root>
