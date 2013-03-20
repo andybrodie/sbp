@@ -56,7 +56,10 @@
     <Item Title="history"
           Type="text">
       1.0.0.0
-      This is the initial public version.      
+      This is the initial public version.
+      
+      1.0.0.1
+      Fixed bug that caused blank tile to jump about on suspend/resume, making the puzzle impossible on some occasions.
     </Item>
 
     <Item Title="acknowledgements" Type="xaml">
