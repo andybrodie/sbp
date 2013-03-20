@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -471,6 +470,7 @@ namespace Locima.SlidingBlock.ViewModel
             // Set up the model based on the current level
             _puzzleModel.Initialise(game.CurrentLevel);
 
+            // NOTE
             _puzzleModel.AddPlayer(game.LocalPlayerDetails.Name, PlayerType.Local,
                                    game.LocalPlayerDetails.PreferredColor, FindTilePosition(game.CurrentLevel.SolvedTilePositions, game.CurrentLevel.BlankTilePosition));
 
@@ -711,7 +711,7 @@ namespace Locima.SlidingBlock.ViewModel
 
             // Copy down tile positions from current grid in to the save game
             currentLevel.SolvedTilePositions = _puzzleModel.GetCurrentPuzzleState();
-            currentLevel.BlankTilePosition = _puzzleModel.LocalPlayer.Position;
+//            currentLevel.BlankTilePosition = _puzzleModel.LocalPlayer.Position;
 
             // Create the thumbnail image
             currentLevel.Thumbnail = CreateThumbnailBitmap();
