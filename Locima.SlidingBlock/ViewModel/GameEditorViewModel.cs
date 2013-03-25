@@ -392,7 +392,7 @@ namespace Locima.SlidingBlock.ViewModel
         public void DeleteLevel(LevelDefinition level)
         {
             Logger.Info("Deleting level {0}", this);
-            // Don't forget Andy, you CAN'T delete the image in level.ImageId yet, because the user might decide not to save change.
+            // Just remove from the list of visible levels, don't actually delete any images because the user might abandon changes
             _gameTemplate.Levels.Remove(level);
             SaveTemplateAndResyncViewModel();
         }
