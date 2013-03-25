@@ -221,16 +221,41 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         /// <summary>
         /// Deletes a game template
         /// </summary>
+        /// <remarks>
+        /// Note that we don't tidy up images that might be orphaned by the deletion of the game template.  We do that in the initialiser of the GameTemplateSelector, as we're
+        /// loading all the templates anyway at that stage. </remarks>
         /// <param name="id">The identity of the game template</param>
         public void Delete(string id)
-        {           
-            if (IOHelper.FileExists(id))
+        {
+            Logger.Info("Deleting game template file {0}", id);
+            IOHelper.DeleteFile(id);
+            RemoveOrphanedImages();
+        }
+
+
+        /// <summary>
+        /// Searches for all orphaned images (i.e. images which don't have a reference in a <see cref="LevelDefinition.ImageId"/> within a <see cref="GameTemplate"/>
+        /// </summary>
+        private void RemoveOrphanedImages()
+        {
+            // Load *all* the game templates, valid or not, shadow or not
+            List<GameTemplate> allTemplates = GetGameTemplates(true, false, true);
+            // Get a list of al the images used across all game templates
+            IEnumerable<string> imagesReferenced = (from gameTemplate in allTemplates 
+                                     from level in gameTemplate.Levels where !string.IsNullOrEmpty(level.ImageId)
+                                     select level.ImageId).Distinct();
+
+            // Get a list of all the images
+            IEnumerable<string> imagesFound = ImageStorageManager.Instance.ListImages(false);
+
+            // All the images found minus all the images used equals the list of orphaned images to delete
+            List<string> unreferencedImages = imagesFound.Except(imagesReferenced).ToList();
+
+            Logger.Info("Deleting {0} unreferenced images", unreferencedImages.Count);
+            foreach (string imageId in unreferencedImages)
             {
-                Delete(Load(id));
-            }
-            else
-            {
-                Logger.Warn("Call to delete game template that doesn't exist ignored {0}", id);
+                Logger.Info("Deleting unreferenced image: {0}", imageId);
+                ImageStorageManager.Instance.Delete(imageId);
             }
         }
 
@@ -241,19 +266,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         /// <param name="gameTemplate">The game template to delete</param>
         public void Delete(GameTemplate gameTemplate)
         {
-            Logger.Info("Deleting all non-XAP images associated with game {0}", gameTemplate);
-            if (gameTemplate.Levels != null)
-            {
-                foreach (LevelDefinition level in gameTemplate.Levels)
-                {
-                    if (level.ImageId != null)
-                    {
-                        ImageStorageManager.Instance.Delete(level.ImageId);
-                    }
-                }
-            }
-            Logger.Info("Deleting game template file {0}", gameTemplate.Id);
-            IOHelper.DeleteFile(gameTemplate.Id);
+            Delete(gameTemplate.Id);
         }
 
 
