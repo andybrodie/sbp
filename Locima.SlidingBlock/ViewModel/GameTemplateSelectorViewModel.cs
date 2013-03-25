@@ -79,7 +79,8 @@ namespace Locima.SlidingBlock.ViewModel
                 String.Compare(definition.Title, gameTemplate.Title, StringComparison.InvariantCultureIgnoreCase));
             foreach (GameTemplate gameTemplate in gameTemplates)
             {
-                GameTemplateList.Add(new GameTemplateViewModel(this, gameTemplate));
+                GameTemplateViewModel gtvm = new GameTemplateViewModel(this, gameTemplate);
+                GameTemplateList.Add(gtvm);
             }
 
         }
