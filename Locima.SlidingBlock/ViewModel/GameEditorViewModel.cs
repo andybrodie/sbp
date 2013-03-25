@@ -243,7 +243,7 @@ namespace Locima.SlidingBlock.ViewModel
         {
             if ("IsEditable" == propertyChangedEventArgs.PropertyName)
             {
-                Logger.Debug("Firing CanExecuteChanged events as IsEditable has been changed");
+                Logger.Debug("Firing CanExecuteChanged events as IsEditable has been changed to {0}", IsEditable);
                 ((DelegateCommand)ConfirmCancelCommand).RaiseCanExecuteChanged();
                 ((DelegateCommand)SaveFinalTemplateChangesCommand).RaiseCanExecuteChanged();
                 ((DelegateCommand)AppendLevelCommand).RaiseCanExecuteChanged();
