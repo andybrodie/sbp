@@ -1,3 +1,5 @@
+using System;
+using System.ComponentModel;
 using System.Windows.Input;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.GameTemplates;
@@ -27,12 +29,23 @@ namespace Locima.SlidingBlock.ViewModel
         public GameTemplateViewModel(GameTemplateSelectorViewModel parent, GameTemplate game)
         {
             ShareMessageHandlers(parent);
+            PropertyChanged += OnPropertyChanged;
             Title = game.Title;
+            if (game.IsShadow) Title += "*";
             Id = game.Id;
             IsReadOnly = game.IsReadOnly;
-            DeleteGameTemplateCommand = new DelegateCommand(DeleteGameTemplateAction);
+            DeleteGameTemplateCommand = new DelegateCommand(DeleteGameTemplateAction, o => !IsReadOnly);
             CopyGameTemplateCommand = new DelegateCommand(CopyGameTemplateAction);
             Parent = parent;
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            if (propertyChangedEventArgs.PropertyName == "IssReadOnly")
+            {
+                Logger.Debug("Notifying that CanExecute has changed to allow context menu item enable/disable");
+                ((DelegateCommand)DeleteGameTemplateCommand).RaiseCanExecuteChanged();
+            }
         }
 
 
