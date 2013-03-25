@@ -142,6 +142,15 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to * indicates unsaved changes made.
+        /// </summary>
+        public static string AsteriskOnTemplateSelect {
+            get {
+                return ResourceManager.GetString("AsteriskOnTemplateSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to author.
         /// </summary>
         public static string AuthorName {

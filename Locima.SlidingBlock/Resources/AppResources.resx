@@ -153,6 +153,10 @@
     <value>SLIDING BLOCK</value>
     <comment>The title of the application</comment>
   </data>
+  <data name="AsteriskOnTemplateSelect" xml:space="preserve">
+    <value>* indicates unsaved changes made</value>
+    <comment>The footnote on GameTemplateSelector.xaml for changes made to a puzzle that haven't been saved</comment>
+  </data>
   <data name="AuthorName" xml:space="preserve">
     <value>author</value>
     <comment>GameEditor prompt for author name</comment>
