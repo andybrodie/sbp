@@ -216,9 +216,17 @@ namespace Locima.SlidingBlock.ViewModel
                 }
                 else
                 {
-                    _gameTemplate.MakeShadow();
-                    Logger.Debug("Editing existing game template {0}, so creating shadow {1}", _gameTemplate.ShadowOf,
-                                 _gameTemplate.Id);
+                    if (_gameTemplate.IsReadOnly)
+                    {
+                        Logger.Debug("Not creating shadow as template {0}({1}) is read only", _gameTemplate.Title, _gameTemplate.Id);
+                    }
+                    else
+                    {
+                        _gameTemplate.MakeShadow();
+                        Logger.Debug("Editing existing game template {0}, so creating shadow {1}",
+                                     _gameTemplate.ShadowOf,
+                                     _gameTemplate.Id);
+                    }
                 }
             }
             else
