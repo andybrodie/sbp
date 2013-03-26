@@ -100,7 +100,7 @@ namespace Locima.SlidingBlock.GameTemplates
         public WriteableBitmap CreateThumbnail(int width, int height)
         {
             WriteableBitmap bitmap = GetImage();
-            Logger.Info("Creating a {0}x{1} thumbnail of the {2}x{3} iamge", width, height, _image.PixelWidth,
+            Logger.Info("Creating a {0}x{1} thumbnail of the {2}x{3} image", width, height, _image.PixelWidth,
                         _image.PixelHeight);
             WriteableBitmap thumbnail = bitmap.Clone();
             thumbnail.Resize(width, height, WriteableBitmapExtensions.Interpolation.Bilinear);
