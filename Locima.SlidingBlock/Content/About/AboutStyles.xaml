@@ -7,7 +7,8 @@
 
     <!-- About Page -->
     <Style x:Key="AboutPageStyle"
-           TargetType="controls:PhoneApplicationPage">
+           TargetType="controls:PhoneApplicationPage"
+           BasedOn="{StaticResource TransitionPageStyle}">
         <Setter Property="FontFamily"
                 Value="{StaticResource PhoneFontFamilyNormal}" />
         <Setter Property="FontSize"
