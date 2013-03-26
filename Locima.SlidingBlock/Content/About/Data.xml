@@ -41,11 +41,11 @@
         <!-- By using different protocols like http or mailto you can invoke the respective applications -->
         <!-- The Label attribute defines an additional label placed in front of the hyperlink -->
         <!-- Use this to provide contact/support details for your app -->
-        <Link NavigateUri="http://www.example.com"
-              Content="http://www.example.com"
+        <Link NavigateUri="http://sbp.codeplex.com"
+              Content="http://sbp.codeplex.com"
               Label="Web:" />
-        <Link NavigateUri="mailto:slidingblocksupport@locima.co.uk"
-              Content="slidingblocksupport@locima.co.uk"
+        <Link NavigateUri="mailto:sbp@locima.co.uk"
+              Content="sbp@locima.co.uk"
               Label="Support:" />
       </Links>
     </MainItem>
@@ -60,6 +60,9 @@
       
       1.0.0.1
       Fixed bug that caused blank tile to jump about on suspend/resume, making the puzzle impossible on some occasions.
+      
+      1.0.0.2
+      Fixed bug that caused custom images to be deleted when updating a game template.      
     </Item>
 
     <Item Title="acknowledgements" Type="xaml">
