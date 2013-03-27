@@ -163,6 +163,11 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// </summary>
         public static readonly Func<bool> AlwaysEnabled = () => true;
 
+
+        /// <summary>
+        /// Initialises this view model with the model passed in <paramref name="menuItemModel"/>
+        /// </summary>
+        /// <param name="menuItemModel">The model to use for this viewmodel</param>
         public MenuItemViewModel(MenuItemModel menuItemModel)
         {
             Icon = menuItemModel.Icon;

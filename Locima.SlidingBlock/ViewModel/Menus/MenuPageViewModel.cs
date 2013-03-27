@@ -13,13 +13,12 @@ namespace Locima.SlidingBlock.ViewModel.Menus
     public class MenuPageViewModel : ViewModelBase
     {
 
-
-
         /// <summary>
         /// Backing field for <see cref="MenuItems"/>
         /// </summary>
         private ObservableCollection<MenuItemViewModel> _menuItems;
 
+        /// <summary>
         /// Backing field for <see cref="PageTitle"/>
         /// </summary>
         private string _pageTitle;
@@ -28,12 +27,6 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// Backing field for <see cref="ActivePlayerName"/>
         /// </summary>
         private string _activePlayerName;
-
-        /// <summary>
-        /// Contains MVVM model for this view model
-        /// </summary>
-        private MenuPageModel _model;
-
 
         /// <summary>
         /// Default constructor used in page creation
