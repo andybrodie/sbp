@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.GameTemplates;
 using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Persistence;
+using Locima.SlidingBlock.ViewModel;
 using Microsoft.Phone.Shell;
 using NLog;
 
-namespace Locima.SlidingBlock.ViewModel.Menus
+namespace Locima.SlidingBlock.Model
 {
     /// <summary>
     /// Brokers different menu pages, allowing a single XAML page (<see cref="MainPage"/>) to be reused for all menus
@@ -23,7 +25,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// <summary>
         /// Holds the different menu pages available, see <see cref="MenuPageBroker"/>
         /// </summary>
-        private static readonly Dictionary<string, Func<IEnumerable<JournalEntry>,MenuPageViewModel>> Menus;
+        private static readonly Dictionary<string, Func<IEnumerable<JournalEntry>, MenuPageModel>> Menus;
 
         /// <summary>
         /// Initialises the different named menu pages that are available
@@ -33,7 +35,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// to create the menu page rather than just instantiate it immediately.</remarks>
         static MenuPageBroker()
         {
-            Menus = new Dictionary<string, Func<IEnumerable<JournalEntry>,MenuPageViewModel>>
+            Menus = new Dictionary<string, Func<IEnumerable<JournalEntry>,MenuPageModel>>
                         {
                             {
                                 // The first page the user sees
@@ -50,10 +52,23 @@ namespace Locima.SlidingBlock.ViewModel.Menus
                             {
                                 // Select a game template
                                 "SelectGameTemplate", CreateGameTemplateSelector
+                            },
+                            {
+                                // Select an image source (used in ImageChooser.xaml)
+                                "ImageChoosers", CreateImageChoosersSelector
                             }
                         };
         }
 
+        private static MenuPageModel CreateImageChoosersSelector(IEnumerable<JournalEntry> arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Used by <see cref="SelectedTemplateId"/> as a key for the <see cref="PhoneApplicationService.State"/> collection.
+        /// </summary>
+        private const string SelectedTemplateIdKey = "Menu_SelectedTemplateId";
 
         /// <summary>
         /// Stores the game template selected by the user within the persistent storage area for the app
@@ -62,8 +77,8 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// We need this here in case the user quits as part of the menu navigaton</remarks>
         protected static string SelectedTemplateId
         {
-            get { return PhoneApplicationService.Current.State["Menu_SelectedTemplateId"] as string; }
-            set { PhoneApplicationService.Current.State["Menu_SelectedTemplateId"] = value; }
+            get { return PhoneApplicationService.Current.State[SelectedTemplateIdKey] as string; }
+            set { PhoneApplicationService.Current.State[SelectedTemplateIdKey] = value; }
         }
 
 
@@ -75,9 +90,15 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// <param name="pageName"></param>
         /// <param name="backStack"></param>
         /// <returns>Never returns null</returns>
-        public static MenuPageViewModel RetrieveMenuPage(string pageName, IEnumerable<JournalEntry> backStack)
+        public static MenuPageModel RetrieveMenuPage(string pageName, IEnumerable<JournalEntry> backStack)
         {
-            Func<IEnumerable<JournalEntry>, MenuPageViewModel> menuPageFactory;
+            if (string.IsNullOrEmpty(pageName))
+            {
+                string defaultMenuPageName = Menus.First().Key;
+                Logger.Info("No menu page specified, defaulting to {0}", defaultMenuPageName);
+                pageName = defaultMenuPageName;
+            }
+            Func<IEnumerable<JournalEntry>, MenuPageModel> menuPageFactory;
             if (Menus.TryGetValue(pageName, out menuPageFactory))
             {
                 Logger.Info("Creating menu page {0}", pageName);
@@ -90,17 +111,17 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// <summary>
         /// Creates the main menu menu items which is the first page the user sees when launching the application
         /// </summary>
-        private static MenuPageViewModel CreateMainMenu(IEnumerable<JournalEntry> backStack)
+        private static MenuPageModel CreateMainMenu(IEnumerable<JournalEntry> unused)
         {
             SaveGame continuableGame =
                 SaveGameStorageManager.Instance.GetContinuableGame(PlayerStorageManager.Instance.CurrentPlayer.Id);
 
-            MenuPageViewModel mpvm = new MenuPageViewModel
+            MenuPageModel mpvm = new MenuPageModel
                                          {
                                              PageTitle = LocalizationHelper.GetString("MainMenu"),
-                                             MenuItems = new ObservableCollection<MenuItemViewModel>
+                                             MenuItems = new ObservableCollection<MenuItemModel>
                                                              {
-                                                                 new MenuItemViewModel
+                                                                 new MenuItemModel
                                                                      {
                                                                          Title =
                                                                              LocalizationHelper.GetString("ContinueGame"),
@@ -114,7 +135,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
                                                                                      continuableGame.Id, 0, null),
                                                                          IsEnabled = continuableGame != null
                                                                      },
-                                                                 new MenuItemViewModel
+                                                                 new MenuItemModel
                                                                      {
                                                                          Title = LocalizationHelper.GetString("NewGame"),
                                                                          Text =
@@ -122,7 +143,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
                                                                                  "NewGameDescription"),
                                                                          TargetPage = "NewGameMenu"
                                                                      },
-                                                                 new MenuItemViewModel
+                                                                 new MenuItemModel
                                                                      {
                                                                          Title =
                                                                              LocalizationHelper.GetString("LoadGame"),
@@ -133,7 +154,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
                                                                              SavedGameSelector.CreateNavigationUri(),
                                                                          IsEnabled = continuableGame != null
                                                                      },
-                                                                 new MenuItemViewModel
+                                                                 new MenuItemModel
                                                                      {
                                                                          Title = LocalizationHelper.GetString("Custom"),
                                                                          Text =
@@ -172,9 +193,9 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// </summary>
         /// <param name="backStack">The current app back stack, used by <see cref="CreateGameDifficultySelector"/></param>
         /// <returns></returns>
-        private static MenuPageViewModel CreateNewGameMenu(IEnumerable<JournalEntry> backStack)
+        private static MenuPageModel CreateNewGameMenu(IEnumerable<JournalEntry> backStack)
         {
-            MenuPageViewModel mpvm;
+            MenuPageModel mpvm;
 
             List<GameTemplate> templates = GameTemplateStorageManager.Instance.GetGameTemplates(false, false, false);
             if (templates.Count > 1)
@@ -192,7 +213,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         }
 
 
-        private static MenuPageViewModel CreateGameDifficultySelector(IEnumerable<JournalEntry> backStack)
+        private static MenuPageModel CreateGameDifficultySelector(IEnumerable<JournalEntry> backStack)
         {
             /* Find how many pages to remove from the back stack to ensure that pressing "Back" from the game page returns to the top menu
              * We need this because we can't tell how many menu pages we've traversed to get here, because menus are dynamic
@@ -201,10 +222,10 @@ namespace Locima.SlidingBlock.ViewModel.Menus
             int pagesOnBackStackToSuppress = CalculatePagesToRemoveInBackstack(backStack);
             pagesOnBackStackToSuppress++; // Need to suppress this page too!
 
-            return new MenuPageViewModel
+            return new MenuPageModel
                        {
                            PageTitle = LocalizationHelper.GetString("NewGame"),
-                           MenuItems = new ObservableCollection<MenuItemViewModel>
+                           MenuItems = new Collection<MenuItemModel>
                                            {
                                                CreateDifficultyMenuItem("Easy", SelectedTemplateId, 3, 3, pagesOnBackStackToSuppress),
                                                CreateDifficultyMenuItem("Medium", SelectedTemplateId, 4, 4, pagesOnBackStackToSuppress),
@@ -267,9 +288,9 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// <param name="tilesHigh">The number of tiles high the puzzle should be</param>
         /// <param name="pagesOnBackStackToSuppress">The number of pages on the back stack to request that <see cref="GamePage"/> suppresses, see <see cref="CalculatePagesToRemoveInBackstack"/></param>
         /// <returns>A menu item that, when selected, will create a new game</returns>
-        private static MenuItemViewModel CreateDifficultyMenuItem(string gameLabel, string gameTemplateId, int tilesAcross, int tilesHigh, int pagesOnBackStackToSuppress)
+        private static MenuItemModel CreateDifficultyMenuItem(string gameLabel, string gameTemplateId, int tilesAcross, int tilesHigh, int pagesOnBackStackToSuppress)
         {
-            return new MenuItemViewModel
+            return new MenuItemModel
             {
                 Title = LocalizationHelper.GetString(gameLabel),
                 Text = LocalizationHelper.GetString("GameDescription", tilesAcross, tilesHigh),
@@ -283,7 +304,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// </summary>
         /// <param name="unused">Unused</param>
         /// <returns>A menu page view model that offers a selection of templates</returns>
-        public static MenuPageViewModel CreateGameTemplateSelector(IEnumerable<JournalEntry> unused)
+        public static MenuPageModel CreateGameTemplateSelector(IEnumerable<JournalEntry> unused)
         {
             return CreateGameTemplateSelector(GameTemplateStorageManager.Instance.GetGameTemplates(false, false, false));
         }
@@ -293,18 +314,18 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         /// </summary>
         /// <param name="templates">A set of templates to select from</param>
         /// <returns>A menu page view model that offers a selection of templates</returns>
-        private static MenuPageViewModel CreateGameTemplateSelector(IEnumerable<GameTemplate> templates)
+        private static MenuPageModel CreateGameTemplateSelector(IEnumerable<GameTemplate> templates)
         {
-            MenuPageViewModel mpvm = new MenuPageViewModel
+            MenuPageModel mpm = new MenuPageModel
             {
                 PageTitle = LocalizationHelper.GetString("GameTemplateSelectorTitle"),
-                MenuItems = new ObservableCollection<MenuItemViewModel>()
+                MenuItems = new Collection<MenuItemModel>()
             };
 
             foreach (GameTemplate template in templates)
             {
                 GameTemplate gameTemplate = template;   // Have to do this because we access the template ID inside the closure below
-                mpvm.MenuItems.Add(new MenuItemViewModel
+                mpm.MenuItems.Add(new MenuItemModel
                 {
                     Title = template.Title,
                     Text = template.Author,
@@ -315,7 +336,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
                     }
                 });
             }
-            return mpvm;
+            return mpm;
         }
 
 

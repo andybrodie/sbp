@@ -33,6 +33,14 @@ namespace Locima.SlidingBlock
         }
 
         /// <summary>
+        /// Convenience access for the view model that is initialise in the XAML
+        /// </summary>
+        public MenuPageViewModel ViewModel
+        {
+            get { return ((MenuPageViewModel)Resources["ViewModel"]); }
+        }
+
+        /// <summary>
         /// Creates the application bar and sets up the view model for the desired menu page (passed as a query parameter)
         /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -45,9 +53,8 @@ namespace Locima.SlidingBlock
 
             CreateApplicationBar();
 
-            string pageId = this.GetQueryParameter(MenuPageQueryParamName) ?? "MainMenu";
-            MenuPageViewModel page = MenuPageBroker.RetrieveMenuPage(pageId, NavigationService.BackStack);
-            DataContext = page;
+            string menuPageName = this.GetQueryParameter(MenuPageQueryParamName);
+            ViewModel.Initialise(menuPageName, NavigationService.BackStack);
         }
 
 
@@ -61,22 +68,22 @@ namespace Locima.SlidingBlock
         {
             Logger.Info("Creating application bar");
             // Set the page's ApplicationBar to a new instance of ApplicationBar.
-            ApplicationBar = new ApplicationBar {Mode = ApplicationBarMode.Minimized};
-
-            // Settings page
-            IApplicationBarMenuItem item = ApplicationBarHelper.AddMenuItem(ApplicationBar,
-                                                                            LocalizationHelper.GetString(
-                                                                                "AboutMenuOption"));
-            item.Click += (sender, args) => NavigationService.Navigate(GetAboutPageUri());
+            ApplicationBar = new ApplicationBar();
 
             // Player selection
-            item = ApplicationBarHelper.AddMenuItem(ApplicationBar, LocalizationHelper.GetString("SelectPlayer"));
-            item.Click +=
-                (sender, args) => NavigationService.Navigate(new Uri("/PlayerSelector.xaml", UriKind.Relative));
+            IApplicationBarIconButton userButton  = ApplicationBarHelper.AddButton(ApplicationBar, ApplicationBarHelper.ButtonIcons["User"],
+                LocalizationHelper.GetString("SelectPlayer"));
+            userButton.Click += (sender, args) => NavigationService.Navigate(new Uri("/PlayerSelector.xaml", UriKind.Relative));
 
             // HighScore review
-            item = ApplicationBarHelper.AddMenuItem(ApplicationBar, LocalizationHelper.GetString("GoToHighScores"));
-            item.Click += (sender, args) => NavigationService.Navigate(HighScores.CreateNavigationUri());
+            IApplicationBarIconButton highScoresButton  = ApplicationBarHelper.AddButton(ApplicationBar, ApplicationBarHelper.ButtonIcons["Highscores"],
+                LocalizationHelper.GetString("GoToHighScores"));
+            highScoresButton.Click += (sender, args) => NavigationService.Navigate(HighScores.CreateNavigationUri());
+
+            // About page
+            IApplicationBarMenuItem aboutButton = ApplicationBarHelper.AddMenuItem(ApplicationBar, LocalizationHelper.GetString("AboutMenuOption"));
+            aboutButton.Click += (sender, args) => NavigationService.Navigate(GetAboutPageUri());
+
         }
 
 
@@ -95,7 +102,7 @@ namespace Locima.SlidingBlock
         /// </summary>
         private void MainMenuListboxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MenuItemViewModel item = (MenuItemViewModel) mainMenuListbox.SelectedItem;
+            MenuItemViewModel item = (MenuItemViewModel) MainMenuListbox.SelectedItem;
             if (item != null)
             {
                 if (item.IsEnabled)
@@ -109,7 +116,7 @@ namespace Locima.SlidingBlock
                 }
                 // Best Practice: Reset selected index to -1 to ensure that if the Listbox contains duplicates that when moving from one to another the event is detected
                 // Looks like a defect in the Listbox implementation
-                mainMenuListbox.SelectedIndex = -1;
+                MainMenuListbox.SelectedIndex = -1;
             }
         }
 

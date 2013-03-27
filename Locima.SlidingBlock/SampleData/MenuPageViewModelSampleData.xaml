@@ -1,13 +1,13 @@
-﻿<ViewModel:MenuPageViewModel xmlns:ViewModel="clr-namespace:Locima.SlidingBlock.ViewModel"                             
-                             PageTitle="Parturient hendrerit">
-	<ViewModel:MenuPageViewModel.MenuItems>
-        <ViewModel:MenuItemViewModel IsEnabled="true" Text="Maecenas nam praesent cras duis aenean aliquam" TargetPage="Nam cras" Title="Aliquam nam sed dis integer"/>
-        <ViewModel:MenuItemViewModel IsEnabled="false" Text="Integer accumsan sed nunc mauris bibendum amet class" TargetPage="Aenean dis class maecenas" Title="Maecenas praesent cras accumsan aenean mauris"/>
-        <ViewModel:MenuItemViewModel IsEnabled="true" Text="Dictumst dis quisque curae est nullam aptent" TargetPage="Hac parturient leo donec" Title="Bibendum class est duis curae nunc amet donec"/>
-        <ViewModel:MenuItemViewModel IsEnabled="false" Text="Eleifend auctor facilisi hac" TargetPage="Mus duis" Title="Hac quisque leo dictumst nullam aptent ante"/>
-        <ViewModel:MenuItemViewModel IsEnabled="true" Text="Vivamus ante congue aliquam donec arcu cursus aliquet" TargetPage="Fusce cursus lorem non dictum" Title="Arcu etiam vivamus auctor"/>
-        <ViewModel:MenuItemViewModel IsEnabled="false" Text="Dictum lectus faucibus habitant blandit commodo" TargetPage="Per vestibulum sed amet morbi" Title="Eleifend facilisi congue mus"/>
-        <ViewModel:MenuItemViewModel IsEnabled="true" Text="Etiam libero diam conubia fusce lorem" TargetPage="Dictumst sem" Title="Nec diam fusce cursus aliquam faucibus dictum aliquet"/>
-        <ViewModel:MenuItemViewModel IsEnabled="false" Text="Cubilia morbi dapibus ligula inceptos nulla eget interdum" TargetPage="Facilisis diam fermentum" Title="Lectus blandit eget lorem commodo"/>
-	</ViewModel:MenuPageViewModel.MenuItems>
-</ViewModel:MenuPageViewModel>
+﻿<menus:MenuPageViewModel     xmlns:menus="clr-namespace:Locima.SlidingBlock.ViewModel.Menus"
+                             PageTitle="Parturient hendrerit" ActivePlayerName="Andy">
+	<menus:MenuPageViewModel.MenuItems>
+        <menus:MenuItemViewModel IsEnabled="true" Text="Maecenas nam praesent cras duis aenean aliquam" TargetPage="Nam cras" Title="Aliquam nam sed dis integer"/>
+        <menus:MenuItemViewModel IsEnabled="false" Text="Integer accumsan sed nunc mauris bibendum amet class" TargetPage="Aenean dis class maecenas" Title="Maecenas praesent cras accumsan aenean mauris"/>
+        <menus:MenuItemViewModel IsEnabled="true" Text="Dictumst dis quisque curae est nullam aptent" TargetPage="Hac parturient leo donec" Title="Bibendum class est duis curae nunc amet donec"/>
+        <menus:MenuItemViewModel IsEnabled="false" Text="Eleifend auctor facilisi hac" TargetPage="Mus duis" Title="Hac quisque leo dictumst nullam aptent ante"/>
+        <menus:MenuItemViewModel IsEnabled="true" Text="Vivamus ante congue aliquam donec arcu cursus aliquet" TargetPage="Fusce cursus lorem non dictum" Title="Arcu etiam vivamus auctor"/>
+        <menus:MenuItemViewModel IsEnabled="false" Text="Dictum lectus faucibus habitant blandit commodo" TargetPage="Per vestibulum sed amet morbi" Title="Eleifend facilisi congue mus"/>
+        <menus:MenuItemViewModel IsEnabled="true" Text="Etiam libero diam conubia fusce lorem" TargetPage="Dictumst sem" Title="Nec diam fusce cursus aliquam faucibus dictum aliquet"/>
+        <menus:MenuItemViewModel IsEnabled="false" Text="Cubilia morbi dapibus ligula inceptos nulla eget interdum" TargetPage="Facilisis diam fermentum" Title="Lectus blandit eget lorem commodo"/>
+	</menus:MenuPageViewModel.MenuItems>
+</menus:MenuPageViewModel>

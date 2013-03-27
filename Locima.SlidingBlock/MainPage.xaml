@@ -6,22 +6,30 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Controls="clr-namespace:Locima.SlidingBlock.Controls"
-     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    xmlns:controls="clr-namespace:Locima.SlidingBlock.Controls"
+    xmlns:viewModel="clr-namespace:Locima.SlidingBlock.ViewModel"
+    xmlns:menus="clr-namespace:Locima.SlidingBlock.ViewModel.Menus"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"
     Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
-    d:DataContext="{d:DesignData /SampleData/MenuPageViewModelSampleData.xaml}"
     Style="{StaticResource TransitionPageStyle}">
 
+    <phone:PhoneApplicationPage.Resources>
+        <menus:MenuPageViewModel x:Key="ViewModel"/>
+    </phone:PhoneApplicationPage.Resources>
+
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{Binding Source={StaticResource ViewModel}}"
+           d:DataContext="{d:DesignData /SampleData/MenuPageViewModelSampleData.xaml}"
+    >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
@@ -34,12 +42,12 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-           <ListBox x:Name="mainMenuListbox" ItemsSource="{Binding Path=MenuItems}" 
+           <ListBox x:Name="MainMenuListbox" ItemsSource="{Binding Path=MenuItems}" 
                     Margin="0,0,-12,0" SelectionChanged="MainMenuListboxSelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Controls:MenuItemTemplateSelector Content="{Binding}">
-                            <Controls:MenuItemTemplateSelector.Enabled>
+                        <controls:MenuItemTemplateSelector Content="{Binding}">
+                            <controls:MenuItemTemplateSelector.Enabled>
                                 <DataTemplate>
                                     <StackPanel Margin="0,0,0,17" Width="432">
                                         <TextBlock Text="{Binding Path=Title}" TextWrapping="NoWrap"
@@ -48,8 +56,8 @@
                                        Style="{StaticResource PhoneTextSmallStyle}"/>
                                     </StackPanel>
                                 </DataTemplate>
-                            </Controls:MenuItemTemplateSelector.Enabled>
-                            <Controls:MenuItemTemplateSelector.Disabled>
+                            </controls:MenuItemTemplateSelector.Enabled>
+                            <controls:MenuItemTemplateSelector.Disabled>
                                 <DataTemplate>
                                     <StackPanel Margin="0,0,0,17" Width="432">
                                         <StackPanel.Resources>
@@ -68,12 +76,18 @@
                                        Style="{StaticResource PhoneTextSmallStyleDisabled}"/>
                                     </StackPanel>
                                 </DataTemplate>
-                            </Controls:MenuItemTemplateSelector.Disabled>
-                        </Controls:MenuItemTemplateSelector>
+                            </controls:MenuItemTemplateSelector.Disabled>
+                        </controls:MenuItemTemplateSelector>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
+        <StackPanel Grid.Row="2" FlowDirection="LeftToRight" HorizontalAlignment="Right" Orientation="Horizontal">
+            <TextBlock x:Name="ActivePlayerPrompt" 
+                       Text="{Binding Path=Strings.ActivePlayer, Source={StaticResource Localization}}"
+                       Style="{StaticResource PhoneTextNormalStyle}" Margin="0"/>
+            <TextBlock x:Name="ActivePlayer" Text="{Binding Path=ActivePlayerName}" Style="{StaticResource PhoneTextAccentStyle}" Margin="12,0,0,0" />
+        </StackPanel>
     </Grid>
  
 </phone:PhoneApplicationPage>

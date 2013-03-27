@@ -125,6 +125,10 @@
     <value>The author would like to acknowledge the following people and organisations who provided either inspiration or some great tips and code snippets on the Internet that were used within this app.</value>
     <comment>Text shown at the top of the acknowledgements page</comment>
   </data>
+  <data name="ActivePlayer" xml:space="preserve">
+    <value>active player:</value>
+    <comment>The prompt used on the menu pages to inform the user who the active player is</comment>
+  </data>
   <data name="AddLevelAfter" xml:space="preserve">
     <value>insert level after</value>
     <comment>Context menu option in GameEditor to insert a new level after this one</comment>
