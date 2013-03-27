@@ -65,6 +65,7 @@
       Fixed bug that caused custom images to be deleted when updating a game template.
       Fixed bug that caused built-in game templates to be marked as updated.
       Added missing support e-mail and URL from About page.
+      Rearranged application bar on menus.
     </Item>
 
     <Item Title="acknowledgements" Type="xaml">
