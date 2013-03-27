@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using Locima.SlidingBlock.ViewModel;
+using Locima.SlidingBlock.ViewModel.Menus;
 
 namespace Locima.SlidingBlock.Controls
 {

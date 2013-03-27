@@ -79,6 +79,15 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to active player:.
+        /// </summary>
+        public static string ActivePlayer {
+            get {
+                return ResourceManager.GetString("ActivePlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to insert level after.
         /// </summary>
         public static string AddLevelAfter {

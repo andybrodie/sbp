@@ -28,8 +28,7 @@ namespace Locima.SlidingBlock
         }
 
         /// <summary>
-        /// Convenien
-        /// ce access for the view model that is initialise in the XAML
+        /// Convenience access for the view model that is initialise in the XAML
         /// </summary>
         public GameTemplateSelectorViewModel ViewModel
         {

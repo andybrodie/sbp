@@ -1,9 +1,10 @@
 using System;
 using System.Windows.Media.Imaging;
 using Locima.SlidingBlock.Common;
+using Locima.SlidingBlock.Model;
 using NLog;
 
-namespace Locima.SlidingBlock.ViewModel
+namespace Locima.SlidingBlock.ViewModel.Menus
 {
     /// <summary>
     ///   View model to represent a single item of a <see cref="MenuPageViewModel" />.
@@ -161,6 +162,16 @@ namespace Locima.SlidingBlock.ViewModel
         /// Re-usable defined function for <see cref="IsEnabled"/> that always returns <c>true</c>
         /// </summary>
         public static readonly Func<bool> AlwaysEnabled = () => true;
+
+        public MenuItemViewModel(MenuItemModel menuItemModel)
+        {
+            Icon = menuItemModel.Icon;
+            TargetPage = menuItemModel.TargetPage;
+            TargetUri = menuItemModel.TargetUri;
+            SelectedAction = menuItemModel.SelectedAction;
+            Text = menuItemModel.Text;
+            Title = menuItemModel.Title;
+        }
 
         /// <summary>
         ///   Invokes the correct action for this menu item and returns a <see cref="Uri" /> to navigate to or <c>null</c> if no navigation should occur.

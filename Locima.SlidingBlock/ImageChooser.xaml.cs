@@ -7,7 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.IO;
+using Locima.SlidingBlock.Model;
 using Locima.SlidingBlock.ViewModel;
+using Locima.SlidingBlock.ViewModel.Menus;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using NLog;
@@ -61,8 +63,8 @@ namespace Locima.SlidingBlock
 
         private MenuPageViewModel GetImageProviders()
         {
-            MenuPageViewModel mpvm = new MenuPageViewModel {MenuItems = new ObservableCollection<MenuItemViewModel>()};
-            MenuItemViewModel item = new MenuItemViewModel
+            MenuPageModel mpm = new MenuPageModel();
+            MenuItemModel item = new MenuItemModel
                                          {
                                              Title = LocalizationHelper.GetString("LocalPictures"),
                                              SelectedAction = delegate
@@ -72,12 +74,14 @@ namespace Locima.SlidingBlock
                                                                   },
                                              Text = LocalizationHelper.GetString("LocalPicturesDescription")
                                          };
-            mpvm.MenuItems.Add(item);
+            mpm.MenuItems.Add(item);
    
             // TODO allow URLs to be set for image download
 //            item = new MenuItemViewModel {Title = "Enter URL", Text = "Enter or paste a URL to an image on line"};
 //            mpvm.MenuItems.Add(item);
 
+            MenuPageViewModel mpvm = new MenuPageViewModel();
+            mpvm.Initialise(mpm);
             return mpvm;
         }
 
