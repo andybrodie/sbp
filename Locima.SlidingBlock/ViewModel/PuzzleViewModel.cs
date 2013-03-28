@@ -626,6 +626,21 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+        public void MoveTileBasedOnFlick(double horizontalVelocity, double verticalVelocity)
+        {
+            TileDirection dir;
+            if (Math.Abs(horizontalVelocity) > Math.Abs(verticalVelocity))
+            {
+                dir = horizontalVelocity > 0 ? TileDirection.FromLeft : TileDirection.FromRight;
+            }
+            else
+            {
+                dir = verticalVelocity > 0 ? TileDirection.FromAbove : TileDirection.FromBelow;
+            }
+            _puzzleModel.MoveTile(_puzzleModel.LocalPlayer, dir);
+        }
+
+
 
         /// <summary>
         ///   Work out the preferred order of tile movement, based on where an input tap event occurred relative to the blank tile for that player
@@ -727,5 +742,6 @@ namespace Locima.SlidingBlock.ViewModel
         {
             return Thumbnail;
         }
+
     }
 }

@@ -2,17 +2,16 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Persistence;
 using Locima.SlidingBlock.ViewModel;
+using Microsoft.Phone.Controls;
 using NLog;
+using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Locima.SlidingBlock.Controls
 {
-
     /// <summary>
     /// This control represents the entire sliding block puzzle as it appears on <see cref="GamePage"/>.  It contains only instances of <see cref="TileControl"/>.
     /// </summary>
@@ -36,25 +35,31 @@ namespace Locima.SlidingBlock.Controls
         /// The pause screen is overlaid on top of the puzzle when <see cref="GameStateProperty"/> is set to <see cref="GameStates.Paused"/>
         /// </summary>
         public static readonly DependencyProperty PauseScreenProperty = DependencyProperty.Register("PauseScreen",
-                                                                                                    typeof(FrameworkElement),
-                                                                                                    typeof(Puzzle),
+                                                                                                    typeof (
+                                                                                                        FrameworkElement
+                                                                                                        ),
+                                                                                                    typeof (Puzzle),
                                                                                                     null);
 
         /// <summary>
         /// The start screen is overlaid on top of the puzzle when the level is completed
         /// </summary>
         public static readonly DependencyProperty StartScreenProperty = DependencyProperty.Register("StartScreen",
-                                                                                                    typeof(FrameworkElement),
-                                                                                                    typeof(Puzzle),
+                                                                                                    typeof (
+                                                                                                        FrameworkElement
+                                                                                                        ),
+                                                                                                    typeof (Puzzle),
                                                                                                     null);
 
         /// <summary>
         /// The start screen is overlaid on top of the puzzle when the level is completed
         /// </summary>
         public static readonly DependencyProperty CompleteScreenProperty = DependencyProperty.Register("CompleteScreen",
-                                                                                                    typeof(FrameworkElement),
-                                                                                                    typeof(Puzzle),
-                                                                                                    null);
+                                                                                                       typeof (
+                                                                                                           FrameworkElement
+                                                                                                           ),
+                                                                                                       typeof (Puzzle),
+                                                                                                       null);
 
         /// <summary>
         /// The current state of the game, as determined by the set of valid values for <see cref="GameStates"/>
@@ -64,7 +69,7 @@ namespace Locima.SlidingBlock.Controls
              typeof (GameStates),
              typeof (Puzzle),
              new PropertyMetadata(GameStates.NotStarted, GameStatePropertyChangeCallback));
-        
+
         /// <summary>
         /// The save game that the puzzle is currently playing.  I don't like this, the View essentially has a reference to the model, which is not right at all.
         /// </summary>
@@ -141,7 +146,7 @@ namespace Locima.SlidingBlock.Controls
             PauseScreen.Visibility = GameState == GameStates.Paused ? Visibility.Visible : Visibility.Collapsed;
             StartScreen.Visibility = GameState == GameStates.NotStarted ? Visibility.Visible : Visibility.Collapsed;
             CompleteScreen.Visibility = GameState == GameStates.Completed ? Visibility.Visible : Visibility.Collapsed;
-            
+
             // Ensure that the pause and start panels sits over the top of everything else
             PauseScreen.SetValue(ZIndexProperty, 100);
             StartScreen.SetValue(ZIndexProperty, 100);
@@ -159,15 +164,25 @@ namespace Locima.SlidingBlock.Controls
         /// <param name="dependencyObject">The puzzle (required because this method must be static to be used with the static declaration of <see cref="GameStateProperty"/></param>
         /// <param name="dependencyPropertyChangedEventArgs"><see cref="DependencyPropertyChangedEventArgs.NewValue"/> used to detect which state we're in</param>
         private static void GameStatePropertyChangeCallback(DependencyObject dependencyObject,
-                                                         DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+                                                            DependencyPropertyChangedEventArgs
+                                                                dependencyPropertyChangedEventArgs)
         {
             GameStates newState = (GameStates) dependencyPropertyChangedEventArgs.NewValue;
             Logger.Info("New game state: {0}", newState);
             Puzzle puzzle = (Puzzle) dependencyObject;
 
-            if (puzzle.PauseScreen!=null) puzzle.PauseScreen.Visibility = newState==GameStates.Paused ? Visibility.Visible : Visibility.Collapsed;
-            if (puzzle.StartScreen != null) puzzle.StartScreen.Visibility = newState == GameStates.NotStarted ? Visibility.Visible : Visibility.Collapsed;
-            if (puzzle.CompleteScreen != null) puzzle.CompleteScreen.Visibility = newState == GameStates.Completed ? Visibility.Visible : Visibility.Collapsed;
+            if (puzzle.PauseScreen != null)
+                puzzle.PauseScreen.Visibility = newState == GameStates.Paused
+                                                    ? Visibility.Visible
+                                                    : Visibility.Collapsed;
+            if (puzzle.StartScreen != null)
+                puzzle.StartScreen.Visibility = newState == GameStates.NotStarted
+                                                    ? Visibility.Visible
+                                                    : Visibility.Collapsed;
+            if (puzzle.CompleteScreen != null)
+                puzzle.CompleteScreen.Visibility = newState == GameStates.Completed
+                                                       ? Visibility.Visible
+                                                       : Visibility.Collapsed;
         }
 
 
@@ -212,7 +227,6 @@ namespace Locima.SlidingBlock.Controls
                 Size newSize = new Size(ActualWidth, ActualHeight);
                 Logger.Info("Grid layout changed from {0} to {1}, notifying puzzle viewmodel", currentSize, newSize);
                 ReconfigureScreens(newSize);
-
             }
         }
 
@@ -244,6 +258,31 @@ namespace Locima.SlidingBlock.Controls
         }
 
 
+        private void GlOnFlick(object sender, FlickGestureEventArgs flickGestureEventArgs)
+        {
+            Logger.Info("Flick detected Vx={0} Vy={1}", flickGestureEventArgs.HorizontalVelocity, flickGestureEventArgs.VerticalVelocity);
+            switch (GameState)
+            {
+                case GameStates.Completed:
+                    ViewModel.ProceedToNextLevel();
+                    break;
+                case GameStates.NotStarted:
+                    Logger.Info("Starting the level");
+                    ViewModel.StartGameCommand.Execute(this);
+                    break;
+                case GameStates.Running:
+                    ViewModel.MoveTileBasedOnFlick(flickGestureEventArgs.HorizontalVelocity,
+                                                   flickGestureEventArgs.VerticalVelocity);
+                    break;
+                case GameStates.Paused:
+                    Logger.Debug("Ignoring flick on the puzzle as the game state is {0}", GameState);
+                    break;
+                default:
+                    throw new InvalidStateException("Unexpeccted GameState value {0}", GameState);
+            }
+            flickGestureEventArgs.Handled = true;
+        }
+
         /// <summary>
         /// Hook up events and tells the <see cref="ViewModel"/> that its ready to calculate its maximum size.
         /// </summary>
@@ -264,14 +303,17 @@ namespace Locima.SlidingBlock.Controls
             LayoutUpdated -= OnLayoutUpdated;
             LayoutUpdated -= OnLayoutUpdated;
 
-            // Hook up events from the user to respond to, currently only detecting taps
+            // Hook up events from the user to respond to
             Tap -= PuzzleTap;
             Tap += PuzzleTap;
+
+            GestureListener gl = GestureService.GetGestureListener(this);
+            gl.Flick -= GlOnFlick;
+            gl.Flick += GlOnFlick;
 
             ViewModel.PuzzleModelPuzzleResized(true);
             Logger.Info("Puzzle control initialise exit");
         }
-
 
         /// <summary>
         ///   Creates all the child controls of this canvas specialisation, namely the tiles that will slide around
@@ -285,10 +327,12 @@ namespace Locima.SlidingBlock.Controls
                 ViewModel.Tiles.Count);
             foreach (TileViewModel tvm in ViewModel.Tiles)
             {
-                Logger.Info("Creating tile control for {0} (solved Position ({1},{2}))", tvm.Position, tvm.SolvedPosition.X, tvm.SolvedPosition.Y);
+                Logger.Info("Creating tile control for {0} (solved Position ({1},{2}))", tvm.Position,
+                            tvm.SolvedPosition.X, tvm.SolvedPosition.Y);
                 TileControl tile = new TileControl {DataContext = tvm};
-                
-                Logger.Debug("Binding TileControl Width, Height, Top and Left properties to the TileViewModel and adding to the Puzzles Children collection");
+
+                Logger.Debug(
+                    "Binding TileControl Width, Height, Top and Left properties to the TileViewModel and adding to the Puzzles Children collection");
                 tile.SetBinding(WidthProperty, new Binding
                     {
                         Mode = BindingMode.OneWay,
@@ -314,7 +358,8 @@ namespace Locima.SlidingBlock.Controls
                     });
 
                 Children.Add(tile);
-                Logger.Debug("Current tile values are: Width({0}) Height({1}) Top({2}) Left({3})", tile.ActualWidth, tile.ActualHeight, GetTop(tile), GetLeft(tile));
+                Logger.Debug("Current tile values are: Width({0}) Height({1}) Top({2}) Left({3})", tile.ActualWidth,
+                             tile.ActualHeight, GetTop(tile), GetLeft(tile));
             }
             Logger.Debug("CreateTileControls Exit");
         }
@@ -345,7 +390,5 @@ namespace Locima.SlidingBlock.Controls
                 CompleteScreen.Visibility = csVis;
             }
         }
-
-
     }
 }
