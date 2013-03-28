@@ -302,7 +302,7 @@
     <comment>The game description given for each game in the high score table</comment>
   </data>
   <data name="GameEditorPageTitle" xml:space="preserve">
-    <value>edit game template</value>
+    <value>edit game</value>
     <comment>Page title for GameEditor</comment>
   </data>
   <data name="GameName" xml:space="preserve">
@@ -318,7 +318,7 @@
     <comment>The title given to a game template that has been cloned</comment>
   </data>
   <data name="GameTemplateSelectorTitle" xml:space="preserve">
-    <value>select game template</value>
+    <value>select game</value>
     <comment>Title for the game template selector menu page</comment>
   </data>
   <data name="GoToHighScores" xml:space="preserve">
@@ -474,7 +474,7 @@
     <comment>The context menu header for the option to delete a previously saved game</comment>
   </data>
   <data name="SaveGameSelectorPageTitle" xml:space="preserve">
-    <value>select save game</value>
+    <value>load game</value>
     <comment>Page title for the save game selector page</comment>
   </data>
   <data name="SaveGameTemplateButton" xml:space="preserve">

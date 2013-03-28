@@ -475,7 +475,7 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to edit game template.
+        ///   Looks up a localized string similar to edit game.
         /// </summary>
         public static string GameEditorPageTitle {
             get {
@@ -511,7 +511,7 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to select game template.
+        ///   Looks up a localized string similar to select game.
         /// </summary>
         public static string GameTemplateSelectorTitle {
             get {
@@ -862,7 +862,7 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to select save game.
+        ///   Looks up a localized string similar to load game.
         /// </summary>
         public static string SaveGameSelectorPageTitle {
             get {
