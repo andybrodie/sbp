@@ -176,6 +176,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
             SelectedAction = menuItemModel.SelectedAction;
             Text = menuItemModel.Text;
             Title = menuItemModel.Title;
+            IsEnabled = menuItemModel.IsEnabled;
         }
 
         /// <summary>

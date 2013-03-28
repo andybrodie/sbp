@@ -12,31 +12,23 @@ namespace Locima.SlidingBlock.ViewModel.Menus
     /// </summary>
     public class MenuPageViewModel : ViewModelBase
     {
-
-        /// <summary>
-        /// Backing field for <see cref="MenuItems"/>
-        /// </summary>
-        private ObservableCollection<MenuItemViewModel> _menuItems;
-
-        /// <summary>
-        /// Backing field for <see cref="PageTitle"/>
-        /// </summary>
-        private string _pageTitle;
-
         /// <summary>
         /// Backing field for <see cref="ActivePlayerName"/>
         /// </summary>
         private string _activePlayerName;
 
         /// <summary>
-        /// Default constructor used in page creation
+        /// Backing field for <see cref="MenuItems"/>
         /// </summary>
-        public MenuPageViewModel()
-        {
-            
-        }
+        private ObservableCollection<MenuItemViewModel> _menuItems;
 
-       
+
+        /// <summary>
+        /// Backing field for <see cref="PageTitle"/>
+        /// </summary>
+        private string _pageTitle;
+
+
         /// <summary>
         /// The title of the menu page
         /// </summary>
@@ -85,6 +77,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
             }
         }
 
+
         /// <summary>
         /// Initialise with the named menu page model
         /// </summary>
@@ -112,6 +105,7 @@ namespace Locima.SlidingBlock.ViewModel.Menus
             }
         }
 
+
         /// <summary>
         /// Raised when a new menu item is added or an existing one removed from <see cref="MenuItems"/>
         /// </summary>
@@ -120,6 +114,5 @@ namespace Locima.SlidingBlock.ViewModel.Menus
         {
             OnNotifyPropertyChanged("MenuItems");
         }
-
     }
 }

@@ -104,7 +104,7 @@ namespace Locima.SlidingBlock
                 {
                     NameTextBox.Text = LocalizationHelper.GetString("UnnamedPlayer");
                 }
-                _player.Name = NameTextBox.Text;
+                _player.Name = NameTextBox.Text;                
                 PlayerStorageManager.Instance.SavePlayer(_player);
             }
             NavigationService.GoBack();
