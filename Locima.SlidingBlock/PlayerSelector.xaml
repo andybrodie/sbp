@@ -24,6 +24,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
@@ -52,6 +53,12 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
+        <StackPanel Grid.Row="2" FlowDirection="LeftToRight" HorizontalAlignment="Right" Orientation="Horizontal">
+            <TextBlock x:Name="ActivePlayerPrompt" 
+                       Text="{Binding Path=Strings.ActivePlayer, Source={StaticResource Localization}}"
+                       Style="{StaticResource PhoneTextNormalStyle}" Margin="0"/>
+            <TextBlock x:Name="ActivePlayer" Text="{Binding Path=ActivePlayerName}" Style="{StaticResource PhoneTextAccentStyle}" Margin="12,0,0,0" />
+        </StackPanel>
     </Grid>
  
 </phone:PhoneApplicationPage>

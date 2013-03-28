@@ -60,6 +60,11 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
                 IOHelper.EnsureDirectory(PlayerProfileDirectory, store);
                 IOHelper.SaveObject(player, store);
             }
+            if (CurrentPlayer != null && CurrentPlayer.Id == player.Id)
+            {
+                Logger.Debug("Updating CurrentPlayer with updated player passed");
+                CurrentPlayer = player;
+            }
         }
 
 
@@ -95,10 +100,14 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         /// <summary>
         ///   Delete a player from Isolated Storage
         /// </summary>
+        /// <remarks>
+        /// This method must ensure that <see cref="CurrentPlayer"/> remains valid, so if the player being deleted is the current player
+        /// then a new current player will be nominated (randomly)</remarks>
         /// <param name="playerId"> </param>
         public void DeletePlayer(string playerId)
         {
             IOHelper.DeleteFile(playerId);
+            EnsureCurrentPlayer();
         }
 
 

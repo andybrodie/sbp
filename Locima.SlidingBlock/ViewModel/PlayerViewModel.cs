@@ -13,7 +13,7 @@ namespace Locima.SlidingBlock.ViewModel
     /// <summary>
     /// The view model object for a player within a list.  <see cref="PlayerSelectorViewModel"/> is the parent view model and <see cref="PlayerDetails"/> provides the model
     /// </summary>
-    public class PlayerSelectorItem : ViewModelBase
+    public class PlayerViewModel : ViewModelBase
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -27,10 +27,10 @@ namespace Locima.SlidingBlock.ViewModel
         /// This class makes use of <see cref="IViewModelBase.ShareMessageHandlers"/> to </remarks>
         /// <param name="playerSelectorViewModel"></param>
         /// <param name="player"></param>
-        public PlayerSelectorItem(PlayerSelectorViewModel playerSelectorViewModel, PlayerDetails player)
+        public PlayerViewModel(PlayerSelectorViewModel playerSelectorViewModel, PlayerDetails player)
         {
             EditPlayerCommand = new DelegateCommand(EditPlayerAction);
-            DeletePlayerCommand = new DelegateCommand(DeletePlayerAction);
+            DeletePlayerCommand = new DelegateCommand(DeletePlayerAction, CanExecute);
             ForceDeletePlayerCommand = new DelegateCommand(ForceDeletePlayerAction);
             SelectPlayerCommand = new DelegateCommand(SelectPlayerAction);
 
@@ -87,6 +87,21 @@ namespace Locima.SlidingBlock.ViewModel
             get { return new SolidColorBrush(_playerDetails.PreferredColor); }
         }
 
+
+        /// <summary>
+        /// Identity of the player, from <see cref="PlayerDetails.Id"/>
+        /// </summary>
+        public string Id
+        {
+            get { return _playerDetails.Id; }
+        }
+
+        private bool CanExecute(object o)
+        {
+            return _playerSelectorViewModel.PlayerList.Count > 1;
+        }
+
+
         /// <summary>
         /// Sets the current player in <see cref="IPlayerStorageManager.CurrentPlayer"/> and navigates back
         /// </summary>
@@ -107,7 +122,7 @@ namespace Locima.SlidingBlock.ViewModel
         {
             Logger.Info("Editing player : {0}", Name);
             SendViewMessage(new NavigationMessageArgs
-                                {Uri = PlayerEditor.CreateNavigationUri(_playerDetails.Id)});
+                {Uri = PlayerEditor.CreateNavigationUri(_playerDetails.Id)});
         }
 
 
@@ -125,14 +140,14 @@ namespace Locima.SlidingBlock.ViewModel
             {
                 // If there are any save games associated with the player then notify the view that we need confirmation and on OK, call ForceDeletePlayerCommand
                 SendViewMessage(new ConfirmationMessageArgs
-                                    {
-                                        Title = LocalizationHelper.GetString("DeleteConfirmationTitle"),
-                                        Message =
-                                            LocalizationHelper.GetString("DeleteConfirmationMessage", Name,
-                                                                         saveGameCount),
-                                        OnOkCommand = ForceDeletePlayerCommand,
-                                        OnCancelCommand = ConfirmationMessageArgs.NoOpCommand
-                                    });
+                    {
+                        Title = LocalizationHelper.GetString("DeleteConfirmationTitle"),
+                        Message =
+                            LocalizationHelper.GetString("DeleteConfirmationMessage", Name,
+                                                         saveGameCount),
+                        OnOkCommand = ForceDeletePlayerCommand,
+                        OnCancelCommand = ConfirmationMessageArgs.NoOpCommand
+                    });
             }
             else
             {
@@ -156,7 +171,7 @@ namespace Locima.SlidingBlock.ViewModel
             // Delete the player
             PlayerStorageManager.Instance.DeletePlayer(_playerDetails.Id);
 
-            // Remove them from the View
+            // Remove them from the View Model
             _playerSelectorViewModel.PlayerList.Remove(this);
         }
     }

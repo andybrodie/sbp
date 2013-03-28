@@ -116,7 +116,7 @@ namespace Locima.SlidingBlock.Model
             SaveGame continuableGame =
                 SaveGameStorageManager.Instance.GetContinuableGame(PlayerStorageManager.Instance.CurrentPlayer.Id);
 
-            MenuPageModel mpvm = new MenuPageModel
+            MenuPageModel menuPageModel = new MenuPageModel
                                          {
                                              PageTitle = LocalizationHelper.GetString("MainMenu"),
                                              MenuItems = new ObservableCollection<MenuItemModel>
@@ -165,7 +165,7 @@ namespace Locima.SlidingBlock.Model
                                                                      }
                                                              }
                                          };
-            return mpvm;
+            return menuPageModel;
         }
 
 

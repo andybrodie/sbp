@@ -229,7 +229,7 @@
     <Compile Include="ViewModel\ImageAreaChooserViewModel.cs" />
     <Compile Include="ViewModel\Menus\MenuItemViewModel.cs" />
     <Compile Include="ViewModel\Menus\MenuPageViewModel.cs" />
-    <Compile Include="ViewModel\PlayerSelectorItem.cs" />
+    <Compile Include="ViewModel\PlayerViewModel.cs" />
     <Compile Include="ViewModel\PlayerSelectorViewModel.cs" />
     <Compile Include="ViewModel\PuzzleViewModel.cs" />
     <Compile Include="Common\Tuple.cs" />

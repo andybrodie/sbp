@@ -49,6 +49,27 @@ namespace Locima.SlidingBlock.Persistence
         {
             return string.Format("{0}(Name={1}, Filename={2})", base.ToString(), Name, Id);
         }
+
+        /// <summary>
+        /// Compares based on <see cref="Id"/> only
+        /// </summary>
+        /// <param name="obj">The object to compare with</param>
+        /// <returns>True if <see cref="Id"/> matches on <paramref name="obj"/>, false otherwise</returns>
+        public override bool Equals(object obj)
+        {
+            PlayerDetails other = obj as PlayerDetails;
+            return other != null && other.Id == Id;
+        }
+
+
+        /// <summary>
+        /// Returns hash code based on <see cref="Id"/> or 0 if not set
+        /// </summary>
+        /// <returns>Hash code based on <see cref="Id"/> or 0 if not set</returns>
+        public override int GetHashCode()
+        {
+            return Id == null ? 0 : Id.GetHashCode();
+        }
     }
 
 }

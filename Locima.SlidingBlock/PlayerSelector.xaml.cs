@@ -1,12 +1,12 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
+using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
+using Locima.SlidingBlock.Messaging;
 using Locima.SlidingBlock.ViewModel;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using NLog;
-using Locima.SlidingBlock.Messaging;
 
 namespace Locima.SlidingBlock
 {
@@ -18,9 +18,7 @@ namespace Locima.SlidingBlock
     /// </remarks>
     public partial class PlayerSelector : PhoneApplicationPage
     {
-
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
 
 
         /// <summary>
@@ -31,7 +29,7 @@ namespace Locima.SlidingBlock
             InitializeComponent();
         }
 
-        
+
         /// <summary>
         /// Convenience access for the view model that is initialise in the XAML
         /// </summary>
@@ -45,14 +43,13 @@ namespace Locima.SlidingBlock
         /// Sets up the application bar and registered the default message handlers
         /// </summary>
         /// <param name="e">unused</param>
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             BuildApplicationBar();
             this.RegisterDefaultMessageHandlers(ViewModel);
-            
-            ViewModel.Initialise();
 
+            ViewModel.Initialise();
         }
 
         private void BuildApplicationBar()
@@ -62,13 +59,12 @@ namespace Locima.SlidingBlock
                                                                             ApplicationBarHelper.ButtonIcons["New"],
                                                                             LocalizationHelper.GetString("AddPlayer"));
             icon.Click += (o, args) => NavigationService.Navigate(PlayerEditor.CreateNavigationUri(null));
-
         }
 
 
         private void PlayerListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PlayerSelectorItem selectedItem = (PlayerSelectorItem)((ListBox)sender).SelectedItem;
+            PlayerViewModel selectedItem = (PlayerViewModel) ((ListBox) sender).SelectedItem;
             if (selectedItem != null)
             {
                 Logger.Debug("Player selected {0}", selectedItem);
@@ -79,7 +75,5 @@ namespace Locima.SlidingBlock
                 }
             }
         }
-
     }
-
 }

@@ -75,6 +75,15 @@ namespace Locima.SlidingBlock.Model
         /// </summary>
         public static readonly Func<bool> AlwaysEnabled = () => true;
 
+
+        /// <summary>
+        /// Ensures that <see cref="IsEnabled"/> default to true.
+        /// </summary>
+        public MenuItemModel()
+        {
+            IsEnabled = true;
+        }
+
         /// <summary>
         ///   Invokes the correct action for this menu item and returns a <see cref="Uri" /> to navigate to or <c>null</c> if no navigation should occur.
         /// </summary>
