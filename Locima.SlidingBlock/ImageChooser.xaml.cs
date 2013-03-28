@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
 using System.Windows;
@@ -8,7 +7,6 @@ using System.Windows.Navigation;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Model;
-using Locima.SlidingBlock.ViewModel;
 using Locima.SlidingBlock.ViewModel.Menus;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;

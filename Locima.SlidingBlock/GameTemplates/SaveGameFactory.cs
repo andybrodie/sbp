@@ -43,7 +43,6 @@ namespace Locima.SlidingBlock.GameTemplates
         {
             SaveGame sg = new SaveGame {GameType = SaveGame.GameTypes.SinglePlayer, GameDefinitionId = gameTemplate.Id};
 
-            // TODO Allow the level definition to set the player tile
             sg.LocalPlayerId = PlayerStorageManager.Instance.CurrentPlayer.Id;
 
             Logger.Info("Creating a new SaveGame for {0} using {1} x {2} tile grid",

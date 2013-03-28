@@ -94,7 +94,8 @@ namespace Locima.SlidingBlock
 /*            icon = ApplicationBarHelper.AddButton(ApplicationBar,
                                                     ApplicationBarHelper.ButtonIcons["Edit"],
                                                     LocalizationHelper.GetString("SelectLicense"));
-  */ // TODO License selector logic, we could do with a picker
+  */
+            // TODO License selector logic, we could do with a picker
         }
 
 
@@ -109,17 +110,12 @@ namespace Locima.SlidingBlock
         /// <returns></returns>
         public static Uri CreateNavigationUri(string gameTemplateId, int levelIndex, bool createNew, string imageId)
         {
-            // TODO Fix this to use the better Uri creation method
-            return new Uri(string.Format("/LevelEditor.xaml?{0}={1}&{2}={3}&{4}={5}&{6}={7}",
-                                         GameTemplateIdParameterName,
-                                         HttpUtility.UrlEncode(gameTemplateId),
-                                         LevelIndexQueryParameterName,
-                                         levelIndex,
-                                         CreateNewQueryParameterName,
-                                         createNew,
-                                         ImageIdQueryParameterName,
-                                         HttpUtility.UrlEncode(imageId)
-                               ), UriKind.Relative);
+            UriConstructor uri = new UriConstructor("/LevelEditor.xaml", UriKind.Relative);
+            uri.AddParameter(GameTemplateIdParameterName, gameTemplateId);
+            uri.AddParameter(LevelIndexQueryParameterName, levelIndex);
+            uri.AddParameter(CreateNewQueryParameterName, createNew);
+            uri.AddParameter(ImageIdQueryParameterName, imageId);
+            return uri.ToUri();
         }
 
 

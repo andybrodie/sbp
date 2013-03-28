@@ -94,7 +94,6 @@ namespace Locima.SlidingBlock
 
 
             // Cancel changes made to the game template
-            // TODO Include an "are you sure?" dialog if the game template has been modified and we'll lose changes
             IApplicationBarIconButton cancelButton = ApplicationBarHelper.AddButton(ApplicationBar,
                                                                                     ApplicationBarHelper.ButtonIcons[
                                                                                         "Cancel"],

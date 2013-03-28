@@ -83,7 +83,7 @@ namespace Locima.SlidingBlock.IO.IsolatedStorage
         /// <summary>
         ///   Loads all the save games in to memory so the user can pick the one they want to play
         /// </summary>
-        /// <returns> A list (never null, but possibly empty) of all the save games available, ordered by last access time, descending (most recent first) TODO Check that IEnumerable is "permitted" to allow ordering </returns>
+        /// <returns> A list (never null, but possibly empty) of all the save games available, ordered by last access time, descending (most recent first)</returns>
         public IEnumerable<SaveGame> LoadGames(string playerId)
         {
             ICollection<SaveGame> puzzles = new List<SaveGame>();

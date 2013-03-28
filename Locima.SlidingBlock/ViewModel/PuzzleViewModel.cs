@@ -565,7 +565,6 @@ namespace Locima.SlidingBlock.ViewModel
                                                          _puzzleModel.MoveCount,
                                                          _puzzleModel.MoveCount != 1 ? "moves" : "move");
             GameState = GameStates.Completed;
-            // TODO Find a way to make the player tile disappear
         }
 
 
