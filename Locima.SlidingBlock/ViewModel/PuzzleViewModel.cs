@@ -11,6 +11,7 @@ using Locima.SlidingBlock.IO;
 using Locima.SlidingBlock.Messaging;
 using Locima.SlidingBlock.Model;
 using Locima.SlidingBlock.Persistence;
+using Microsoft.Phone.Controls;
 using NLog;
 
 namespace Locima.SlidingBlock.ViewModel
@@ -626,6 +627,13 @@ namespace Locima.SlidingBlock.ViewModel
             }
         }
 
+
+        /// <summary>
+        /// Given the highest magnitude of <paramref name="horizontalVelocity"/> and <paramref name="verticalVelocity"/>, work out which direction the user
+        /// flicked their finger across the screen, and move the tiles appropriately
+        /// </summary>
+        /// <param name="horizontalVelocity">negative for left, positive for right, see <see cref="FlickGestureEventArgs.HorizontalVelocity"/></param>
+        /// <param name="verticalVelocity">negative for up, positive for right, see <see cref="FlickGestureEventArgs.VerticalVelocity"/></param>
         public void MoveTileBasedOnFlick(double horizontalVelocity, double verticalVelocity)
         {
             TileDirection dir;
