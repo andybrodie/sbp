@@ -16,7 +16,7 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <OutputPath>.\Help\</OutputPath>
-    <HtmlHelpName>SlidingBlockPuzzle</HtmlHelpName>
+    <HtmlHelpName>Locima.SlidingBlock</HtmlHelpName>
     <Language>en-US</Language>
     <PresentationStyle>VS2010</PresentationStyle>
     <MissingTags>Summary, AutoDocumentCtors, Namespace, TypeParameter, AutoDocumentDispose</MissingTags>
@@ -36,7 +36,7 @@
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
-    <HelpTitle>Sliding Block Puzzle Code Documentation</HelpTitle>
+    <HelpTitle>Sliding Block Code Documentation</HelpTitle>
     <FeedbackEMailLinkText>sbp%40locima.co.uk</FeedbackEMailLinkText>
     <FeedbackEMailAddress>sbp%40locima.co.uk</FeedbackEMailAddress>
     <CopyrightHref>%28C%29 2012-2013 Locima Ltd</CopyrightHref>
@@ -56,23 +56,24 @@
     <CatalogVersion>100</CatalogVersion>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="Locima.SlidingBlock" isDocumented="True">This is the root namespace for the project.  All XAML pages within the application are defined within this namespace.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.Common" isDocumented="True">Contains common utility classes that are used throughout the project.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.Controls" isDocumented="True">Contains all the user-defined controls and utility classes that apply specifically to controls.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.Converters" isDocumented="True">Contains all the implementations of IValueConverter used in the pages and controls within the project.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.GameTemplates" isDocumented="True">Contains the classes and data (in the form of static classes) for built-in games.  Currently only the default Single Player game is deifned in here.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.GameTemplates.SinglePlayer" isDocumented="True">The single player game data</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.IO" isDocumented="True">Contains the entry point for the rest of the application to all persistence mechanisms.  Nothing in this namespace refers to Isolated Storage, i.e. we completely abstract the implementation away from the actual persistence mechanism.  This allows us to rebase all persistence on SQL later on, for example, with no impact to the rest of the app.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.IO.IsolatedStorage" isDocumented="True">The implementation of the interfaces defined in Locima.SlidingBlock.IO using Isolated Storage as the persistence mechanism.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.Messaging" isDocumented="True">Contains framework, utilities and default implementation for messaging passing between the view model and the view.  This is useful for when a view model wants the view to do something, but has no way to instruct the view using the property change notifications.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.Model" isDocumented="True">Contains all the MVVM model implementations</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.Persistence" isDocumented="True">Contains the serialisable classes (using data contract seriailisation) which can then be pased to storage managers in Locima.SlidingBlock.IO.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.Scrambles" isDocumented="True">Contains the implementation of tile scrambles.  These are utility methods that jumble up the tiles in a puzzle.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.SinglePlayer" isDocumented="True">Contains the entry point for creating single player games (this needs to be moved to Locima.SlidingBlock.GameTemplates.SinglePlayer)</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.Test" isDocumented="True">Unused.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.ViewModel" isDocumented="True">Contains all the MVVM view model implementations.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.GameTemplates.Animals" isDocumented="True">The animals game template</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Locima.SlidingBlock.GameTemplates.Flowers" isDocumented="True">The flowers game template</NamespaceSummaryItem></NamespaceSummaries>
-    <RootNamespaceTitle>Sliding Block Puzzle</RootNamespaceTitle>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.Common" isDocumented="True">Contains common utility classes that are used throughout the project.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.Controls" isDocumented="True">Contains all the user-defined controls and utility classes that apply specifically to controls.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.Converters" isDocumented="True">Contains all the implementations of IValueConverter used in the pages and controls within the project.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.GameTemplates" isDocumented="True">Contains the classes and data (in the form of static classes) for built-in games.  Currently only the default Single Player game is deifned in here.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.GameTemplates.SinglePlayer" isDocumented="True">The single player game data</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.IO" isDocumented="True">Contains the entry point for the rest of the application to all persistence mechanisms.  Nothing in this namespace refers to Isolated Storage, i.e. we completely abstract the implementation away from the actual persistence mechanism.  This allows us to rebase all persistence on SQL later on, for example, with no impact to the rest of the app.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.IO.IsolatedStorage" isDocumented="True">The implementation of the interfaces defined in Locima.SlidingBlock.IO using Isolated Storage as the persistence mechanism.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.Messaging" isDocumented="True">Contains framework, utilities and default implementation for messaging passing between the view model and the view.  This is useful for when a view model wants the view to do something, but has no way to instruct the view using the property change notifications.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.Model" isDocumented="True">Contains all the MVVM model implementations</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.Persistence" isDocumented="True">Contains the serialisable classes (using data contract seriailisation) which can then be pased to storage managers in Locima.SlidingBlock.IO.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.Scrambles" isDocumented="True">Contains the implementation of tile scrambles.  These are utility methods that jumble up the tiles in a puzzle.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.SinglePlayer" isDocumented="True">Contains the entry point for creating single player games (this needs to be moved to Locima.SlidingBlock.GameTemplates.SinglePlayer)</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.Test" isDocumented="True">Unused.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.ViewModel" isDocumented="True">Contains all the MVVM view model implementations.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.GameTemplates.Animals" isDocumented="True">The animals game template</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Locima.SlidingBlock.GameTemplates.Flowers" isDocumented="True">The flowers game template</NamespaceSummaryItem>
+    </NamespaceSummaries>
+    <RootNamespaceTitle>Sliding Block</RootNamespaceTitle>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
