@@ -124,19 +124,6 @@
             </controls:Puzzle>
         </Border>
 
-<!--
-        <StackPanel x:Name="ControlsPanel" Grid.Row="3">
-            <Button Click="ButtonClick">
-                <TextBlock>Break</TextBlock>
-            </Button>
-            <Button Content="Save" Command="{Binding SaveGameCommand}" DataContext="{Binding Source={StaticResource viewModel}}"/>
-            
-            <Slider x:Name="SizeSliderX" Maximum="{Binding ElementName=LayoutRoot,Path=ColumnDefinitions[0].ActualWidth,Mode=TwoWay}" Minimum="0" 
-                    Value="{Binding ElementName=LayoutRoot,Path=ColumnDefinitions[0].ActualWidth}" />
-            <Slider x:Name="SizeSliderY" Maximum="{Binding ElementName=LayoutRoot,Path=RowDefinitions[1].ActualHeight,Mode=TwoWay}" Minimum="0"
-                    Value="{Binding ElementName=LayoutRoot,Path=RowDefinitions[1].ActualHeight}"/>
-        </StackPanel>
--->
     </Grid>
 
 </phone:PhoneApplicationPage>
