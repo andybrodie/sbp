@@ -58,6 +58,6 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <TextBlock x:Name="AsteriskIndicator" Grid.Row="2" Text="{Binding Path=Strings.AsteriskOnTemplateSelect, Source={StaticResource Localization}}" Style="{StaticResource PhoneTextSmallStyle}" Margin="0,12,0,12" HorizontalAlignment="Right"/>
+        <TextBlock x:Name="AsteriskIndicator" Grid.Row="2" Text="{Binding Path=Strings.AsteriskOnTemplateSelect, Source={StaticResource Localization}}" Style="{StaticResource PhoneTextSmallStyle}" Margin="12,12,12,12" HorizontalAlignment="Right"/>
     </Grid> 
 </phone:PhoneApplicationPage>
