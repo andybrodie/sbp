@@ -53,7 +53,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <StackPanel Grid.Row="2" FlowDirection="LeftToRight" HorizontalAlignment="Right" Orientation="Horizontal">
+        <StackPanel Grid.Row="2" FlowDirection="LeftToRight" HorizontalAlignment="Right" Orientation="Horizontal" Margin="12,12,12,12">
             <TextBlock x:Name="ActivePlayerPrompt" 
                        Text="{Binding Path=Strings.ActivePlayer, Source={StaticResource Localization}}"
                        Style="{StaticResource PhoneTextNormalStyle}" Margin="0"/>
