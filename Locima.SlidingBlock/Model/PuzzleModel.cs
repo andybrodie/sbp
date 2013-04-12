@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using Locima.SlidingBlock.Common;
 using Locima.SlidingBlock.Controls;
 using Locima.SlidingBlock.Persistence;
+using Locima.SlidingBlock.Scrambles;
 using Locima.SlidingBlock.ViewModel;
 using NLog;
 
@@ -356,6 +357,15 @@ namespace Locima.SlidingBlock.Model
                             currentPosition, newPosition);
                 _puzzleGrid[currentPosition.Y][currentPosition.X] = swapTile;
                 _puzzleGrid[newPosition.Y][newPosition.X] = playerTile;
+
+                /* For checking purposes, ensure that the parity of the puzzle never changes when a tile is moved, if it does, our parity checker has a defect
+                 * or we're passing it bad data */                
+                if (Debugger.IsAttached)
+                {
+                    ScrambleChecker.Instance.CalculateParity(
+                        ArrayTools.ConvertTo(_puzzleGrid, model => model.SolvedPosition),
+                        LocalPlayer.Position);
+                }
                 SafeRaise.Raise(PlayerMoved, this,
                                 new PlayerMovedEventArgs { PlayerTile = playerTile, PuzzleTile = swapTile});
                 didPlayerMove = true;
