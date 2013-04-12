@@ -91,7 +91,7 @@ namespace Locima.SlidingBlock.Scrambles
 
 
         /// <summary>
-        /// Creates the parity list for a solved puzzle of the domensions specified
+        /// Creates the parity list for a solved puzzle of the dimensions specified
         /// </summary>
         /// <param name="tilesAcross">Number of tiles horizontally in the puzzle</param>
         /// <param name="tilesHigh">Number of tiles vertically in the puzzle</param>
@@ -106,10 +106,11 @@ namespace Locima.SlidingBlock.Scrambles
                 {
                     if (blankTile.X == x && blankTile.Y == y) continue; // Skip the blank tile
                     /* Calculate the absolute tile position (i.e. a single integer representing the position of the tile
-                     * by iterating over a each row alterately left to right and right to left.  For example, on a 3 x 3 puzzle, the order is:
-                     * 0 1 2
-                     * 5 4 3
-                     * 7 8 9
+                     * by iterating over a each row alterately left to right and right to left.  For example, on a 3 x 3 and 4 x 4 puzzle, the order is:
+                     * 0 1 2     0  1  2  3
+                     * 5 4 3     7  6  5  4
+                     * 7 8 9     8  9 10 11
+                     *          15 14 13 12
                      * We can achieve this simply by changing the x-offset of the tile we're after to either be based from the left or the right
                      */
                     int tilePosition = y*tilesAcross;
@@ -144,7 +145,7 @@ namespace Locima.SlidingBlock.Scrambles
                     // Calculate the x co-ordinate in the row making sure that odd numbered rows are traversed right to left
                     int xOffset = (y%2 == 0) ? x : (tilesAcross - 1) - x;
                     Position tile = tiles[y][xOffset];
-                    if (blankTile.X == x && blankTile.Y == y)
+                    if (blankTile.X == xOffset && blankTile.Y == y)
                     {
                         // Ignore the blank tile in creating the parity list
                         Logger.Debug("Ignoring tile {0} (position {1} in the list) as it is the blank tile", blankTile,
@@ -187,7 +188,7 @@ namespace Locima.SlidingBlock.Scrambles
         /// <param name="tiles">The tiles (typically this would be calculated by a scramble)</param>
         /// <param name="blankTile">The position of the blank tile</param>
         /// <returns>The calculated parity of the puzzle</returns>
-        private Parity CalculateParity(Position[][] tiles, Position blankTile)
+        public Parity CalculateParity(Position[][] tiles, Position blankTile)
         {
             return CalculateParity(ConvertToParityList(tiles, blankTile));
         }
@@ -227,5 +228,33 @@ namespace Locima.SlidingBlock.Scrambles
             /// </summary>
             Odd
         }
+
+        public void TestScrambler()
+        {
+/*            EnsureSolveable(new[]
+                {
+                    new[] { new Position(0,0), new Position(1,0), new Position(2,0), new Position(3,0) },
+                    new[] { new Position(0,1), new Position(1,1), new Position(2,1), new Position(3,1) },
+                    new[] { new Position(0,2), new Position(1,2), new Position(2,2), new Position(3,2) },
+                    new[] { new Position(0,3), new Position(1,3), new Position(2,3), new Position(3,3) }
+                }, new Position(0, 3));
+            EnsureSolveable(new[]
+                {
+                    new[] { new Position(0,0), new Position(1,0), new Position(2,0), new Position(3,0) },
+                    new[] { new Position(0,1), new Position(2,2), new Position(2,1), new Position(3,1) },
+                    new[] { new Position(0,2), new Position(1,2), new Position(1,1), new Position(3,2) },
+                    new[] { new Position(0,3), new Position(1,3), new Position(2,3), new Position(3,3) }
+                }, new Position(1, 1));
+
+            Random r = new Random();
+            const int tilesAcross = 5;
+            const int tilesHigh = 5;
+            for (int i = 0; i < 10; i++)
+            {
+                Position start = new Position { X = r.Next(tilesAcross), Y = r.Next(tilesHigh) };
+                Scrambler.Instance.Scramble(Scrambler.ScrambleType.Random, tilesAcross, tilesHigh, start);
+            }
+        */}
+
     }
 }
