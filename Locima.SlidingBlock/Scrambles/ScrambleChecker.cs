@@ -229,32 +229,5 @@ namespace Locima.SlidingBlock.Scrambles
             Odd
         }
 
-        public void TestScrambler()
-        {
-/*            EnsureSolveable(new[]
-                {
-                    new[] { new Position(0,0), new Position(1,0), new Position(2,0), new Position(3,0) },
-                    new[] { new Position(0,1), new Position(1,1), new Position(2,1), new Position(3,1) },
-                    new[] { new Position(0,2), new Position(1,2), new Position(2,2), new Position(3,2) },
-                    new[] { new Position(0,3), new Position(1,3), new Position(2,3), new Position(3,3) }
-                }, new Position(0, 3));
-            EnsureSolveable(new[]
-                {
-                    new[] { new Position(0,0), new Position(1,0), new Position(2,0), new Position(3,0) },
-                    new[] { new Position(0,1), new Position(2,2), new Position(2,1), new Position(3,1) },
-                    new[] { new Position(0,2), new Position(1,2), new Position(1,1), new Position(3,2) },
-                    new[] { new Position(0,3), new Position(1,3), new Position(2,3), new Position(3,3) }
-                }, new Position(1, 1));
-
-            Random r = new Random();
-            const int tilesAcross = 5;
-            const int tilesHigh = 5;
-            for (int i = 0; i < 10; i++)
-            {
-                Position start = new Position { X = r.Next(tilesAcross), Y = r.Next(tilesHigh) };
-                Scrambler.Instance.Scramble(Scrambler.ScrambleType.Random, tilesAcross, tilesHigh, start);
-            }
-        */}
-
     }
 }
