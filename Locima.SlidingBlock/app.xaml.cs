@@ -282,7 +282,9 @@ namespace Locima.SlidingBlock
         private void CompleteInitializePhoneApplication(object sender, NavigationEventArgs e)
         {
             // Set the root visual to allow the application to render
+// ReSharper disable RedundantCheckBeforeAssignment
             if (RootVisual != RootFrame)
+// ReSharper restore RedundantCheckBeforeAssignment
                 RootVisual = RootFrame;
 
             // Remove this handler since it is no longer needed
