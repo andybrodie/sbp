@@ -90,7 +90,7 @@ namespace Locima.SlidingBlock.Scrambles
         public Position[][] Scramble(ScrambleType type, int tilesAcross, int tilesHigh, Position blankTile)
         {
             Position[][] scramble;
-            Logger.Info("Creating scramble {0} for a grid {1} x {2}", type, tilesAcross, tilesHigh);
+            Logger.Info("Creating scramble {0} for a grid {1} x {2} with blank tile at {3},{4}", type, tilesAcross, tilesHigh, blankTile.X, blankTile.Y);
             switch (type)
             {
                 case ScrambleType.XFlip:
