@@ -68,6 +68,9 @@
       Added missing support e-mail and URL from About page.
       Rearranged application bar on menus.
       Added current player indication in menus
+      
+      1.0.0.3
+      Fixed bug that made some 4x4 puzzles impossible.
     </Item>
 
     <Item Title="acknowledgements" Type="xaml">

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{8881db2a-3e16-4215-bb96-03af4095d334}" Title="Sliding Block" RuntimeType="Silverlight" Version="1.0.0.2" Genre="Apps.Games" Author="Andy Brodie" Description="" Publisher="Locima">
+  <App xmlns="" ProductID="{8881db2a-3e16-4215-bb96-03af4095d334}" Title="Sliding Block" RuntimeType="Silverlight" Version="1.0.0.3" Genre="Apps.Games" Author="Andy Brodie" Description="" Publisher="Locima">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
 <!--      <Capability Name="ID_CAP_GAMERSERVICES" />-->
