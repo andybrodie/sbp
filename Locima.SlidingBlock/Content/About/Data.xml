@@ -71,6 +71,7 @@
       
       1.0.0.3
       Fixed bug that made some 4x4 puzzles impossible.
+      Fixed bug that caused app to crash when customising a puzzle image.
     </Item>
 
     <Item Title="acknowledgements" Type="xaml">
