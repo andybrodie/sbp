@@ -44,11 +44,11 @@ namespace Locima.SlidingBlock.ViewModel
             _parent = gameEditorViewModel;
             _level = level;
             PropertyChanged += OnPropertyChanged;
-            IsEditable = _parent.IsEditable;
             AddLevelBeforeCommand = new DelegateCommand(parameter => _parent.AddLevelBefore(_level), o => IsEditable);
             AddLevelAfterCommand = new DelegateCommand(parameter => _parent.AddLevelAfter(_level), o => IsEditable);
             MoveLevelCommand = new DelegateCommand(parameter => _parent.MoveLevel(_level, Int32.Parse((string)parameter)), o => IsEditable);
             DeleteLevelCommand = new DelegateCommand(parameter => _parent.DeleteLevel(_level), o => IsEditable);
+            IsEditable = _parent.IsEditable;
             CreateThumbnail();
         }
 
