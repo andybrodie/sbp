@@ -44,11 +44,11 @@ namespace Locima.SlidingBlock.ViewModel
             _parent = gameEditorViewModel;
             _level = level;
             PropertyChanged += OnPropertyChanged;
+            IsEditable = _parent.IsEditable;
             AddLevelBeforeCommand = new DelegateCommand(parameter => _parent.AddLevelBefore(_level), o => IsEditable);
             AddLevelAfterCommand = new DelegateCommand(parameter => _parent.AddLevelAfter(_level), o => IsEditable);
-            MoveLeveCommand = new DelegateCommand(parameter => _parent.MoveLevel(_level, Int32.Parse((string)parameter)), o => IsEditable);
+            MoveLevelCommand = new DelegateCommand(parameter => _parent.MoveLevel(_level, Int32.Parse((string)parameter)), o => IsEditable);
             DeleteLevelCommand = new DelegateCommand(parameter => _parent.DeleteLevel(_level), o => IsEditable);
-            IsEditable = _parent.IsEditable;
             CreateThumbnail();
         }
 
@@ -64,7 +64,7 @@ namespace Locima.SlidingBlock.ViewModel
                 Logger.Debug("Firing CanExecuteChanged events as IsEditable has been changed");
                 ((DelegateCommand)AddLevelBeforeCommand).RaiseCanExecuteChanged();
                 ((DelegateCommand)AddLevelAfterCommand).RaiseCanExecuteChanged();
-                ((DelegateCommand)MoveLeveCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)MoveLevelCommand).RaiseCanExecuteChanged();
                 ((DelegateCommand)DeleteLevelCommand).RaiseCanExecuteChanged();
             }
         }
@@ -139,7 +139,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// Invoked from the context menu to move this level up or down
         /// </summary>
         /// <remarks>The action is provided by <see cref="GameEditorViewModel.MoveLevel"/></remarks>
-        public ICommand MoveLeveCommand { get; private set; }
+        public ICommand MoveLevelCommand { get; private set; }
 
         /// <summary>
         /// Bound to by <see cref="Control.IsEnabled"/> or to control commands where editing a level is allowed (<see cref="GameTemplate.IsReadOnly"/>)

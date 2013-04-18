@@ -371,7 +371,7 @@ namespace Locima.SlidingBlock.ViewModel
         /// </summary>
         /// <param name="level">The level to move</param>
         /// <param name="relativePosition">The new relative position (0 means stay still) of the level to its original location</param>
-        /// <remarks><see cref="ICommand"/> action for <see cref="LevelDefinitionViewModel.MoveLeveCommand"/></remarks>
+        /// <remarks><see cref="ICommand"/> action for <see cref="LevelDefinitionViewModel.MoveLevelCommand"/></remarks>
         public
             void MoveLevel(LevelDefinition level, int relativePosition)
         {

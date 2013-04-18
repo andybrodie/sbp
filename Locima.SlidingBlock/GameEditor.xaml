@@ -68,8 +68,8 @@
                             <toolkit:ContextMenuService.ContextMenu>
                                 <toolkit:ContextMenu Name="MyContextMenu">
                                     <!-- Can't use IsEnabled binding to IsEditable because of a defect in the silverlight toolkit, have to do it using ICommand CanExecute instead -->
-                                    <toolkit:MenuItem Header="{Binding Path=Strings.MoveLevelUp, Source={StaticResource Localization}}" Command="{Binding MoveLeveCommand}" CommandParameter="-1" />
-                                    <toolkit:MenuItem Header="{Binding Path=Strings.MoveLevelDown, Source={StaticResource Localization}}" Command="{Binding MoveLeveCommand}" CommandParameter="1" />
+                                    <toolkit:MenuItem Header="{Binding Path=Strings.MoveLevelUp, Source={StaticResource Localization}}" Command="{Binding MoveLevelCommand}" CommandParameter="-1" />
+                                    <toolkit:MenuItem Header="{Binding Path=Strings.MoveLevelDown, Source={StaticResource Localization}}" Command="{Binding MoveLevelCommand}" CommandParameter="1" />
                                     <toolkit:MenuItem Header="{Binding Path=Strings.AddLevelBefore, Source={StaticResource Localization}}" Command="{Binding AddLevelBeforeCommand}" />
                                     <toolkit:MenuItem Header="{Binding Path=Strings.AddLevelAfter, Source={StaticResource Localization}}" Command="{Binding AddLevelAfterCommand}" />
                                     <toolkit:MenuItem Header="{Binding Path=Strings.DeleteLevel, Source={StaticResource Localization}}" Command="{Binding DeleteLevelCommand}" />
