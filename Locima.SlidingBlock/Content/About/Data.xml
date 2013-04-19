@@ -55,11 +55,12 @@
     <!-- Supported types are "text" and "xaml", where text is nicely formatted automatically, and XAML is handled by the built-in XamlReader -->
     <Item Title="history"
           Type="text">
-      1.0.0.0
-      This is the initial public version.
-
-      1.0.0.1
-      Fixed bug that caused blank tile to jump about on suspend/resume, making the puzzle impossible on some occasions.
+      1.0.0.4
+      Live tile support added to show puzzle when pinned.
+      
+      1.0.0.3
+      Fixed bug that made some 4x4 puzzles impossible.
+      Fixed bug that caused app to crash when customising a puzzle image.
 
       1.0.0.2
       Fixed bug that caused custom images to be deleted when updating a game template.
@@ -68,10 +69,12 @@
       Added missing support e-mail and URL from About page.
       Rearranged application bar on menus.
       Added current player indication in menus
-      
-      1.0.0.3
-      Fixed bug that made some 4x4 puzzles impossible.
-      Fixed bug that caused app to crash when customising a puzzle image.
+
+      1.0.0.1
+      Fixed bug that caused blank tile to jump about on suspend/resume, making the puzzle impossible on some occasions.
+
+      1.0.0.0
+      This is the initial public version.
     </Item>
 
     <Item Title="acknowledgements" Type="xaml">
