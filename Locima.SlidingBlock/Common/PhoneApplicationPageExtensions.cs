@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -13,7 +10,6 @@ using NLog;
 
 namespace Locima.SlidingBlock.Common
 {
-
     /// <summary>
     /// Extension methods on the <see cref="PhoneApplicationPage"/> class
     /// </summary>
@@ -122,16 +118,16 @@ namespace Locima.SlidingBlock.Common
         public static int GetQueryParameterAsInt(this PhoneApplicationPage page, string queryParamName)
         {
             return GetQueryParameter(page, queryParamName, delegate(string s)
-                                                              {
-                                                                  int i;
-                                                                  if (!int.TryParse(s, out i))
-                                                                  {
-                                                                      i = default(int);
-                                                                      Logger.Error("Unable to parse {0} to an integer",
-                                                                                   s);
-                                                                  }
-                                                                  return i;
-                                                              });
+                {
+                    int i;
+                    if (!int.TryParse(s, out i))
+                    {
+                        i = default(int);
+                        Logger.Error("Unable to parse {0} to an integer",
+                                     s);
+                    }
+                    return i;
+                });
         }
 
         /// <summary>
@@ -218,7 +214,5 @@ namespace Locima.SlidingBlock.Common
         {
             return StateManagementHelper.TryGetState(page.GetType().Name, propertyName, out outputValue);
         }
-
-
     }
 }
