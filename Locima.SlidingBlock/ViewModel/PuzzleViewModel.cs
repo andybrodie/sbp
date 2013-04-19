@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -232,9 +233,11 @@ namespace Locima.SlidingBlock.ViewModel
 
 
         /// <summary>
-        /// A thumbnail image for the puzzle, used to set <see cref="LevelState.Thumbnail"/>
+        /// A full size image of the puzzle, used to set <see cref="LevelState.Thumbnail"/> and the live tile for the application.
         /// </summary>
-        public WriteableBitmap Thumbnail { get; set; }
+        /// <remarks>
+        /// This is only set on <see cref="Page.OnNavigatedFrom"/> as this is the point that you need generate a thumbnail.</remarks>
+        public WriteableBitmap PuzzleImage { get; set; }
 
         /// <summary>
         /// The title of the current level, a short description of the image the user is trying to assemble
@@ -737,18 +740,29 @@ namespace Locima.SlidingBlock.ViewModel
 
             // Create the thumbnail image
             currentLevel.Thumbnail = CreateThumbnailBitmap();
+
+            // Update the live application tile so the background has a copy of the puzzle in its current state, only visible if pinned
+            TileUpdater.Instance.UpdateApplicationTile(PuzzleImage);
         }
 
 
         /// <summary>
         /// Create a small thumbnail of the current state of the puzzle for use within the save game file
         /// </summary>
-        /// <remarks>
-        /// Not implemented yet, this currently just returns a blank thumbnail image </remarks>
         /// <returns>An empty bitmap of size <see cref="SaveGame.ThumbnailWidth"/> by <see cref="SaveGame.ThumbnailHeight"/></returns>
         private WriteableBitmap CreateThumbnailBitmap()
         {
-            return Thumbnail;
+            WriteableBitmap thumbnail;
+            if (PuzzleImage != null) // This might be null if we're exiting before the puzzle loads
+            {
+                thumbnail = PuzzleImage.Resize(SaveGame.ThumbnailWidth, SaveGame.ThumbnailHeight,
+                                               WriteableBitmapExtensions.Interpolation.Bilinear);
+            }
+            else
+            {
+                thumbnail = null;
+            }
+            return thumbnail;
         }
 
     }

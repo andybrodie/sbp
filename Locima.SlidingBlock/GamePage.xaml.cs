@@ -135,10 +135,10 @@ namespace Locima.SlidingBlock
             base.OnNavigatingFrom(e);
 
             // Update the thumbnail of the current level (shown when offering the user a list of game to load)
-            WriteableBitmap thumbnail = CreateThumbnail();
-            if (thumbnail != null)
+            WriteableBitmap puzzleImage = CapturePuzzleImage();
+            if (puzzleImage != null)
             {
-                ViewModel.Thumbnail = thumbnail;
+                ViewModel.PuzzleImage = puzzleImage;
             }
             ViewModel.OnNavigatingFrom(e);
         }
@@ -148,22 +148,20 @@ namespace Locima.SlidingBlock
         /// Creates a screenshot of the level in its current state
         /// </summary>
         /// <returns></returns>
-        private WriteableBitmap CreateThumbnail()
+        private WriteableBitmap CapturePuzzleImage()
         {
             Logger.Info("Creating thumbnail image for current level state");
-            WriteableBitmap thumbnail;
+            WriteableBitmap puzzleImage;
             try
             {
-                thumbnail = Puzzle.CapturePuzzleBitmap();
-                thumbnail.Resize(LevelState.ThumbnailSize, LevelState.ThumbnailSize,
-                                 WriteableBitmapExtensions.Interpolation.Bilinear);
+                puzzleImage = Puzzle.CapturePuzzleBitmap();
             }
             catch (Exception e)
             {
                 Logger.DebugException("Exception thrown by thumbnail creation, probably because game has been completed so level is never rendered", e);
-                thumbnail = null;
+                puzzleImage = null;
             }
-            return thumbnail;
+            return puzzleImage;
         }
 
 
