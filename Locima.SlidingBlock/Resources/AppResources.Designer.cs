@@ -1033,6 +1033,15 @@ namespace Locima.SlidingBlock.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sliding Block.
+        /// </summary>
+        public static string TileName {
+            get {
+                return ResourceManager.GetString("TileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to time:.
         /// </summary>
         public static string TimeLabel {

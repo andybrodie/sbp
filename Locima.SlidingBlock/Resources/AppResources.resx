@@ -549,6 +549,10 @@
     <value>CONTINUE</value>
     <comment>The prompt to the user to continue</comment>
   </data>
+  <data name="TileName" xml:space="preserve">
+    <value>Sliding Block</value>
+    <comment>The title of the tile (required when updating the front tile to include a thumbnail of the current puzzle)</comment>
+  </data>
   <data name="TimeLabel" xml:space="preserve">
     <value>time:</value>
     <comment>Label on the main game screen indicating the amount of time the player has been on this level</comment>
